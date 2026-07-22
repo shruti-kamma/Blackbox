@@ -1,0 +1,14 @@
+{
+  "name": "@blackbox/config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./eslint/next": "./eslint/next.mjs",
+    "./typescript/nextjs": "./typescript/nextjs.json",
+    "./typescript/base": "./typescript/base.json",
+    "./tailwind/theme.css": "./tailwind/theme.css"
+  },
+  "dependencies": {
+    "eslint-config-next": "^16.2.10"
+  }
+}

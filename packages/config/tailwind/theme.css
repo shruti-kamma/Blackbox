@@ -1,0 +1,56 @@
+/*
+ * Shared design tokens for all Blackbox apps (Tailwind v4 CSS-first config).
+ * Import from an app's globals.css with:
+ *   @import "tailwindcss";
+ *   @import "@blackbox/config/tailwind/theme.css";
+ *
+ * Colors are chosen to meet WCAG 2.1 AA contrast (4.5:1 for text) against
+ * their paired background — verify with a contrast checker before changing.
+ */
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+
+  --color-primary: #1d4ed8;
+  --color-primary-foreground: #ffffff;
+
+  --color-danger: #b91c1c;
+  --color-danger-foreground: #ffffff;
+
+  --color-success: #15803d;
+  --color-success-foreground: #ffffff;
+
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #52525b;
+
+  --color-border: #d4d4d8;
+  --color-focus-ring: #2563eb;
+
+  /* Minimum 44x44px touch target, per WCAG 2.5.5 */
+  --spacing-touch-target: 2.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: #0a0a0a;
+    --color-foreground: #ededed;
+    --color-muted: #1c1c1f;
+    --color-muted-foreground: #a1a1aa;
+    --color-border: #3f3f46;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible focus indicator for all interactive elements — never suppress this. */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
