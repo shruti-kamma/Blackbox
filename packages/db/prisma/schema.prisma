@@ -190,7 +190,7 @@ model CandidateSkill {
 model Organization {
   id          String           @id @default(cuid())
   type        OrganizationType
-  name        String
+  name        String           @unique
   website     String?
   description String?
 
