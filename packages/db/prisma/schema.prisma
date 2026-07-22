@@ -41,15 +41,50 @@ enum CrawlStatus {
   FAILED
 }
 
+// Controlled list for disability self-identification. "OTHER" pairs with the
+// free-text CandidateProfile.disabilityOther field.
+enum DisabilityCategory {
+  VISUAL
+  HEARING
+  MOBILITY
+  COGNITIVE
+  SPEECH
+  CHRONIC_ILLNESS
+  MENTAL_HEALTH
+  OTHER
+}
+
+enum EducationLevel {
+  HIGH_SCHOOL
+  DIPLOMA
+  ASSOCIATE
+  BACHELORS
+  MASTERS
+  DOCTORATE
+  OTHER
+}
+
+enum ExperienceLevel {
+  ENTRY
+  MID
+  SENIOR
+  LEAD
+}
+
+enum NotificationType {
+  NEW_MATCH
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id           String   @id @default(cuid())
+  email        String   @unique
   passwordHash String
-  role      UserRole
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role         UserRole
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   candidateProfile CandidateProfile?
+  notifications    Notification[]
 
   // Set when role = EMPLOYER; the company this user posts jobs on behalf of.
   employerOrgId String?
@@ -59,22 +94,97 @@ model User {
 }
 
 model CandidateProfile {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  fullName            String
-  headline            String?
-  resumeUrl           String?
-  accessibilityNeeds  String[] // e.g. "screen-reader", "captioning", "flexible-hours"
+  fullName           String
+  headline           String?
+  resumeUrl          String?
+  accessibilityNeeds String[] // e.g. "screen-reader", "captioning", "flexible-hours"
+
+  // Controlled disability self-identification, used as the first-pass filter
+  // in matching. "OTHER" pairs with disabilityOther free text.
+  disabilityCategories DisabilityCategory[]
+  disabilityOther      String?
+
+  experienceLevel     ExperienceLevel?
+  preferredCategories String[] // job categories, free text controlled by frontend select
+  preferredLocations  String[]
+  openToRemote        Boolean          @default(false)
+
+  education      Education[]
+  workExperience WorkExperience[]
+  skills         CandidateSkill[]
+  applications   Application[]
+  matches        Match[]
 
   // Populated by the matching agent from résumé/profile text. Query via raw SQL
   // (Prisma has no native vector query API) — see services/matching-agent.
   embedding Unsupported("vector(1536)")?
 
-  applications Application[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // GIN indexes back the matching engine's cheap prefilter stage (Prisma
+  // `hasSome`/`has` compile to Postgres `&&`/`@>`, which these indexes serve).
+  @@index([disabilityCategories], type: Gin)
+  @@index([preferredLocations], type: Gin)
+  @@index([openToRemote])
+}
+
+model Education {
+  id                 String           @id @default(cuid())
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  level          EducationLevel
+  fieldOfStudy   String?
+  institution    String
+  graduationYear Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([candidateProfileId])
+}
+
+model WorkExperience {
+  id                 String           @id @default(cuid())
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean   @default(false)
+  description String?
+
+  createdAt DateTime @default(now())
+
+  @@index([candidateProfileId])
+}
+
+// Structured skill vocabulary shared between candidates and job postings, so
+// skills overlap can be computed as a set intersection rather than fuzzy text
+// matching. Grows organically — API upserts by name.
+model Skill {
+  id       String  @id @default(cuid())
+  name     String  @unique
+  category String? // e.g. "technical", "soft", "language"
+
+  candidates CandidateSkill[]
+  jobs       JobSkill[]
+}
+
+model CandidateSkill {
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  skillId            String
+  skill              Skill            @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([candidateProfileId, skillId])
+  @@index([skillId])
 }
 
 model Organization {
@@ -101,22 +211,48 @@ model Job {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  title                  String
-  description            String
-  location               String?
-  remote                 Boolean  @default(false)
-  employmentType         String? // e.g. "full-time", "contract"
-  accommodationsOffered  String[]
-  isOpen                 Boolean  @default(true)
+  title                 String
+  description           String
+  category              String
+  location              String?
+  remote                Boolean  @default(false)
+  employmentType        String? // e.g. "full-time", "contract"
+  accommodationsOffered String[]
+  isOpen                Boolean  @default(true)
+
+  // Empty array = open to all disability categories. Non-empty = the role is
+  // specifically targeted/suited to these; used as the matching prefilter.
+  targetDisabilityCategories DisabilityCategory[]
+
+  requiredEducationLevel  EducationLevel?
+  requiredEducationField  String?
+  requiredExperienceLevel ExperienceLevel?
+
+  requiredSkills JobSkill[]
+  applications   Application[]
+  matches        Match[]
 
   // Populated by the matching agent from the job description. Query via raw SQL.
   embedding Unsupported("vector(1536)")?
 
-  applications Application[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([organizationId])
+  @@index([isOpen])
+  @@index([remote])
+  @@index([location])
+  @@index([targetDisabilityCategories], type: Gin)
+}
+
+model JobSkill {
+  jobId   String
+  job     Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, skillId])
+  @@index([skillId])
 }
 
 model Application {
@@ -128,10 +264,50 @@ model Application {
   status      ApplicationStatus @default(SUBMITTED)
   coverNote   String?
 
+  // Snapshot of the Match.score at the time the candidate applied, so a
+  // hiring manager can see "applied with a 78% match" even if the underlying
+  // profile/job change later.
+  matchScore Float?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([jobId, candidateId])
+}
+
+// A stored, event-driven match produced by the matching engine — created when
+// a job is posted (scored against existing candidates) or when a candidate
+// substantially edits their profile (re-scored against currently open jobs).
+// Never computed live on page load; the candidate feed and the employer's
+// "matched candidates" view both just read this table.
+model Match {
+  id          String           @id @default(cuid())
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  jobId       String
+  job         Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  score      Float // 0-100
+  breakdown  Json // per-criterion scores/weights/reasons, for explainability
+  matchedAt  DateTime  @default(now())
+  notifiedAt DateTime?
+
+  @@unique([jobId, candidateId])
+  @@index([candidateId, score])
+  @@index([jobId, score])
+}
+
+model Notification {
+  id      String           @id @default(cuid())
+  userId  String
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type    NotificationType
+  payload Json
+  read    Boolean          @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, read])
 }
 
 // One invocation of the crawler agent against an organization's public info
@@ -144,8 +320,8 @@ model CrawlRun {
   startedAt      DateTime?
   finishedAt     DateTime?
 
-  findings CrawlFinding[]
-  createdAt DateTime @default(now())
+  findings  CrawlFinding[]
+  createdAt DateTime       @default(now())
 
   @@index([organizationId])
 }
@@ -175,11 +351,11 @@ model AccessibilityScore {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  overallScore      Float
-  breakdown         Json // per-category subscores + rationale
+  overallScore       Float
+  breakdown          Json // per-category subscores + rationale
   methodologyVersion String
-  generatedBy       String // agent identifier, e.g. "scoring-agent@v1"
-  generatedAt       DateTime @default(now())
+  generatedBy        String // agent identifier, e.g. "scoring-agent@v1"
+  generatedAt        DateTime @default(now())
 
   @@index([organizationId, generatedAt])
 }
