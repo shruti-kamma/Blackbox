@@ -35,6 +35,7 @@ A set of agent services automate the data behind these products:
 /packages
   /ui              shared accessible component library
   /db              Prisma schema + client, shared across apps
+  /matching-engine rule-based candidate-job scoring, used by job-portal's worker
   /config          shared eslint/tsconfig/tailwind config
 ```
 
@@ -48,6 +49,9 @@ cp packages/db/.env.example packages/db/.env   # then fill in DATABASE_URL
 pnpm --filter @blackbox/db generate
 pnpm dev
 ```
+
+job-portal's candidate-job matching runs as a separate worker process — see
+[`apps/job-portal/README.md`](apps/job-portal/README.md).
 
 ### Infra + agent services
 
