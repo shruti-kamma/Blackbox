@@ -1,0 +1,73 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { apiRequest } from "@/lib/api-client";
+
+interface Notification {
+  id: string;
+  type: string;
+  payload: { jobId?: string; score?: number };
+  read: boolean;
+  createdAt: string;
+}
+
+export function NotificationBell() {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    apiRequest<{ notifications: Notification[] }>("/api/notifications")
+      .then(({ notifications }) => setNotifications(notifications))
+      .catch(() => {});
+  }, []);
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  async function markAllRead() {
+    const unread = notifications.filter((n) => !n.read).map((n) => n.id);
+    if (unread.length === 0) return;
+    await apiRequest("/api/notifications", { method: "PATCH", body: JSON.stringify({ ids: unread }) });
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  }
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
+        onClick={() => {
+          setOpen((o) => !o);
+          if (!open) markAllRead();
+        }}
+        className="relative flex h-touch-target w-touch-target items-center justify-center rounded-md hover:bg-muted"
+      >
+        <span aria-hidden>🔔</span>
+        {unreadCount > 0 && (
+          <span className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-danger text-[10px] text-danger-foreground">
+            {unreadCount}
+          </span>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 z-10 mt-1 w-72 rounded-md border border-border bg-background p-2 shadow-lg">
+          {notifications.length === 0 ? (
+            <p className="p-2 text-sm text-muted-foreground">No notifications yet</p>
+          ) : (
+            <ul className="flex flex-col gap-1">
+              {notifications.map((n) => (
+                <li key={n.id} className="rounded-md p-2 text-sm text-foreground hover:bg-muted">
+                  New match — {n.payload.score}% fit.{" "}
+                  {n.payload.jobId && (
+                    <a href="/candidate/jobs" className="text-primary underline">
+                      View
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
