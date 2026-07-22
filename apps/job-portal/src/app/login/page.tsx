@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 
@@ -73,9 +74,9 @@ export default function LoginPage() {
       </form>
       <p className="text-sm text-muted-foreground">
         No account?{" "}
-        <a href="/signup" className="font-medium text-primary underline">
+        <Link href="/signup" className="font-medium text-primary underline">
           Sign up
-        </a>
+        </Link>
       </p>
     </main>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { apiRequest } from "@/lib/api-client";
 
 interface Notification {
@@ -58,9 +59,9 @@ export function NotificationBell() {
                 <li key={n.id} className="rounded-md p-2 text-sm text-foreground hover:bg-muted">
                   New match — {n.payload.score}% fit.{" "}
                   {n.payload.jobId && (
-                    <a href="/candidate/jobs" className="text-primary underline">
+                    <Link href="/candidate/jobs" className="text-primary underline">
                       View
-                    </a>
+                    </Link>
                   )}
                 </li>
               ))}

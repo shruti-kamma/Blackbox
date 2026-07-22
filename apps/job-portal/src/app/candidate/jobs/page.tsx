@@ -64,7 +64,7 @@ export default function CandidateJobsPage() {
         <p className="text-muted-foreground">Loading…</p>
       ) : matches.length === 0 ? (
         <p className="text-muted-foreground">
-          No matches yet. Make sure your profile is filled in — new jobs are matched against it as they're
+          No matches yet. Make sure your profile is filled in — new jobs are matched against it as they&apos;re
           posted.
         </p>
       ) : (

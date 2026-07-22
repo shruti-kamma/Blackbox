@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Button } from "@blackbox/ui";
 import { apiRequest } from "@/lib/api-client";
 
@@ -25,7 +26,7 @@ export default function EmployerJobsPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-foreground">Your postings</h1>
         <Button asChild>
-          <a href="/employer/jobs/new">Post a job</a>
+          <Link href="/employer/jobs/new">Post a job</Link>
         </Button>
       </div>
       {jobs === null ? (
@@ -36,9 +37,9 @@ export default function EmployerJobsPage() {
         <ul className="flex flex-col gap-3">
           {jobs.map((job) => (
             <li key={job.id} className="rounded-md border border-border p-4">
-              <a href={`/employer/jobs/${job.id}`} className="font-medium text-foreground hover:underline">
+              <Link href={`/employer/jobs/${job.id}`} className="font-medium text-foreground hover:underline">
                 {job.title}
-              </a>
+              </Link>
               <p className="text-sm text-muted-foreground">
                 {job.category} · {job._count.matches} matched candidate(s) · {job._count.applications}{" "}
                 application(s) · {job.isOpen ? "Open" : "Closed"}

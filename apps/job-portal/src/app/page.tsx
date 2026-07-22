@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-start justify-center gap-4 px-4 py-24">
@@ -10,18 +12,18 @@ export default function Home() {
         for, and hiring managers see applicants who already clear the bar.
       </p>
       <div className="mt-4 flex gap-3">
-        <a
+        <Link
           href="/signup"
           className="flex h-touch-target items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground"
         >
           Get started
-        </a>
-        <a
+        </Link>
+        <Link
           href="/login"
           className="flex h-touch-target items-center justify-center rounded-md border border-border px-5 text-sm font-medium text-foreground"
         >
           Sign in
-        </a>
+        </Link>
       </div>
     </main>
   );
