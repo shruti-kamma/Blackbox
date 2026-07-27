@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { apiRequest } from "@/lib/api-client";
+import { matchScoreColor } from "@/lib/match-score-color";
 
 interface CandidateSummary {
   id: string;
@@ -31,11 +32,19 @@ interface MatchRow {
 }
 
 function CandidateCard({ candidate, score }: { candidate: CandidateSummary; score: number | null }) {
+  const color = score !== null ? matchScoreColor(score) : null;
   return (
-    <div className="rounded-md border border-border p-4">
+    <div
+      className={`rounded-md p-4 ${color ? "border-2" : "border border-border"}`}
+      style={color ? { borderColor: color.border, backgroundColor: color.background } : undefined}
+    >
       <div className="flex items-center justify-between">
         <p className="font-medium text-foreground">{candidate.fullName}</p>
-        {score !== null && <span className="text-sm font-medium text-primary">{score}% match</span>}
+        {score !== null && (
+          <span className="text-sm font-semibold" style={{ color: color!.text }}>
+            {score}% match
+          </span>
+        )}
       </div>
       {candidate.headline && <p className="text-sm text-muted-foreground">{candidate.headline}</p>}
       {candidate.skills.length > 0 && (

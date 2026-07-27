@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
+import { matchScoreColor } from "@/lib/match-score-color";
 
 interface MatchRow {
   id: string;
@@ -69,11 +70,19 @@ export default function CandidateJobsPage() {
         </p>
       ) : (
         <ul className="flex flex-col gap-4">
-          {matches.map((m) => (
-            <li key={m.id} className="rounded-md border border-border p-4">
+          {matches.map((m) => {
+            const color = matchScoreColor(m.score);
+            return (
+            <li
+              key={m.id}
+              className="rounded-md border-2 p-4"
+              style={{ borderColor: color.border, backgroundColor: color.background }}
+            >
               <div className="flex items-center justify-between">
                 <h2 className="font-medium text-foreground">{m.job.title}</h2>
-                <span className="text-sm font-medium text-primary">{m.score}% match</span>
+                <span className="text-sm font-semibold" style={{ color: color.text }}>
+                  {m.score}% match
+                </span>
               </div>
               <p className="text-sm text-muted-foreground">
                 {m.job.organization.name} · {m.job.category} ·{" "}
@@ -90,7 +99,8 @@ export default function CandidateJobsPage() {
                 )}
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </main>
