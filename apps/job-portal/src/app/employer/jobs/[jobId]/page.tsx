@@ -2,22 +2,55 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { apiRequest } from "@/lib/api-client";
-import { matchScoreColor } from "@/lib/match-score-color";
+import { apiRequest, ApiClientError } from "@/lib/api-client";
+import { ApplicationStatusBadge } from "@/components/application-status";
+import { CandidateCard, type CandidateSummary } from "@/components/candidate-card";
+import {
+  APPLICATION_STATUS_META,
+  EMPLOYER_ASSIGNABLE_STATUSES,
+  applicationStatusColor,
+  type ApplicationStatus,
+} from "@/lib/application-status";
 
-interface CandidateSummary {
-  id: string;
-  fullName: string;
-  headline: string | null;
-  disabilityCategories: string[];
-  accessibilityNeeds: string[];
-  education: { level: string; fieldOfStudy: string | null; institution: string }[];
-  skills: { skill: { name: string } }[];
+const PIPELINE_ORDER: ApplicationStatus[] = [
+  "SUBMITTED",
+  "UNDER_REVIEW",
+  "INTERVIEWING",
+  "OFFERED",
+  "REJECTED",
+  "WITHDRAWN",
+];
+
+function PipelineStats({ applications }: { applications: ApplicationRow[] }) {
+  const counts = PIPELINE_ORDER.map((status) => ({
+    status,
+    count: applications.filter((a) => a.status === status).length,
+  }));
+
+  return (
+    <div className="mb-6 grid grid-cols-3 gap-2 sm:grid-cols-6">
+      <div className="rounded-md border border-border p-3">
+        <p className="text-2xl font-semibold tabular-nums text-foreground">{applications.length}</p>
+        <p className="text-xs text-muted-foreground">Total</p>
+      </div>
+      {counts.map(({ status, count }) => {
+        const color = applicationStatusColor(status);
+        return (
+          <div key={status} className="rounded-md border p-3" style={{ borderColor: color.border }}>
+            <p className="text-2xl font-semibold tabular-nums" style={{ color: color.text }}>
+              {count}
+            </p>
+            <p className="text-xs text-muted-foreground">{APPLICATION_STATUS_META[status].label}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 interface ApplicationRow {
   id: string;
-  status: string;
+  status: ApplicationStatus;
   matchScore: number | null;
   coverNote: string | null;
   createdAt: string;
@@ -31,49 +64,13 @@ interface MatchRow {
   candidate: CandidateSummary;
 }
 
-function CandidateCard({ candidate, score }: { candidate: CandidateSummary; score: number | null }) {
-  const color = score !== null ? matchScoreColor(score) : null;
-  return (
-    <div
-      className={`rounded-md p-4 ${color ? "border-2" : "border border-border"}`}
-      style={color ? { borderColor: color.border, backgroundColor: color.background } : undefined}
-    >
-      <div className="flex items-center justify-between">
-        <p className="font-medium text-foreground">{candidate.fullName}</p>
-        {score !== null && (
-          <span className="text-sm font-semibold" style={{ color: color!.text }}>
-            {score}% match
-          </span>
-        )}
-      </div>
-      {candidate.headline && <p className="text-sm text-muted-foreground">{candidate.headline}</p>}
-      {candidate.skills.length > 0 && (
-        <p className="mt-2 text-sm text-foreground">
-          Skills: {candidate.skills.map((s) => s.skill.name).join(", ")}
-        </p>
-      )}
-      {candidate.education.length > 0 && (
-        <p className="text-sm text-foreground">
-          Education: {candidate.education.map((e) => `${e.level} — ${e.institution}`).join(", ")}
-        </p>
-      )}
-      {candidate.disabilityCategories.length > 0 && (
-        <p className="text-sm text-foreground">Disability: {candidate.disabilityCategories.join(", ")}</p>
-      )}
-      {candidate.accessibilityNeeds.length > 0 && (
-        <p className="text-sm text-foreground">
-          Accommodations needed: {candidate.accessibilityNeeds.join(", ")}
-        </p>
-      )}
-    </div>
-  );
-}
-
 export default function EmployerJobDetailPage() {
   const { jobId } = useParams<{ jobId: string }>();
   const [tab, setTab] = useState<"applications" | "matches">("applications");
   const [applications, setApplications] = useState<ApplicationRow[] | null>(null);
   const [matches, setMatches] = useState<MatchRow[] | null>(null);
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
     apiRequest<{ applications: ApplicationRow[] }>(`/api/jobs/${jobId}/applications`).then(({ applications }) =>
@@ -83,6 +80,22 @@ export default function EmployerJobDetailPage() {
       setMatches(matches),
     );
   }, [jobId]);
+
+  async function updateStatus(applicationId: string, status: ApplicationStatus) {
+    setUpdatingId(applicationId);
+    setStatusError(null);
+    try {
+      await apiRequest(`/api/jobs/${jobId}/applications/${applicationId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+      setApplications((prev) => prev && prev.map((a) => (a.id === applicationId ? { ...a, status } : a)));
+    } catch (err) {
+      setStatusError(err instanceof ApiClientError ? err.message : "Failed to update status");
+    } finally {
+      setUpdatingId(null);
+    }
+  }
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
@@ -109,18 +122,57 @@ export default function EmployerJobDetailPage() {
 
       {tab === "applications" && (
         <div className="flex flex-col gap-3">
+          {statusError && (
+            <p role="alert" className="text-sm text-danger">
+              {statusError}
+            </p>
+          )}
           {applications === null ? (
             <p className="text-muted-foreground">Loading…</p>
-          ) : applications.length === 0 ? (
-            <p className="text-muted-foreground">No applications yet.</p>
           ) : (
-            applications.map((app) => (
-              <div key={app.id}>
-                <CandidateCard candidate={app.candidate} score={app.matchScore} />
-                {app.coverNote && <p className="mt-1 text-sm text-foreground">“{app.coverNote}”</p>}
-                <p className="text-xs text-muted-foreground">Status: {app.status}</p>
-              </div>
-            ))
+            <>
+              <PipelineStats applications={applications} />
+              {applications.length === 0 ? (
+                <p className="text-muted-foreground">No applications yet.</p>
+              ) : (
+                applications.map((app) => (
+                  <div key={app.id}>
+                    <CandidateCard
+                      candidate={app.candidate}
+                      score={app.matchScore}
+                      actions={
+                        <div className="flex flex-col items-end gap-2">
+                          <ApplicationStatusBadge status={app.status} />
+                          {app.status === "WITHDRAWN" ? (
+                            <span className="text-right text-xs text-muted-foreground">
+                              Withdrawn by candidate
+                            </span>
+                          ) : (
+                            <label className="flex flex-col items-end gap-1 text-xs text-muted-foreground">
+                              Move to
+                              <select
+                                className="h-touch-target rounded-md border border-border bg-background px-2 text-sm text-foreground"
+                                value={app.status}
+                                disabled={updatingId === app.id}
+                                onChange={(e) => updateStatus(app.id, e.target.value as ApplicationStatus)}
+                              >
+                                {app.status === "SUBMITTED" && <option value="SUBMITTED">Applied</option>}
+                                {EMPLOYER_ASSIGNABLE_STATUSES.map((s) => (
+                                  <option key={s} value={s}>
+                                    {APPLICATION_STATUS_META[s].label}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          )}
+                        </div>
+                      }
+                    />
+                    {app.coverNote && <p className="mt-1 text-sm text-foreground">“{app.coverNote}”</p>}
+                  </div>
+                ))
+              )}
+            </>
           )}
         </div>
       )}
