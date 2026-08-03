@@ -30,12 +30,18 @@ export async function Nav() {
             <Link href="/candidate/jobs" className="text-sm font-medium text-foreground">
               Matched jobs
             </Link>
+            <Link href="/candidate/applications" className="text-sm font-medium text-foreground">
+              My applications
+            </Link>
             <NotificationBell />
             <LogoutButton />
           </>
         )}
         {user?.role === "EMPLOYER" && (
           <>
+            <Link href="/employer" className="text-sm font-medium text-foreground">
+              Matched candidates
+            </Link>
             <Link href="/employer/jobs" className="text-sm font-medium text-foreground">
               Postings
             </Link>
