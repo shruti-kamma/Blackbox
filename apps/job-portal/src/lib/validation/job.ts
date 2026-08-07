@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { disabilityCategorySchema, educationLevelSchema, experienceLevelSchema } from "./candidate-profile";
+import {
+  accommodationTypeSchema,
+  disabilityCategorySchema,
+  educationLevelSchema,
+  experienceLevelSchema,
+} from "./candidate-profile";
 
 export const jobInputSchema = z.object({
   title: z.string().trim().min(1),
@@ -10,10 +15,12 @@ export const jobInputSchema = z.object({
   employmentType: z.string().trim().optional(),
   accommodationsOffered: z.array(z.string().trim().min(1)).default([]),
   targetDisabilityCategories: z.array(disabilityCategorySchema).default([]),
+  accommodationTypes: z.array(accommodationTypeSchema).default([]),
   requiredEducationLevel: educationLevelSchema.optional(),
   requiredEducationField: z.string().trim().optional(),
   requiredExperienceLevel: experienceLevelSchema.optional(),
   requiredSkills: z.array(z.string().trim().min(1)).default([]),
+  preferredAssistiveTechnologies: z.array(z.string().trim().min(1)).default([]),
 });
 
 export type JobInput = z.infer<typeof jobInputSchema>;

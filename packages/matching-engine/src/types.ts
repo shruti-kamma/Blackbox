@@ -13,6 +13,20 @@ export type DisabilityCategory =
   | "MENTAL_HEALTH"
   | "OTHER";
 
+export type AccommodationType =
+  | "SCREEN_READER_SUPPORT"
+  | "SIGN_LANGUAGE_INTERPRETER"
+  | "CAPTIONING"
+  | "WHEELCHAIR_ACCESSIBLE_WORKSPACE"
+  | "ASSISTIVE_TECHNOLOGY_STIPEND"
+  | "FLEXIBLE_HOURS"
+  | "REMOTE_FRIENDLY"
+  | "ERGONOMIC_WORKSTATION"
+  | "ACCESSIBLE_TRANSPORTATION"
+  | "EXTENDED_BREAKS"
+  | "JOB_COACH_SUPPORT"
+  | "OTHER";
+
 export type EducationLevel =
   | "HIGH_SCHOOL"
   | "DIPLOMA"
@@ -32,6 +46,8 @@ export interface CandidateEducation {
 export interface CandidateForMatching {
   id: string;
   disabilityCategories: DisabilityCategory[];
+  accommodationNeeds: AccommodationType[];
+  assistiveTechnologies: string[]; // specific device/software names, e.g. "JAWS"
   experienceLevel?: ExperienceLevel | null;
   preferredLocations: string[];
   openToRemote: boolean;
@@ -42,6 +58,8 @@ export interface CandidateForMatching {
 export interface JobForMatching {
   id: string;
   targetDisabilityCategories: DisabilityCategory[]; // empty = open to all
+  accommodationTypes: AccommodationType[];
+  preferredAssistiveTechnologies: string[]; // specific device/software names
   requiredEducationLevel?: EducationLevel | null;
   requiredEducationField?: string | null;
   requiredExperienceLevel?: ExperienceLevel | null;
@@ -59,6 +77,8 @@ export interface CriterionResult {
 
 export interface MatchBreakdown {
   disability: CriterionResult;
+  accommodationFit: CriterionResult;
+  assistiveTechFit: CriterionResult;
   skills: CriterionResult;
   education: CriterionResult;
   experience: CriterionResult;
@@ -73,6 +93,8 @@ export interface MatchResult {
 
 export interface MatchWeights {
   disability: number;
+  accommodationFit: number;
+  assistiveTechFit: number;
   skills: number;
   education: number;
   experience: number;

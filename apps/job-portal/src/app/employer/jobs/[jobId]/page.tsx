@@ -2,51 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 import { ApplicationStatusBadge } from "@/components/application-status";
 import { CandidateCard, type CandidateSummary } from "@/components/candidate-card";
+import { PipelineStats } from "@/components/pipeline-stats";
+import { ACCOMMODATION_TYPE_OPTIONS } from "@/lib/matching-options";
 import {
   APPLICATION_STATUS_META,
   EMPLOYER_ASSIGNABLE_STATUSES,
-  applicationStatusColor,
   type ApplicationStatus,
 } from "@/lib/application-status";
 
-const PIPELINE_ORDER: ApplicationStatus[] = [
-  "SUBMITTED",
-  "UNDER_REVIEW",
-  "INTERVIEWING",
-  "OFFERED",
-  "REJECTED",
-  "WITHDRAWN",
-];
-
-function PipelineStats({ applications }: { applications: ApplicationRow[] }) {
-  const counts = PIPELINE_ORDER.map((status) => ({
-    status,
-    count: applications.filter((a) => a.status === status).length,
-  }));
-
-  return (
-    <div className="mb-6 grid grid-cols-3 gap-2 sm:grid-cols-6">
-      <div className="rounded-md border border-border p-3">
-        <p className="text-2xl font-semibold tabular-nums text-foreground">{applications.length}</p>
-        <p className="text-xs text-muted-foreground">Total</p>
-      </div>
-      {counts.map(({ status, count }) => {
-        const color = applicationStatusColor(status);
-        return (
-          <div key={status} className="rounded-md border p-3" style={{ borderColor: color.border }}>
-            <p className="text-2xl font-semibold tabular-nums" style={{ color: color.text }}>
-              {count}
-            </p>
-            <p className="text-xs text-muted-foreground">{APPLICATION_STATUS_META[status].label}</p>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+const ACCOMMODATION_LABELS = Object.fromEntries(
+  ACCOMMODATION_TYPE_OPTIONS.map((opt) => [opt.value, opt.label]),
+) as Record<string, string>;
 
 interface ApplicationRow {
   id: string;
@@ -55,6 +25,11 @@ interface ApplicationRow {
   coverNote: string | null;
   createdAt: string;
   candidate: CandidateSummary;
+  accommodationRequestText: string | null;
+  accommodationsApprovedAt: string | null;
+  needsAccommodationApproval: boolean;
+  missingAccommodations: string[];
+  rejectionReason: string | null;
 }
 
 interface MatchRow {
@@ -97,6 +72,58 @@ export default function EmployerJobDetailPage() {
     }
   }
 
+  async function approveAccommodations(applicationId: string) {
+    setUpdatingId(applicationId);
+    setStatusError(null);
+    try {
+      await apiRequest(`/api/jobs/${jobId}/applications/${applicationId}/approve-accommodations`, {
+        method: "POST",
+      });
+      setApplications(
+        (prev) =>
+          prev &&
+          prev.map((a) =>
+            a.id === applicationId
+              ? { ...a, needsAccommodationApproval: false, accommodationsApprovedAt: new Date().toISOString() }
+              : a,
+          ),
+      );
+    } catch (err) {
+      setStatusError(err instanceof ApiClientError ? err.message : "Failed to confirm accommodations");
+    } finally {
+      setUpdatingId(null);
+    }
+  }
+
+  async function declineAccommodations(applicationId: string) {
+    setUpdatingId(applicationId);
+    setStatusError(null);
+    try {
+      const { application } = await apiRequest<{ application: { rejectionReason: string | null } }>(
+        `/api/jobs/${jobId}/applications/${applicationId}/decline-accommodations`,
+        { method: "POST" },
+      );
+      setApplications(
+        (prev) =>
+          prev &&
+          prev.map((a) =>
+            a.id === applicationId
+              ? {
+                  ...a,
+                  status: "REJECTED",
+                  needsAccommodationApproval: false,
+                  rejectionReason: application.rejectionReason,
+                }
+              : a,
+          ),
+      );
+    } catch (err) {
+      setStatusError(err instanceof ApiClientError ? err.message : "Failed to decline");
+    } finally {
+      setUpdatingId(null);
+    }
+  }
+
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
       <h1 className="mb-6 text-2xl font-semibold text-foreground">Job dashboard</h1>
@@ -131,7 +158,9 @@ export default function EmployerJobDetailPage() {
             <p className="text-muted-foreground">Loading…</p>
           ) : (
             <>
-              <PipelineStats applications={applications} />
+              <div className="mb-6">
+                <PipelineStats applications={applications} />
+              </div>
               {applications.length === 0 ? (
                 <p className="text-muted-foreground">No applications yet.</p>
               ) : (
@@ -169,6 +198,43 @@ export default function EmployerJobDetailPage() {
                       }
                     />
                     {app.coverNote && <p className="mt-1 text-sm text-foreground">“{app.coverNote}”</p>}
+                    {app.accommodationRequestText && (
+                      <p className="mt-1 text-sm text-foreground">
+                        Accommodation request: &ldquo;{app.accommodationRequestText}&rdquo;
+                      </p>
+                    )}
+                    {app.needsAccommodationApproval && (
+                      <div className="mt-2 flex flex-col items-start gap-2 rounded-md border border-danger bg-danger/10 p-3">
+                        <p className="text-sm text-foreground">
+                          This candidate needs{" "}
+                          <strong>
+                            {app.missingAccommodations.map((v) => ACCOMMODATION_LABELS[v] ?? v).join(", ")}
+                          </strong>
+                          , which your organization hasn&apos;t confirmed providing before. Can you provide
+                          this before moving them forward?
+                        </p>
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            disabled={updatingId === app.id}
+                            onClick={() => approveAccommodations(app.id)}
+                          >
+                            {updatingId === app.id ? "Confirming…" : "Yes, we can provide this"}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            disabled={updatingId === app.id}
+                            onClick={() => declineAccommodations(app.id)}
+                          >
+                            No, we can&apos;t
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    {app.status === "REJECTED" && app.rejectionReason && (
+                      <p className="mt-1 text-xs text-muted-foreground">Declined: {app.rejectionReason}</p>
+                    )}
                   </div>
                 ))
               )}

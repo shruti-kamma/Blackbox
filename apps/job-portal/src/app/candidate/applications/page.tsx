@@ -13,6 +13,10 @@ interface ApplicationRow {
   coverNote: string | null;
   createdAt: string;
   updatedAt: string;
+  accommodationRequestText: string | null;
+  accommodationRequestSentAt: string | null;
+  accommodationsApprovedAt: string | null;
+  rejectionReason: string | null;
   job: {
     id: string;
     title: string;
@@ -26,6 +30,8 @@ export default function CandidateApplicationsPage() {
   const [applications, setApplications] = useState<ApplicationRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [withdrawingId, setWithdrawingId] = useState<string | null>(null);
+  const [requestDrafts, setRequestDrafts] = useState<Record<string, string>>({});
+  const [sendingId, setSendingId] = useState<string | null>(null);
 
   function load() {
     apiRequest<{ applications: ApplicationRow[] }>("/api/candidate/applications")
@@ -45,6 +51,24 @@ export default function CandidateApplicationsPage() {
       setError(err instanceof ApiClientError ? err.message : "Failed to withdraw application");
     } finally {
       setWithdrawingId(null);
+    }
+  }
+
+  async function sendAccommodationRequest(applicationId: string) {
+    const text = (requestDrafts[applicationId] ?? "").trim();
+    if (!text) return;
+    setSendingId(applicationId);
+    setError(null);
+    try {
+      await apiRequest(`/api/candidate/applications/${applicationId}/accommodation-request`, {
+        method: "POST",
+        body: JSON.stringify({ text }),
+      });
+      load();
+    } catch (err) {
+      setError(err instanceof ApiClientError ? err.message : "Failed to send request");
+    } finally {
+      setSendingId(null);
     }
   }
 
@@ -98,6 +122,51 @@ export default function CandidateApplicationsPage() {
                   Applied {new Date(app.createdAt).toLocaleDateString()} · Updated{" "}
                   {new Date(app.updatedAt).toLocaleDateString()}
                 </p>
+
+                {app.accommodationsApprovedAt && (
+                  <p className="mt-2 text-sm text-success">
+                    ✓ Employer confirmed they can meet your accommodation needs.
+                  </p>
+                )}
+                {app.status === "REJECTED" && app.rejectionReason && (
+                  <p className="mt-2 text-sm text-muted-foreground">{app.rejectionReason}</p>
+                )}
+
+                {(app.status === "INTERVIEWING" || app.status === "OFFERED") &&
+                  (app.accommodationRequestText ? (
+                    <p className="mt-3 rounded-md bg-muted p-3 text-sm text-foreground">
+                      You told the employer: &ldquo;{app.accommodationRequestText}&rdquo;
+                      {app.accommodationRequestSentAt && (
+                        <span className="block text-xs text-muted-foreground">
+                          Sent {new Date(app.accommodationRequestSentAt).toLocaleDateString()}
+                        </span>
+                      )}
+                    </p>
+                  ) : (
+                    <div className="mt-3 flex flex-col gap-2">
+                      <label htmlFor={`accommodation-request-${app.id}`} className="text-xs font-medium text-foreground">
+                        Anything specific the employer should know you need? (not covered by your profile
+                        checklist)
+                      </label>
+                      <textarea
+                        id={`accommodation-request-${app.id}`}
+                        value={requestDrafts[app.id] ?? ""}
+                        onChange={(e) => setRequestDrafts((d) => ({ ...d, [app.id]: e.target.value }))}
+                        rows={2}
+                        className="rounded-md border border-border bg-background p-2 text-sm text-foreground"
+                        placeholder="e.g. I use JAWS 2024 specifically, or need a height-adjustable desk"
+                      />
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        disabled={sendingId === app.id || !(requestDrafts[app.id] ?? "").trim()}
+                        onClick={() => sendAccommodationRequest(app.id)}
+                        className="self-start"
+                      >
+                        {sendingId === app.id ? "Sending…" : "Send requirements"}
+                      </Button>
+                    </div>
+                  ))}
 
                 {app.status !== "OFFERED" && !isTerminalOffPath && (
                   <Button

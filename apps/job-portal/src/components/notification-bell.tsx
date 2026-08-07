@@ -3,13 +3,50 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiRequest } from "@/lib/api-client";
+import { ACCOMMODATION_TYPE_OPTIONS } from "@/lib/matching-options";
 
 interface Notification {
   id: string;
   type: string;
-  payload: { jobId?: string; score?: number };
+  payload: {
+    jobId?: string;
+    score?: number;
+    candidateName?: string;
+    missingAccommodations?: string[];
+  };
   read: boolean;
   createdAt: string;
+}
+
+const ACCOMMODATION_LABELS = Object.fromEntries(
+  ACCOMMODATION_TYPE_OPTIONS.map((opt) => [opt.value, opt.label]),
+) as Record<string, string>;
+
+function NotificationContent({ n }: { n: Notification }) {
+  if (n.type === "ACCOMMODATION_GAP") {
+    const labels = (n.payload.missingAccommodations ?? []).map((v) => ACCOMMODATION_LABELS[v] ?? v);
+    return (
+      <>
+        <strong>{n.payload.candidateName}</strong> needs: {labels.join(", ")} — not yet marked as offered on
+        this job.{" "}
+        {n.payload.jobId && (
+          <Link href={`/employer/jobs/${n.payload.jobId}`} className="text-primary underline">
+            View
+          </Link>
+        )}
+      </>
+    );
+  }
+  return (
+    <>
+      New match — {n.payload.score}% fit.{" "}
+      {n.payload.jobId && (
+        <Link href="/candidate/jobs" className="text-primary underline">
+          View
+        </Link>
+      )}
+    </>
+  );
 }
 
 export function NotificationBell() {
@@ -57,12 +94,7 @@ export function NotificationBell() {
             <ul className="flex flex-col gap-1">
               {notifications.map((n) => (
                 <li key={n.id} className="rounded-md p-2 text-sm text-foreground hover:bg-muted">
-                  New match — {n.payload.score}% fit.{" "}
-                  {n.payload.jobId && (
-                    <Link href="/candidate/jobs" className="text-primary underline">
-                      View
-                    </Link>
-                  )}
+                  <NotificationContent n={n} />
                 </li>
               ))}
             </ul>

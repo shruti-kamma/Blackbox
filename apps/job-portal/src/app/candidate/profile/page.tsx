@@ -4,10 +4,17 @@ import { useEffect, useState } from "react";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 import {
+  ACCOMMODATION_TYPE_OPTIONS,
+  BODY_PART_OPTIONS,
   DISABILITY_CATEGORY_OPTIONS,
   EDUCATION_LEVEL_OPTIONS,
   EXPERIENCE_LEVEL_OPTIONS,
 } from "@/lib/matching-options";
+
+interface DisabilityDetailRow {
+  severityPercentage: string;
+  affectedBodyPart: string;
+}
 
 interface EducationRow {
   level: string;
@@ -25,13 +32,34 @@ interface WorkExperienceRow {
   description: string;
 }
 
+interface ProjectRow {
+  title: string;
+  subtitle: string;
+  techStack: string;
+  date: string;
+  description: string;
+  url: string;
+}
+
+interface CertificationRow {
+  title: string;
+  issuer: string;
+  date: string;
+  url: string;
+}
+
 interface ProfileFormState {
   fullName: string;
   headline: string;
+  phone: string;
   resumeUrl: string;
   accessibilityNeeds: string;
   disabilityCategories: string[];
   disabilityOther: string;
+  disabilityDetails: Partial<Record<string, DisabilityDetailRow>>;
+  accommodationNeeds: string[];
+  confirmedNoAccommodationNeeds: boolean;
+  assistiveTechnologies: string;
   experienceLevel: string;
   preferredCategories: string;
   preferredLocations: string;
@@ -39,15 +67,22 @@ interface ProfileFormState {
   skills: string;
   education: EducationRow[];
   workExperience: WorkExperienceRow[];
+  projects: ProjectRow[];
+  certifications: CertificationRow[];
 }
 
 const emptyForm: ProfileFormState = {
   fullName: "",
   headline: "",
+  phone: "",
   resumeUrl: "",
   accessibilityNeeds: "",
   disabilityCategories: [],
   disabilityOther: "",
+  disabilityDetails: {},
+  accommodationNeeds: [],
+  confirmedNoAccommodationNeeds: false,
+  assistiveTechnologies: "",
   experienceLevel: "",
   preferredCategories: "",
   preferredLocations: "",
@@ -55,6 +90,8 @@ const emptyForm: ProfileFormState = {
   skills: "",
   education: [],
   workExperience: [],
+  projects: [],
+  certifications: [],
 };
 
 function splitList(value: string): string[] {
@@ -78,20 +115,45 @@ interface ProfileApiWorkExperience {
   isCurrent: boolean;
   description: string | null;
 }
+interface ProfileApiProject {
+  title: string;
+  subtitle: string | null;
+  techStack: string | null;
+  date: string | null;
+  description: string | null;
+  url: string | null;
+}
+interface ProfileApiCertification {
+  title: string;
+  issuer: string | null;
+  date: string | null;
+  url: string | null;
+}
 interface ProfileApiResponse {
   profile: {
     fullName: string;
     headline: string | null;
+    phone: string | null;
     resumeUrl: string | null;
     accessibilityNeeds: string[];
     disabilityCategories: string[];
     disabilityOther: string | null;
+    disabilityDetails: {
+      category: string;
+      severityPercentage: number | null;
+      affectedBodyPart: string | null;
+    }[];
+    accommodationNeeds: string[];
+    confirmedNoAccommodationNeeds: boolean;
+    assistiveTechnologies: { assistiveTechnology: { name: string } }[];
     experienceLevel: string | null;
     preferredCategories: string[];
     preferredLocations: string[];
     openToRemote: boolean;
     education: ProfileApiEducation[];
     workExperience: ProfileApiWorkExperience[];
+    projects: ProfileApiProject[];
+    certifications: ProfileApiCertification[];
     skills: { skill: { name: string } }[];
   } | null;
 }
@@ -102,6 +164,7 @@ export default function CandidateProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [showEmptyNeedsPrompt, setShowEmptyNeedsPrompt] = useState(false);
 
   useEffect(() => {
     apiRequest<ProfileApiResponse>("/api/candidate/profile")
@@ -110,10 +173,23 @@ export default function CandidateProfilePage() {
         setForm({
           fullName: profile.fullName,
           headline: profile.headline ?? "",
+          phone: profile.phone ?? "",
           resumeUrl: profile.resumeUrl ?? "",
           accessibilityNeeds: profile.accessibilityNeeds.join(", "),
           disabilityCategories: profile.disabilityCategories,
           disabilityOther: profile.disabilityOther ?? "",
+          disabilityDetails: Object.fromEntries(
+            profile.disabilityDetails.map((d) => [
+              d.category,
+              {
+                severityPercentage: d.severityPercentage !== null ? String(d.severityPercentage) : "",
+                affectedBodyPart: d.affectedBodyPart ?? "",
+              },
+            ]),
+          ),
+          accommodationNeeds: profile.accommodationNeeds,
+          confirmedNoAccommodationNeeds: profile.confirmedNoAccommodationNeeds,
+          assistiveTechnologies: profile.assistiveTechnologies.map((a) => a.assistiveTechnology.name).join(", "),
           experienceLevel: profile.experienceLevel ?? "",
           preferredCategories: profile.preferredCategories.join(", "),
           preferredLocations: profile.preferredLocations.join(", "),
@@ -133,6 +209,20 @@ export default function CandidateProfilePage() {
             isCurrent: w.isCurrent,
             description: w.description ?? "",
           })),
+          projects: profile.projects.map((p) => ({
+            title: p.title,
+            subtitle: p.subtitle ?? "",
+            techStack: p.techStack ?? "",
+            date: p.date ? p.date.slice(0, 10) : "",
+            description: p.description ?? "",
+            url: p.url ?? "",
+          })),
+          certifications: profile.certifications.map((c) => ({
+            title: c.title,
+            issuer: c.issuer ?? "",
+            date: c.date ? c.date.slice(0, 10) : "",
+            url: c.url ?? "",
+          })),
         });
       })
       .catch((err) => setError(err instanceof ApiClientError ? err.message : "Failed to load profile"))
@@ -145,6 +235,30 @@ export default function CandidateProfilePage() {
       disabilityCategories: f.disabilityCategories.includes(value)
         ? f.disabilityCategories.filter((v) => v !== value)
         : [...f.disabilityCategories, value],
+    }));
+  }
+
+  function updateDisabilityDetail(category: string, patch: Partial<DisabilityDetailRow>) {
+    setForm((f) => ({
+      ...f,
+      disabilityDetails: {
+        ...f.disabilityDetails,
+        [category]: {
+          severityPercentage: "",
+          affectedBodyPart: "",
+          ...f.disabilityDetails[category],
+          ...patch,
+        },
+      },
+    }));
+  }
+
+  function toggleAccommodation(value: string) {
+    setForm((f) => ({
+      ...f,
+      accommodationNeeds: f.accommodationNeeds.includes(value)
+        ? f.accommodationNeeds.filter((v) => v !== value)
+        : [...f.accommodationNeeds, value],
     }));
   }
 
@@ -183,8 +297,61 @@ export default function CandidateProfilePage() {
     }));
   }
 
-  async function onSubmit(event: React.FormEvent) {
+  function addProject() {
+    setForm((f) => ({
+      ...f,
+      projects: [...f.projects, { title: "", subtitle: "", techStack: "", date: "", description: "", url: "" }],
+    }));
+  }
+  function removeProject(index: number) {
+    setForm((f) => ({ ...f, projects: f.projects.filter((_, i) => i !== index) }));
+  }
+  function updateProject(index: number, patch: Partial<ProjectRow>) {
+    setForm((f) => ({
+      ...f,
+      projects: f.projects.map((row, i) => (i === index ? { ...row, ...patch } : row)),
+    }));
+  }
+
+  function addCertification() {
+    setForm((f) => ({
+      ...f,
+      certifications: [...f.certifications, { title: "", issuer: "", date: "", url: "" }],
+    }));
+  }
+  function removeCertification(index: number) {
+    setForm((f) => ({ ...f, certifications: f.certifications.filter((_, i) => i !== index) }));
+  }
+  function updateCertification(index: number, patch: Partial<CertificationRow>) {
+    setForm((f) => ({
+      ...f,
+      certifications: f.certifications.map((row, i) => (i === index ? { ...row, ...patch } : row)),
+    }));
+  }
+
+  function onSubmit(event: React.FormEvent) {
     event.preventDefault();
+    // Intercept the very first save with empty needs — everything after
+    // that respects whatever they chose, never nagging twice.
+    if (form.accommodationNeeds.length === 0 && !form.confirmedNoAccommodationNeeds) {
+      setShowEmptyNeedsPrompt(true);
+      return;
+    }
+    void save();
+  }
+
+  function confirmHasNeeds() {
+    setShowEmptyNeedsPrompt(false);
+    document.getElementById("accommodations-fieldset")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function confirmNoNeeds() {
+    setShowEmptyNeedsPrompt(false);
+    setForm((f) => ({ ...f, confirmedNoAccommodationNeeds: true }));
+    void save(true);
+  }
+
+  async function save(confirmedNoNeedsOverride = false) {
     setError(null);
     setStatus(null);
     setSaving(true);
@@ -192,10 +359,24 @@ export default function CandidateProfilePage() {
       const payload = {
         fullName: form.fullName,
         headline: form.headline || undefined,
+        phone: form.phone || undefined,
         resumeUrl: form.resumeUrl || undefined,
         accessibilityNeeds: splitList(form.accessibilityNeeds),
         disabilityCategories: form.disabilityCategories,
         disabilityOther: form.disabilityOther || undefined,
+        disabilityDetails: form.disabilityCategories
+          .filter((c) => form.disabilityDetails[c])
+          .map((c) => {
+            const d = form.disabilityDetails[c]!;
+            return {
+              category: c,
+              severityPercentage: d.severityPercentage ? Number(d.severityPercentage) : undefined,
+              affectedBodyPart: d.affectedBodyPart || undefined,
+            };
+          }),
+        accommodationNeeds: form.accommodationNeeds,
+        confirmedNoAccommodationNeeds: form.confirmedNoAccommodationNeeds || confirmedNoNeedsOverride,
+        assistiveTechnologies: splitList(form.assistiveTechnologies),
         experienceLevel: form.experienceLevel || undefined,
         preferredCategories: splitList(form.preferredCategories),
         preferredLocations: splitList(form.preferredLocations),
@@ -218,6 +399,24 @@ export default function CandidateProfilePage() {
             endDate: w.endDate || undefined,
             isCurrent: w.isCurrent,
             description: w.description || undefined,
+          })),
+        projects: form.projects
+          .filter((p) => p.title)
+          .map((p) => ({
+            title: p.title,
+            subtitle: p.subtitle || undefined,
+            techStack: p.techStack || undefined,
+            date: p.date || undefined,
+            description: p.description || undefined,
+            url: p.url || undefined,
+          })),
+        certifications: form.certifications
+          .filter((c) => c.title)
+          .map((c) => ({
+            title: c.title,
+            issuer: c.issuer || undefined,
+            date: c.date || undefined,
+            url: c.url || undefined,
           })),
       };
       const result = await apiRequest<{ rematchTriggered: boolean }>("/api/candidate/profile", {
@@ -273,6 +472,19 @@ export default function CandidateProfilePage() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
+            <label htmlFor="phone" className="text-sm font-medium text-foreground">
+              Phone
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              value={form.phone}
+              onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+              className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+            />
+            <p className="text-xs text-muted-foreground">Shown on your downloadable resume, not on your profile.</p>
+          </div>
+          <div className="flex flex-col gap-1.5">
             <label htmlFor="resumeUrl" className="text-sm font-medium text-foreground">
               Résumé URL
             </label>
@@ -315,17 +527,115 @@ export default function CandidateProfilePage() {
             </div>
           )}
           <p className="text-xs text-muted-foreground">This is used to match you to roles suited to your needs.</p>
+
+          {form.disabilityCategories
+            .filter((c) => c !== "OTHER")
+            .map((category) => {
+              const detail = form.disabilityDetails[category] ?? { severityPercentage: "", affectedBodyPart: "" };
+              const label = DISABILITY_CATEGORY_OPTIONS.find((o) => o.value === category)?.label ?? category;
+              return (
+                <div key={category} className="flex flex-col gap-2 rounded-md border border-border p-3">
+                  <p className="text-sm font-medium text-foreground">{label} details (optional)</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="flex flex-col gap-1.5">
+                      <label
+                        htmlFor={`severity-${category}`}
+                        className="text-xs font-medium text-muted-foreground"
+                      >
+                        Disability percentage
+                      </label>
+                      <input
+                        id={`severity-${category}`}
+                        type="number"
+                        min={0}
+                        max={100}
+                        inputMode="numeric"
+                        value={detail.severityPercentage}
+                        onChange={(e) =>
+                          updateDisabilityDetail(category, { severityPercentage: e.target.value })
+                        }
+                        className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                      />
+                    </div>
+                    {category === "MOBILITY" && (
+                      <div className="flex flex-col gap-1.5">
+                        <label
+                          htmlFor={`bodypart-${category}`}
+                          className="text-xs font-medium text-muted-foreground"
+                        >
+                          Affected body part
+                        </label>
+                        <select
+                          id={`bodypart-${category}`}
+                          value={detail.affectedBodyPart}
+                          onChange={(e) =>
+                            updateDisabilityDetail(category, { affectedBodyPart: e.target.value })
+                          }
+                          className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                        >
+                          <option value="">Not specified</option>
+                          {BODY_PART_OPTIONS.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Record-keeping and shown to employers — this doesn&apos;t affect your match score.
+                  </p>
+                </div>
+              );
+            })}
+        </fieldset>
+
+        <fieldset id="accommodations-fieldset" className="flex flex-col gap-2">
+          <legend className="text-sm font-medium text-foreground">Accommodations you need</legend>
+          <div className="flex flex-wrap gap-3">
+            {ACCOMMODATION_TYPE_OPTIONS.map((opt) => (
+              <label key={opt.value} className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.accommodationNeeds.includes(opt.value)}
+                  onChange={() => toggleAccommodation(opt.value)}
+                  className="size-5"
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            This is scored directly against what each employer offers — check everything that applies.
+          </p>
         </fieldset>
 
         <div className="flex flex-col gap-1.5">
+          <label htmlFor="assistiveTechnologies" className="text-sm font-medium text-foreground">
+            Assistive technology you use (comma-separated)
+          </label>
+          <input
+            id="assistiveTechnologies"
+            value={form.assistiveTechnologies}
+            onChange={(e) => setForm((f) => ({ ...f, assistiveTechnologies: e.target.value }))}
+            placeholder="JAWS, white cane, crutches"
+            className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+          />
+          <p className="text-xs text-muted-foreground">
+            Specific devices and software — scored against what employers say they already support.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
           <label htmlFor="accessibilityNeeds" className="text-sm font-medium text-foreground">
-            Accessibility accommodations you require (comma-separated)
+            Anything else? (free text, not used in matching)
           </label>
           <input
             id="accessibilityNeeds"
             value={form.accessibilityNeeds}
             onChange={(e) => setForm((f) => ({ ...f, accessibilityNeeds: e.target.value }))}
-            placeholder="screen reader, flexible hours, captioning"
+            placeholder="anything not covered by the checkboxes above"
             className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
           />
         </div>
@@ -512,6 +822,121 @@ export default function CandidateProfilePage() {
           ))}
         </section>
 
+        <section className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-medium text-foreground">Projects</h2>
+            <Button type="button" variant="secondary" size="sm" onClick={addProject}>
+              Add project
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Optional — only shows on your resume if you add at least one. Good for hackathon/competition results
+            too: just note the award in the subtitle.
+          </p>
+          {form.projects.map((row, i) => (
+            <div key={i} className="flex flex-col gap-2 rounded-md border border-border p-3">
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  aria-label="Project title"
+                  placeholder="Project title"
+                  value={row.title}
+                  onChange={(e) => updateProject(i, { title: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Subtitle"
+                  placeholder="Subtitle (e.g. one-liner, or an award note)"
+                  value={row.subtitle}
+                  onChange={(e) => updateProject(i, { subtitle: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Tech stack"
+                  placeholder="Tech stack (e.g. Python, TensorFlow)"
+                  value={row.techStack}
+                  onChange={(e) => updateProject(i, { techStack: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Date"
+                  type="date"
+                  value={row.date}
+                  onChange={(e) => updateProject(i, { date: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Project URL"
+                  type="url"
+                  placeholder="Link (optional)"
+                  value={row.url}
+                  onChange={(e) => updateProject(i, { url: e.target.value })}
+                  className="col-span-2 h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+              </div>
+              <textarea
+                aria-label="Description"
+                placeholder="One bullet point per line"
+                value={row.description}
+                onChange={(e) => updateProject(i, { description: e.target.value })}
+                className="rounded-md border border-border bg-background p-2 text-foreground"
+              />
+              <Button type="button" variant="ghost" size="sm" onClick={() => removeProject(i)}>
+                Remove
+              </Button>
+            </div>
+          ))}
+        </section>
+
+        <section className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-medium text-foreground">Certifications</h2>
+            <Button type="button" variant="secondary" size="sm" onClick={addCertification}>
+              Add certification
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Optional — only shows on your resume if you add at least one.
+          </p>
+          {form.certifications.map((row, i) => (
+            <div key={i} className="flex flex-col gap-2 rounded-md border border-border p-3">
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  aria-label="Certification title"
+                  placeholder="Certification title"
+                  value={row.title}
+                  onChange={(e) => updateCertification(i, { title: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Issuer"
+                  placeholder="Issuer"
+                  value={row.issuer}
+                  onChange={(e) => updateCertification(i, { issuer: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Date"
+                  type="date"
+                  value={row.date}
+                  onChange={(e) => updateCertification(i, { date: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+                <input
+                  aria-label="Certification URL"
+                  type="url"
+                  placeholder="Verification link (optional)"
+                  value={row.url}
+                  onChange={(e) => updateCertification(i, { url: e.target.value })}
+                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                />
+              </div>
+              <Button type="button" variant="ghost" size="sm" onClick={() => removeCertification(i)}>
+                Remove
+              </Button>
+            </div>
+          ))}
+        </section>
+
         {error && (
           <p role="alert" className="text-sm text-danger">
             {error}
@@ -522,9 +947,26 @@ export default function CandidateProfilePage() {
             {status}
           </p>
         )}
-        <Button type="submit" disabled={saving}>
-          {saving ? "Saving…" : "Save profile"}
-        </Button>
+
+        {showEmptyNeedsPrompt ? (
+          <div className="flex flex-col gap-3 rounded-md border border-border bg-muted p-4">
+            <p className="text-sm font-medium text-foreground">
+              You haven&apos;t listed any accommodation needs — do you have any?
+            </p>
+            <div className="flex gap-3">
+              <Button type="button" variant="secondary" onClick={confirmHasNeeds}>
+                Yes, let me add them
+              </Button>
+              <Button type="button" onClick={confirmNoNeeds} disabled={saving}>
+                {saving ? "Saving…" : "No, I don't need any"}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <Button type="submit" disabled={saving}>
+            {saving ? "Saving…" : "Save profile"}
+          </Button>
+        )}
       </form>
     </main>
   );

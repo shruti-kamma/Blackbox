@@ -1,4 +1,4 @@
-import { DEFAULT_WEIGHTS, EDUCATION_RANK, EXPERIENCE_RANK, MATCH_THRESHOLD } from "./constants";
+import { EDUCATION_RANK, EXPERIENCE_RANK, MATCH_THRESHOLD, resolveWeightsForCandidate } from "./constants";
 import { exactMatchSkillsSimilarity, type SkillsSimilarity } from "./skills-similarity";
 import type {
   CandidateForMatching,
@@ -41,6 +41,54 @@ function scoreDisability(
     0,
     weight,
     `Candidate's categories (${candidate.disabilityCategories.join(", ") || "none listed"}) don't overlap with job's targeted categories (${job.targetDisabilityCategories.join(", ")})`,
+  );
+}
+
+// Coverage of the *candidate's* needs by the *job's* offerings — the
+// inverse direction of scoreSkills (which covers the job's requirements by
+// the candidate). AccommodationType is a closed enum, so exact-set overlap
+// is precise here; no pluggable-similarity extension point needed the way
+// skills has one for free-text names.
+function scoreAccommodationFit(
+  candidate: CandidateForMatching,
+  job: JobForMatching,
+  weight: number,
+): CriterionResult {
+  if (candidate.accommodationNeeds.length === 0) {
+    return criterion(1, weight, "Candidate hasn't specified accommodation needs");
+  }
+  const offered = new Set(job.accommodationTypes);
+  const covered = candidate.accommodationNeeds.filter((need) => offered.has(need));
+  const score = covered.length / candidate.accommodationNeeds.length;
+  const pct = Math.round(score * 100);
+  return criterion(score, weight, `Job offers ${pct}% of the candidate's specified accommodations`);
+}
+
+// Same direction as scoreSkills (coverage of the *job's* preferred list by
+// the *candidate*), not accommodationFit's inverted direction — a job
+// optionally lists assistive technology it'd value experience with, and this
+// asks how much of that the candidate already has. Exact, case-insensitive
+// name match for now, same starting point exactMatchSkillsSimilarity had
+// before skills needed a pluggable interface — revisit if "JAWS" vs "JAWS
+// screen reader" naming variance turns out to matter in practice.
+function scoreAssistiveTechFit(
+  candidate: CandidateForMatching,
+  job: JobForMatching,
+  weight: number,
+): CriterionResult {
+  if (job.preferredAssistiveTechnologies.length === 0) {
+    return criterion(1, weight, "Job specifies no preferred assistive technology");
+  }
+  const candidateSet = new Set(candidate.assistiveTechnologies.map((t) => t.trim().toLowerCase()));
+  const matched = job.preferredAssistiveTechnologies.filter((t) =>
+    candidateSet.has(t.trim().toLowerCase()),
+  );
+  const score = matched.length / job.preferredAssistiveTechnologies.length;
+  const pct = Math.round(score * 100);
+  return criterion(
+    score,
+    weight,
+    `Candidate has experience with ${pct}% of the job's preferred assistive technology`,
   );
 }
 
@@ -141,7 +189,7 @@ export function scoreCandidateAgainstJob(
   job: JobForMatching,
   options: ScoreOptions = {},
 ): MatchResult {
-  const weights = options.weights ?? DEFAULT_WEIGHTS;
+  const weights = options.weights ?? resolveWeightsForCandidate(candidate.disabilityCategories);
   const threshold = options.threshold ?? MATCH_THRESHOLD;
   const similarity = options.skillsSimilarity ?? exactMatchSkillsSimilarity;
 
@@ -154,6 +202,8 @@ export function scoreCandidateAgainstJob(
 
   const breakdown = {
     disability: scoreDisability(candidate, job, weights.disability),
+    accommodationFit: scoreAccommodationFit(candidate, job, weights.accommodationFit),
+    assistiveTechFit: scoreAssistiveTechFit(candidate, job, weights.assistiveTechFit),
     skills: scoreSkills(candidate, job, weights.skills, similarity),
     education: scoreEducation(candidate, job, weights.education),
     experience: scoreExperience(candidate, job, weights.experience),

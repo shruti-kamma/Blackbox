@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 import {
+  ACCOMMODATION_TYPE_OPTIONS,
   DISABILITY_CATEGORY_OPTIONS,
   EDUCATION_LEVEL_OPTIONS,
   EXPERIENCE_LEVEL_OPTIONS,
@@ -17,15 +18,39 @@ function splitList(value: string): string[] {
     .filter(Boolean);
 }
 
+interface AssistiveTechInsight {
+  name: string;
+  count: number;
+}
+
 export default function NewJobPage() {
   const router = useRouter();
   const [targetCategories, setTargetCategories] = useState<string[]>([]);
+  const [accommodationTypes, setAccommodationTypes] = useState<string[]>([]);
   const [remote, setRemote] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [insights, setInsights] = useState<AssistiveTechInsight[] | null>(null);
 
   function toggleCategory(value: string) {
     setTargetCategories((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  }
+
+  // Live insight into what assistive technology candidates matching these
+  // categories already use — informs what to list as preferred below.
+  useEffect(() => {
+    if (targetCategories.length === 0) return;
+    apiRequest<{ insights: AssistiveTechInsight[] }>(
+      `/api/employer/assistive-tech-insights?categories=${targetCategories.join(",")}`,
+    )
+      .then(({ insights }) => setInsights(insights))
+      .catch(() => setInsights(null));
+  }, [targetCategories]);
+
+  function toggleAccommodationType(value: string) {
+    setAccommodationTypes((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   }
@@ -45,10 +70,12 @@ export default function NewJobPage() {
         employmentType: form.get("employmentType") || undefined,
         accommodationsOffered: splitList(String(form.get("accommodationsOffered") ?? "")),
         targetDisabilityCategories: targetCategories,
+        accommodationTypes,
         requiredEducationLevel: form.get("requiredEducationLevel") || undefined,
         requiredEducationField: form.get("requiredEducationField") || undefined,
         requiredExperienceLevel: form.get("requiredExperienceLevel") || undefined,
         requiredSkills: splitList(String(form.get("requiredSkills") ?? "")),
+        preferredAssistiveTechnologies: splitList(String(form.get("preferredAssistiveTechnologies") ?? "")),
       };
       const { job } = await apiRequest<{ job: { id: string } }>("/api/jobs", {
         method: "POST",
@@ -120,6 +147,76 @@ export default function NewJobPage() {
             ))}
           </div>
           <p className="text-xs text-muted-foreground">Leave all unchecked to mark this role open to all.</p>
+        </fieldset>
+
+        {targetCategories.length > 0 && insights && (
+          <div className="rounded-md border border-border bg-muted p-3">
+            <p className="text-sm font-medium text-foreground">Assistive technology in this candidate pool</p>
+            {insights.length === 0 ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                No candidates with these categories have listed assistive technology yet.
+              </p>
+            ) : (
+              <>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Candidates on the platform with these categories most often use:
+                </p>
+                <ul className="mt-2 flex flex-wrap gap-2">
+                  {insights.map((i) => (
+                    <li
+                      key={i.name}
+                      className="rounded-full border border-border bg-background px-3 py-1 text-sm text-foreground"
+                    >
+                      {i.name} ({i.count})
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="preferredAssistiveTechnologies" className="text-sm font-medium text-foreground">
+            Preferred assistive technology experience (comma-separated)
+          </label>
+          <input
+            id="preferredAssistiveTechnologies"
+            name="preferredAssistiveTechnologies"
+            placeholder="JAWS, NVDA"
+            className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+          />
+          <p className="text-xs text-muted-foreground">
+            Optional — scored as a soft preference, not a hard requirement. Use the insight above to see what
+            candidates already know.
+          </p>
+        </div>
+
+        <fieldset className="flex flex-col gap-2">
+          <legend className="text-sm font-medium text-foreground">Accommodations you can offer</legend>
+          <div className="flex flex-wrap gap-3">
+            {ACCOMMODATION_TYPE_OPTIONS.map((opt) => (
+              <label key={opt.value} className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={accommodationTypes.includes(opt.value)}
+                  onChange={() => toggleAccommodationType(opt.value)}
+                  className="size-5"
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Scored directly against what candidates say they need — check everything this role actually offers.
+          </p>
+          {targetCategories.length > 0 && accommodationTypes.length === 0 && (
+            <p className="rounded-md bg-muted px-3 py-2 text-xs text-foreground">
+              You&apos;ve targeted {targetCategories.length === 1 ? "a category" : "categories"} above but
+              haven&apos;t checked any accommodations — candidates with real needs won&apos;t see what you
+              provide until you do. You can still post without this, but it&apos;s worth a second look.
+            </p>
+          )}
         </fieldset>
 
         <div className="flex flex-col gap-1.5">
@@ -221,12 +318,12 @@ export default function NewJobPage() {
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="accommodationsOffered" className="text-sm font-medium text-foreground">
-            Accommodations offered (comma-separated)
+            Anything else? (free text, not used in matching)
           </label>
           <input
             id="accommodationsOffered"
             name="accommodationsOffered"
-            placeholder="flexible hours, screen-reader-compatible tooling"
+            placeholder="anything not covered by the checkboxes above"
             className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
           />
         </div>

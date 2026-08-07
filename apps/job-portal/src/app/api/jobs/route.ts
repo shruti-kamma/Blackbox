@@ -41,6 +41,7 @@ export async function POST(request: Request) {
           employmentType: input.employmentType || null,
           accommodationsOffered: input.accommodationsOffered,
           targetDisabilityCategories: input.targetDisabilityCategories,
+          accommodationTypes: input.accommodationTypes,
           requiredEducationLevel: input.requiredEducationLevel ?? null,
           requiredEducationField: input.requiredEducationField || null,
           requiredExperienceLevel: input.requiredExperienceLevel ?? null,
@@ -50,6 +51,17 @@ export async function POST(request: Request) {
       for (const name of input.requiredSkills) {
         const skill = await tx.skill.upsert({ where: { name }, update: {}, create: { name } });
         await tx.jobSkill.create({ data: { jobId: created.id, skillId: skill.id } });
+      }
+
+      for (const name of input.preferredAssistiveTechnologies) {
+        const tech = await tx.assistiveTechnology.upsert({
+          where: { name },
+          update: {},
+          create: { name, type: "OTHER" },
+        });
+        await tx.jobAssistiveTechnology.create({
+          data: { jobId: created.id, assistiveTechnologyId: tech.id },
+        });
       }
 
       return created;

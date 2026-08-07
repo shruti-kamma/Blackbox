@@ -20,6 +20,8 @@ export async function GET() {
             education: true,
             workExperience: true,
             skills: { include: { skill: true } },
+            assistiveTechnologies: { include: { assistiveTechnology: true } },
+            disabilityDetails: true,
           },
         },
       },

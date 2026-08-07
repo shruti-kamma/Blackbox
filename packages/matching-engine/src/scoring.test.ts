@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MATCH_THRESHOLD } from "./constants";
+import { MATCH_THRESHOLD, WEIGHT_ARCHETYPES, resolveWeightsForCandidate } from "./constants";
 import { scoreCandidateAgainstJob } from "./scoring";
 import type { SkillsSimilarity } from "./skills-similarity";
 import type { CandidateForMatching, JobForMatching } from "./types";
@@ -8,6 +8,8 @@ function makeCandidate(overrides: Partial<CandidateForMatching> = {}): Candidate
   return {
     id: "candidate-1",
     disabilityCategories: ["VISUAL"],
+    accommodationNeeds: [],
+    assistiveTechnologies: [],
     experienceLevel: "MID",
     preferredLocations: ["Bengaluru"],
     openToRemote: true,
@@ -21,6 +23,8 @@ function makeJob(overrides: Partial<JobForMatching> = {}): JobForMatching {
   return {
     id: "job-1",
     targetDisabilityCategories: ["VISUAL"],
+    accommodationTypes: [],
+    preferredAssistiveTechnologies: [],
     requiredEducationLevel: "BACHELORS",
     requiredEducationField: "Computer Science",
     requiredExperienceLevel: "MID",
@@ -144,8 +148,16 @@ describe("scoreCandidateAgainstJob", () => {
 
   it("respects a custom threshold", () => {
     const poorFit = {
-      candidate: makeCandidate({ skills: [], disabilityCategories: ["HEARING"] }),
-      job: makeJob({ requiredSkills: ["JavaScript", "React"], targetDisabilityCategories: ["VISUAL"] }),
+      candidate: makeCandidate({
+        skills: [],
+        disabilityCategories: ["HEARING"],
+        accommodationNeeds: ["SIGN_LANGUAGE_INTERPRETER"],
+      }),
+      job: makeJob({
+        requiredSkills: ["JavaScript", "React"],
+        targetDisabilityCategories: ["VISUAL"],
+        accommodationTypes: [],
+      }),
     };
     const belowDefault = scoreCandidateAgainstJob(poorFit.candidate, poorFit.job);
     expect(belowDefault.score).toBeLessThan(MATCH_THRESHOLD);
@@ -168,8 +180,121 @@ describe("scoreCandidateAgainstJob", () => {
   it("rejects weights that don't sum to 1", () => {
     expect(() =>
       scoreCandidateAgainstJob(makeCandidate(), makeJob(), {
-        weights: { disability: 0.5, skills: 0.5, education: 0.5, experience: 0, location: 0 },
+        weights: {
+          disability: 0.5,
+          accommodationFit: 0.5,
+          assistiveTechFit: 0.5,
+          skills: 0.5,
+          education: 0.5,
+          experience: 0,
+          location: 0,
+        },
       }),
     ).toThrow();
+  });
+
+  describe("scoreAccommodationFit (via breakdown)", () => {
+    it("gives full credit when the candidate hasn't specified any accommodation needs", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: [] }),
+        makeJob({ accommodationTypes: [] }),
+      );
+      expect(result.breakdown.accommodationFit.score).toBe(1);
+    });
+
+    it("scores partial coverage of the candidate's accommodation needs", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: ["SCREEN_READER_SUPPORT", "FLEXIBLE_HOURS"] }),
+        makeJob({ accommodationTypes: ["FLEXIBLE_HOURS"] }),
+      );
+      expect(result.breakdown.accommodationFit.score).toBeCloseTo(0.5);
+    });
+
+    it("zeroes the criterion when the job offers none of the needed accommodations", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: ["WHEELCHAIR_ACCESSIBLE_WORKSPACE"] }),
+        makeJob({ accommodationTypes: ["FLEXIBLE_HOURS"] }),
+      );
+      expect(result.breakdown.accommodationFit.score).toBe(0);
+    });
+
+    it("gives full credit when the job offers everything the candidate needs, plus extras", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: ["FLEXIBLE_HOURS"] }),
+        makeJob({ accommodationTypes: ["FLEXIBLE_HOURS", "REMOTE_FRIENDLY"] }),
+      );
+      expect(result.breakdown.accommodationFit.score).toBe(1);
+    });
+  });
+
+  describe("scoreAssistiveTechFit (via breakdown)", () => {
+    it("gives full credit when the job specifies no preferred assistive technology", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ assistiveTechnologies: [] }),
+        makeJob({ preferredAssistiveTechnologies: [] }),
+      );
+      expect(result.breakdown.assistiveTechFit.score).toBe(1);
+    });
+
+    it("scores partial coverage of the job's preferred assistive technology", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ assistiveTechnologies: ["JAWS"] }),
+        makeJob({ preferredAssistiveTechnologies: ["JAWS", "NVDA"] }),
+      );
+      expect(result.breakdown.assistiveTechFit.score).toBeCloseTo(0.5);
+    });
+
+    it("zeroes the criterion when the candidate has none of the preferred technology", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ assistiveTechnologies: ["Crutches"] }),
+        makeJob({ preferredAssistiveTechnologies: ["JAWS"] }),
+      );
+      expect(result.breakdown.assistiveTechFit.score).toBe(0);
+    });
+
+    it("matches case-insensitively", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ assistiveTechnologies: ["jaws"] }),
+        makeJob({ preferredAssistiveTechnologies: ["JAWS"] }),
+      );
+      expect(result.breakdown.assistiveTechFit.score).toBe(1);
+    });
+  });
+});
+
+describe("resolveWeightsForCandidate", () => {
+  it("returns the default vector when the candidate has no categories", () => {
+    expect(resolveWeightsForCandidate([])).toEqual(WEIGHT_ARCHETYPES.DEFAULT);
+  });
+
+  it("returns the default vector when the only category is OTHER", () => {
+    expect(resolveWeightsForCandidate(["OTHER"])).toEqual(WEIGHT_ARCHETYPES.DEFAULT);
+  });
+
+  it("returns a single category's archetype directly", () => {
+    expect(resolveWeightsForCandidate(["MOBILITY"])).toEqual(WEIGHT_ARCHETYPES.PHYSICAL_ACCESS);
+    expect(resolveWeightsForCandidate(["VISUAL"])).toEqual(WEIGHT_ARCHETYPES.TOOLING_ACCOMMODATION);
+    expect(resolveWeightsForCandidate(["COGNITIVE"])).toEqual(WEIGHT_ARCHETYPES.FLEXIBILITY);
+  });
+
+  it("averages archetypes elementwise for a candidate with multiple categories", () => {
+    const resolved = resolveWeightsForCandidate(["MOBILITY", "VISUAL"]);
+    const physical = WEIGHT_ARCHETYPES.PHYSICAL_ACCESS;
+    const tooling = WEIGHT_ARCHETYPES.TOOLING_ACCOMMODATION;
+    expect(resolved.accommodationFit).toBeCloseTo((physical.accommodationFit + tooling.accommodationFit) / 2);
+    expect(resolved.location).toBeCloseTo((physical.location + tooling.location) / 2);
+  });
+
+  it("every weight archetype sums to exactly 1", () => {
+    for (const [name, weights] of Object.entries(WEIGHT_ARCHETYPES)) {
+      const sum = Object.values(weights).reduce((a, b) => a + b, 0);
+      expect(sum, `${name} archetype should sum to 1`).toBeCloseTo(1);
+    }
+  });
+
+  it("an averaged multi-category vector always sums to exactly 1", () => {
+    const resolved = resolveWeightsForCandidate(["MOBILITY", "VISUAL", "COGNITIVE"]);
+    const sum = Object.values(resolved).reduce((a, b) => a + b, 0);
+    expect(sum).toBeCloseTo(1);
   });
 });

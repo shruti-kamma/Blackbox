@@ -3,6 +3,8 @@ import { isMatchingSubstantialChange } from "./change-detection";
 
 const base = {
   disabilityCategories: ["VISUAL", "HEARING"],
+  accommodationNeeds: ["SCREEN_READER_SUPPORT"],
+  assistiveTechnologies: ["JAWS"],
   experienceLevel: "MID",
   preferredLocations: ["Bengaluru", "Mumbai"],
   openToRemote: true,
@@ -53,5 +55,31 @@ describe("isMatchingSubstantialChange", () => {
 
   it("flags a changed preferred location list", () => {
     expect(isMatchingSubstantialChange(base, { ...base, preferredLocations: ["Delhi"] })).toBe(true);
+  });
+
+  it("flags a changed accommodation needs list", () => {
+    expect(isMatchingSubstantialChange(base, { ...base, accommodationNeeds: ["FLEXIBLE_HOURS"] })).toBe(true);
+  });
+
+  it("ignores accommodation needs ordering", () => {
+    expect(
+      isMatchingSubstantialChange(
+        { ...base, accommodationNeeds: ["FLEXIBLE_HOURS", "SCREEN_READER_SUPPORT"] },
+        { ...base, accommodationNeeds: ["SCREEN_READER_SUPPORT", "FLEXIBLE_HOURS"] },
+      ),
+    ).toBe(false);
+  });
+
+  it("flags a changed assistive technology list", () => {
+    expect(isMatchingSubstantialChange(base, { ...base, assistiveTechnologies: ["NVDA"] })).toBe(true);
+  });
+
+  it("ignores assistive technology ordering", () => {
+    expect(
+      isMatchingSubstantialChange(
+        { ...base, assistiveTechnologies: ["JAWS", "NVDA"] },
+        { ...base, assistiveTechnologies: ["NVDA", "JAWS"] },
+      ),
+    ).toBe(false);
   });
 });

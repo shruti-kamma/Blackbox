@@ -27,6 +27,9 @@ export async function Nav() {
             <Link href="/candidate/profile" className="text-sm font-medium text-foreground">
               Profile
             </Link>
+            <Link href="/candidate/resume" className="text-sm font-medium text-foreground">
+              Resume
+            </Link>
             <Link href="/candidate/jobs" className="text-sm font-medium text-foreground">
               Matched jobs
             </Link>
@@ -47,6 +50,24 @@ export async function Nav() {
             </Link>
             <Link href="/employer/jobs/new" className="text-sm font-medium text-foreground">
               Post a job
+            </Link>
+            <NotificationBell />
+            <LogoutButton />
+          </>
+        )}
+        {user?.role === "ADMIN" && (
+          <>
+            <Link href="/admin" className="text-sm font-medium text-foreground">
+              Overview
+            </Link>
+            <Link href="/admin/coverage" className="text-sm font-medium text-foreground">
+              Coverage
+            </Link>
+            <Link href="/admin/employers" className="text-sm font-medium text-foreground">
+              Employers
+            </Link>
+            <Link href="/admin/candidates" className="text-sm font-medium text-foreground">
+              Candidates
             </Link>
             <LogoutButton />
           </>

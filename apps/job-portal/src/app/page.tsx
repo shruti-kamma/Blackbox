@@ -9,6 +9,7 @@ export default async function Home() {
   const user = await getCurrentUser();
   if (user?.role === "CANDIDATE") redirect("/candidate/jobs");
   if (user?.role === "EMPLOYER") redirect("/employer");
+  if (user?.role === "ADMIN") redirect("/admin");
 
   const [openJobsCount, organizationsCount] = await Promise.all([
     prisma.job.count({ where: { isOpen: true } }),

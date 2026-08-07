@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "worker": "tsx watch --env-file=.env src/worker/index.ts",
+    "seed:admin": "tsx --env-file=.env scripts/seed-admin.ts",
     "test": "vitest run"
   },
   "dependencies": {

@@ -3,6 +3,8 @@
 // URL alone shouldn't trigger a re-scan of every open job.
 interface MatchingRelevantFields {
   disabilityCategories: string[];
+  accommodationNeeds: string[];
+  assistiveTechnologies: string[];
   experienceLevel: string | null;
   preferredLocations: string[];
   openToRemote: boolean;
@@ -13,6 +15,8 @@ interface MatchingRelevantFields {
 function normalize(fields: MatchingRelevantFields): string {
   return JSON.stringify({
     disabilityCategories: [...fields.disabilityCategories].sort(),
+    accommodationNeeds: [...fields.accommodationNeeds].sort(),
+    assistiveTechnologies: [...fields.assistiveTechnologies].sort(),
     experienceLevel: fields.experienceLevel,
     preferredLocations: [...fields.preferredLocations].sort(),
     openToRemote: fields.openToRemote,

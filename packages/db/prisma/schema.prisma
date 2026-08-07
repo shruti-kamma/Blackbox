@@ -73,6 +73,58 @@ enum ExperienceLevel {
 
 enum NotificationType {
   NEW_MATCH
+  // Fired when an employer moves an application to INTERVIEWING and the
+  // candidate's accommodationNeeds aren't fully covered by the job's
+  // accommodationTypes — informational only, never blocks the transition.
+  ACCOMMODATION_GAP
+}
+
+// Controlled vocabulary for accommodations, mirroring DisabilityCategory's
+// pattern: a closed enum the scoring engine can do exact-set overlap on,
+// plus the existing free-text fields (CandidateProfile.accessibilityNeeds,
+// Job.accommodationsOffered) stay as unscored supplementary notes.
+enum AccommodationType {
+  SCREEN_READER_SUPPORT
+  SIGN_LANGUAGE_INTERPRETER
+  CAPTIONING
+  WHEELCHAIR_ACCESSIBLE_WORKSPACE
+  ASSISTIVE_TECHNOLOGY_STIPEND
+  FLEXIBLE_HOURS
+  REMOTE_FRIENDLY
+  ERGONOMIC_WORKSTATION
+  ACCESSIBLE_TRANSPORTATION
+  EXTENDED_BREAKS
+  JOB_COACH_SUPPORT
+  OTHER
+}
+
+// Groups AssistiveTechnology entries for display/filtering — the specific
+// entries themselves (JAWS, NVDA, crutches, ...) are an open, growing
+// vocabulary (see AssistiveTechnology), not a closed enum like the one above.
+enum AssistiveTechnologyType {
+  MOBILITY_AID
+  VISION_AID
+  HEARING_AID
+  COMMUNICATION_AID
+  SCREEN_READER_SOFTWARE
+  OTHER_SOFTWARE
+  OTHER
+}
+
+// Which limb/region is affected — only meaningfully asked in the UI when a
+// candidate's disability category is MOBILITY. Deliberately a small, stable
+// enum (unlike AssistiveTechnology's open vocabulary).
+enum BodyPart {
+  LEFT_ARM
+  RIGHT_ARM
+  BOTH_ARMS
+  LEFT_LEG
+  RIGHT_LEG
+  BOTH_LEGS
+  HAND
+  SPINE
+  MULTIPLE
+  OTHER
 }
 
 model User {
@@ -83,8 +135,9 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  candidateProfile CandidateProfile?
-  notifications    Notification[]
+  candidateProfile       CandidateProfile?
+  notifications          Notification[]
+  accommodationApprovals Application[]     @relation("ApplicationAccommodationApprover")
 
   // Set when role = EMPLOYER; the company this user posts jobs on behalf of.
   employerOrgId String?
@@ -100,24 +153,38 @@ model CandidateProfile {
 
   fullName           String
   headline           String?
+  phone              String?
   resumeUrl          String?
-  accessibilityNeeds String[] // e.g. "screen-reader", "captioning", "flexible-hours"
+  accessibilityNeeds String[] // free-text supplementary notes, not read by scoring — see accommodationNeeds
 
   // Controlled disability self-identification, used as the first-pass filter
   // in matching. "OTHER" pairs with disabilityOther free text.
   disabilityCategories DisabilityCategory[]
   disabilityOther      String?
 
+  // Controlled accommodation needs, scored against Job.accommodationTypes
+  // by the matching engine's accommodationFit criterion.
+  accommodationNeeds AccommodationType[]
+
+  // True once the candidate has explicitly confirmed "I don't need
+  // accommodations" from the empty-needs prompt — distinguishes that from
+  // simply never having filled the section in. Set once, not re-asked.
+  confirmedNoAccommodationNeeds Boolean @default(false)
+
   experienceLevel     ExperienceLevel?
   preferredCategories String[] // job categories, free text controlled by frontend select
   preferredLocations  String[]
   openToRemote        Boolean          @default(false)
 
-  education      Education[]
-  workExperience WorkExperience[]
-  skills         CandidateSkill[]
-  applications   Application[]
-  matches        Match[]
+  education             Education[]
+  workExperience        WorkExperience[]
+  projects              Project[]
+  certifications        Certification[]
+  skills                CandidateSkill[]
+  assistiveTechnologies CandidateAssistiveTechnology[]
+  disabilityDetails     CandidateDisabilityDetail[]
+  applications          Application[]
+  matches               Match[]
 
   // Populated by the matching agent from résumé/profile text. Query via raw SQL
   // (Prisma has no native vector query API) — see services/matching-agent.
@@ -165,6 +232,42 @@ model WorkExperience {
   @@index([candidateProfileId])
 }
 
+// Optional — shown on the generated resume only if the candidate has at
+// least one entry. A hackathon/competition result is just a project with an
+// award noted in its subtitle, so there's no separate model for that.
+model Project {
+  id                 String           @id @default(cuid())
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  title       String
+  subtitle    String? // e.g. a one-line project description, or an award/competition note
+  techStack   String? // free text, e.g. "Python, TensorFlow, CNN, OpenCV"
+  date        DateTime?
+  description String? // one bullet per line, split on \n when rendered
+  url         String?
+
+  createdAt DateTime @default(now())
+
+  @@index([candidateProfileId])
+}
+
+// Optional, same "only shown if present" behavior as Project.
+model Certification {
+  id                 String           @id @default(cuid())
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  title  String
+  issuer String?
+  date   DateTime?
+  url    String?
+
+  createdAt DateTime @default(now())
+
+  @@index([candidateProfileId])
+}
+
 // Structured skill vocabulary shared between candidates and job postings, so
 // skills overlap can be computed as a set intersection rather than fuzzy text
 // matching. Grows organically — API upserts by name.
@@ -185,6 +288,49 @@ model CandidateSkill {
 
   @@id([candidateProfileId, skillId])
   @@index([skillId])
+}
+
+// Open, growing vocabulary of specific assistive devices/software (JAWS,
+// NVDA, crutches, a particular wheelchair model, ...) — same upsert-by-name
+// pattern as Skill, deliberately not a closed enum since this list is never
+// "done" the way DisabilityCategory or AccommodationType are.
+model AssistiveTechnology {
+  id   String                  @id @default(cuid())
+  name String                  @unique
+  type AssistiveTechnologyType
+
+  candidates CandidateAssistiveTechnology[]
+  jobs       JobAssistiveTechnology[]
+}
+
+model CandidateAssistiveTechnology {
+  candidateProfileId    String
+  candidateProfile      CandidateProfile    @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  assistiveTechnologyId String
+  assistiveTechnology   AssistiveTechnology @relation(fields: [assistiveTechnologyId], references: [id], onDelete: Cascade)
+
+  @@id([candidateProfileId, assistiveTechnologyId])
+  @@index([assistiveTechnologyId])
+}
+
+// Per-category clinical/functional detail — one row per disability category
+// a candidate has declared, so someone with both MOBILITY and VISUAL gets
+// two rows, each holding only what's relevant to that category. Purely
+// informational: never read by the matching engine, only displayed on the
+// candidate's profile and on match/application cards for employers.
+model CandidateDisabilityDetail {
+  id                 String           @id @default(cuid())
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  category           DisabilityCategory
+  severityPercentage Int? // 0-100, disability certification percentage where applicable
+  affectedBodyPart   BodyPart? // only asked in the UI when category = MOBILITY
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([candidateProfileId, category])
 }
 
 model Organization {
@@ -217,20 +363,25 @@ model Job {
   location              String?
   remote                Boolean  @default(false)
   employmentType        String? // e.g. "full-time", "contract"
-  accommodationsOffered String[]
+  accommodationsOffered String[] // free-text supplementary notes, not read by scoring — see accommodationTypes
   isOpen                Boolean  @default(true)
 
   // Empty array = open to all disability categories. Non-empty = the role is
   // specifically targeted/suited to these; used as the matching prefilter.
   targetDisabilityCategories DisabilityCategory[]
 
+  // Controlled accommodations offered, scored against
+  // CandidateProfile.accommodationNeeds by the accommodationFit criterion.
+  accommodationTypes AccommodationType[]
+
   requiredEducationLevel  EducationLevel?
   requiredEducationField  String?
   requiredExperienceLevel ExperienceLevel?
 
-  requiredSkills JobSkill[]
-  applications   Application[]
-  matches        Match[]
+  requiredSkills                 JobSkill[]
+  preferredAssistiveTechnologies JobAssistiveTechnology[]
+  applications                   Application[]
+  matches                        Match[]
 
   // Populated by the matching agent from the job description. Query via raw SQL.
   embedding Unsupported("vector(1536)")?
@@ -255,6 +406,16 @@ model JobSkill {
   @@index([skillId])
 }
 
+model JobAssistiveTechnology {
+  jobId                 String
+  job                   Job                 @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  assistiveTechnologyId String
+  assistiveTechnology   AssistiveTechnology @relation(fields: [assistiveTechnologyId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, assistiveTechnologyId])
+  @@index([assistiveTechnologyId])
+}
+
 model Application {
   id          String            @id @default(cuid())
   jobId       String
@@ -264,10 +425,28 @@ model Application {
   status      ApplicationStatus @default(SUBMITTED)
   coverNote   String?
 
+  // Set when an employer declines a first-time accommodation need via
+  // decline-accommodations — an honest, visible reason for an auto-reject
+  // rather than a silent status change.
+  rejectionReason String?
+
   // Snapshot of the Match.score at the time the candidate applied, so a
   // hiring manager can see "applied with a 78% match" even if the underlying
   // profile/job change later.
   matchScore Float?
+
+  // A free-text accommodation request the candidate can send once the
+  // application reaches INTERVIEWING — expressive beyond the fixed
+  // accommodationNeeds checklist (e.g. a specific software version).
+  accommodationRequestText   String?
+  accommodationRequestSentAt DateTime?
+
+  // Set once an employer explicitly confirms they can meet a first-time
+  // accommodation need (see computeFirstTimeMissingAccommodations) — gates
+  // the OFFERED transition when non-null is required. Null = not approved.
+  accommodationsApprovedAt       DateTime?
+  accommodationsApprovedByUserId String?
+  accommodationsApprovedBy       User?     @relation("ApplicationAccommodationApprover", fields: [accommodationsApprovedByUserId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

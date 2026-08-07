@@ -24,7 +24,7 @@ export default function LoginPage() {
           body: JSON.stringify({ email: form.get("email"), password: form.get("password") }),
         },
       );
-      router.push(role === "EMPLOYER" ? "/employer/jobs" : "/candidate/jobs");
+      router.push(role === "EMPLOYER" ? "/employer/jobs" : role === "ADMIN" ? "/admin" : "/candidate/jobs");
       router.refresh();
     } catch (err) {
       setError(err instanceof ApiClientError ? err.message : "Something went wrong");

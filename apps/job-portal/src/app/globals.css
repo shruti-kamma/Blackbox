@@ -11,3 +11,22 @@ body {
   color: var(--color-foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Printable pages (e.g. the candidate resume) shouldn't carry the site nav
+   or dark-mode colors onto paper/PDF, regardless of the viewer's OS theme. */
+@media print {
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  .resume-print {
+    border: none !important;
+    padding: 0 !important;
+  }
+}

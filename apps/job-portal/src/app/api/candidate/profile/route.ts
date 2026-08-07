@@ -9,7 +9,11 @@ import { enqueueMatchingJob } from "@/lib/queue/matching-queue";
 const profileInclude = {
   education: true,
   workExperience: true,
+  projects: true,
+  certifications: true,
   skills: { include: { skill: true } },
+  assistiveTechnologies: { include: { assistiveTechnology: true } },
+  disabilityDetails: true,
 } as const;
 
 export async function GET() {
@@ -44,10 +48,13 @@ export async function PUT(request: Request) {
         data: {
           fullName: input.fullName,
           headline: input.headline || null,
+          phone: input.phone || null,
           resumeUrl: input.resumeUrl || null,
           accessibilityNeeds: input.accessibilityNeeds,
           disabilityCategories: input.disabilityCategories,
           disabilityOther: input.disabilityOther || null,
+          accommodationNeeds: input.accommodationNeeds,
+          confirmedNoAccommodationNeeds: input.confirmedNoAccommodationNeeds,
           experienceLevel: input.experienceLevel ?? null,
           preferredCategories: input.preferredCategories,
           preferredLocations: input.preferredLocations,
@@ -74,16 +81,70 @@ export async function PUT(request: Request) {
         });
       }
 
+      await tx.project.deleteMany({ where: { candidateProfileId: before.id } });
+      if (input.projects.length > 0) {
+        await tx.project.createMany({
+          data: input.projects.map((p) => ({
+            title: p.title,
+            subtitle: p.subtitle || null,
+            techStack: p.techStack || null,
+            date: p.date ? new Date(p.date) : null,
+            description: p.description || null,
+            url: p.url || null,
+            candidateProfileId: before.id,
+          })),
+        });
+      }
+
+      await tx.certification.deleteMany({ where: { candidateProfileId: before.id } });
+      if (input.certifications.length > 0) {
+        await tx.certification.createMany({
+          data: input.certifications.map((c) => ({
+            title: c.title,
+            issuer: c.issuer || null,
+            date: c.date ? new Date(c.date) : null,
+            url: c.url || null,
+            candidateProfileId: before.id,
+          })),
+        });
+      }
+
       await tx.candidateSkill.deleteMany({ where: { candidateProfileId: before.id } });
       for (const name of input.skills) {
         const skill = await tx.skill.upsert({ where: { name }, update: {}, create: { name } });
         await tx.candidateSkill.create({ data: { candidateProfileId: before.id, skillId: skill.id } });
+      }
+
+      await tx.candidateAssistiveTechnology.deleteMany({ where: { candidateProfileId: before.id } });
+      for (const name of input.assistiveTechnologies) {
+        const tech = await tx.assistiveTechnology.upsert({
+          where: { name },
+          update: {},
+          create: { name, type: "OTHER" },
+        });
+        await tx.candidateAssistiveTechnology.create({
+          data: { candidateProfileId: before.id, assistiveTechnologyId: tech.id },
+        });
+      }
+
+      await tx.candidateDisabilityDetail.deleteMany({ where: { candidateProfileId: before.id } });
+      if (input.disabilityDetails.length > 0) {
+        await tx.candidateDisabilityDetail.createMany({
+          data: input.disabilityDetails.map((d) => ({
+            candidateProfileId: before.id,
+            category: d.category,
+            severityPercentage: d.severityPercentage ?? null,
+            affectedBodyPart: d.affectedBodyPart ?? null,
+          })),
+        });
       }
     });
 
     const substantial = isMatchingSubstantialChange(
       {
         disabilityCategories: before.disabilityCategories,
+        accommodationNeeds: before.accommodationNeeds,
+        assistiveTechnologies: before.assistiveTechnologies.map((a) => a.assistiveTechnology.name),
         experienceLevel: before.experienceLevel,
         preferredLocations: before.preferredLocations,
         openToRemote: before.openToRemote,
@@ -92,6 +153,8 @@ export async function PUT(request: Request) {
       },
       {
         disabilityCategories: input.disabilityCategories,
+        accommodationNeeds: input.accommodationNeeds,
+        assistiveTechnologies: input.assistiveTechnologies,
         experienceLevel: input.experienceLevel ?? null,
         preferredLocations: input.preferredLocations,
         openToRemote: input.openToRemote,
