@@ -185,6 +185,7 @@ model CandidateProfile {
   disabilityDetails     CandidateDisabilityDetail[]
   applications          Application[]
   matches               Match[]
+  interviews            Interview[]
 
   // Populated by the matching agent from résumé/profile text. Query via raw SQL
   // (Prisma has no native vector query API) — see services/matching-agent.
@@ -366,6 +367,10 @@ model Job {
   accommodationsOffered String[] // free-text supplementary notes, not read by scoring — see accommodationTypes
   isOpen                Boolean  @default(true)
 
+  // When true, a candidate must complete an AI-screened interview before
+  // their Application (and profile) becomes visible to this job's employer.
+  requiresAiInterview Boolean @default(false)
+
   // Empty array = open to all disability categories. Non-empty = the role is
   // specifically targeted/suited to these; used as the matching prefilter.
   targetDisabilityCategories DisabilityCategory[]
@@ -382,6 +387,7 @@ model Job {
   preferredAssistiveTechnologies JobAssistiveTechnology[]
   applications                   Application[]
   matches                        Match[]
+  interviews                     Interview[]
 
   // Populated by the matching agent from the job description. Query via raw SQL.
   embedding Unsupported("vector(1536)")?
@@ -448,10 +454,69 @@ model Application {
   accommodationsApprovedByUserId String?
   accommodationsApprovedBy       User?     @relation("ApplicationAccommodationApprover", fields: [accommodationsApprovedByUserId], references: [id])
 
+  // Set when this application came through a job requiring an AI interview
+  // — the application is only created once that interview is COMPLETED.
+  interviewId String?    @unique
+  interview   Interview? @relation(fields: [interviewId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([jobId, candidateId])
+}
+
+enum InterviewStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
+// Chosen once by the candidate before questions are generated — text stays a
+// first-class option alongside video so the interview itself never becomes
+// an accessibility barrier. See lib/ai-interview and video-answer-recorder.tsx.
+enum InterviewMode {
+  TEXT
+  VIDEO
+}
+
+// An AI-conducted screening interview for one candidate/job pair, required
+// only when Job.requiresAiInterview is true. The Application isn't created
+// until this reaches COMPLETED — see interview/submit/route.ts.
+model Interview {
+  id                 String           @id @default(cuid())
+  jobId              String
+  job                Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  status         InterviewStatus @default(IN_PROGRESS)
+  mode           InterviewMode   @default(TEXT)
+  overallScore   Int?
+  overallSummary String?
+
+  questions   InterviewQuestion[]
+  application Application?
+
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@unique([jobId, candidateProfileId])
+}
+
+model InterviewQuestion {
+  id          String    @id @default(cuid())
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  order       Int
+  question    String
+  answer      String?
+  feedback    String? // AI's per-question feedback, filled in at evaluation time
+
+  // Set only when this question was answered by video — the locally-stored
+  // recording's relative path under uploads/interviews/, served through an
+  // authenticated route rather than a public URL.
+  videoUrl String?
+
+  @@index([interviewId])
 }
 
 // A stored, event-driven match produced by the matching engine — created when

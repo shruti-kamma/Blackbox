@@ -21,6 +21,7 @@ export const jobInputSchema = z.object({
   requiredExperienceLevel: experienceLevelSchema.optional(),
   requiredSkills: z.array(z.string().trim().min(1)).default([]),
   preferredAssistiveTechnologies: z.array(z.string().trim().min(1)).default([]),
+  requiresAiInterview: z.boolean().default(false),
 });
 
 export type JobInput = z.infer<typeof jobInputSchema>;

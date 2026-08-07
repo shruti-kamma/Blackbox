@@ -31,6 +31,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ jobI
             disabilityDetails: true,
           },
         },
+        interview: {
+          include: { questions: { orderBy: { order: "asc" } } },
+        },
       },
     });
 

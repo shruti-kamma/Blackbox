@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 import { matchScoreColor } from "@/lib/match-score-color";
@@ -35,6 +36,7 @@ interface MatchRow {
     location: string | null;
     remote: boolean;
     accommodationTypes: string[];
+    requiresAiInterview: boolean;
     organization: { name: string };
   };
 }
@@ -54,6 +56,7 @@ interface Profile {
 }
 
 export default function CandidateJobsPage() {
+  const router = useRouter();
   const [matches, setMatches] = useState<MatchRow[] | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [applications, setApplications] = useState<{ status: ApplicationStatus }[] | null>(null);
@@ -114,7 +117,11 @@ export default function CandidateJobsPage() {
     }
   }
 
-  async function apply(jobId: string) {
+  async function apply(jobId: string, requiresAiInterview: boolean) {
+    if (requiresAiInterview) {
+      router.push(`/candidate/jobs/${jobId}/interview`);
+      return;
+    }
     setApplyingId(jobId);
     setError(null);
     try {
@@ -244,9 +251,22 @@ export default function CandidateJobsPage() {
                               .join(", ")} — you may want to confirm before applying.`}
                       </p>
                     )}
+                    {m.job.requiresAiInterview && (
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        This role requires a short AI interview before the employer sees your application.
+                      </p>
+                    )}
                     <div className="mt-3 flex items-center gap-2">
-                      <Button size="sm" disabled={applyingId === m.jobId} onClick={() => apply(m.jobId)}>
-                        {applyingId === m.jobId ? "Applying…" : "Apply"}
+                      <Button
+                        size="sm"
+                        disabled={applyingId === m.jobId}
+                        onClick={() => apply(m.jobId, m.job.requiresAiInterview)}
+                      >
+                        {applyingId === m.jobId
+                          ? "Applying…"
+                          : m.job.requiresAiInterview
+                            ? "Start AI interview"
+                            : "Apply"}
                       </Button>
                       <Button size="sm" variant="secondary" onClick={() => checkAtsScore(m.jobId)}>
                         {atsScores[m.jobId] ? "Hide ATS score" : "Check ATS score"}

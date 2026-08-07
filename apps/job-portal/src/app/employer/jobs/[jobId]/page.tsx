@@ -30,6 +30,20 @@ interface ApplicationRow {
   needsAccommodationApproval: boolean;
   missingAccommodations: string[];
   rejectionReason: string | null;
+  interview: {
+    id: string;
+    mode: "TEXT" | "VIDEO";
+    overallScore: number | null;
+    overallSummary: string | null;
+    questions: {
+      id: string;
+      order: number;
+      question: string;
+      answer: string | null;
+      feedback: string | null;
+      videoUrl: string | null;
+    }[];
+  } | null;
 }
 
 interface MatchRow {
@@ -46,6 +60,7 @@ export default function EmployerJobDetailPage() {
   const [matches, setMatches] = useState<MatchRow[] | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [expandedInterviewId, setExpandedInterviewId] = useState<string | null>(null);
 
   useEffect(() => {
     apiRequest<{ applications: ApplicationRow[] }>(`/api/jobs/${jobId}/applications`).then(({ applications }) =>
@@ -198,6 +213,52 @@ export default function EmployerJobDetailPage() {
                       }
                     />
                     {app.coverNote && <p className="mt-1 text-sm text-foreground">“{app.coverNote}”</p>}
+                    {app.interview && (
+                      <div className="mt-2 rounded-md border border-border p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-sm font-medium text-foreground">
+                            AI interview score: {app.interview.overallScore}%
+                            {app.interview.mode === "VIDEO" && (
+                              <span className="ml-2 text-xs font-normal text-muted-foreground">(video)</span>
+                            )}
+                          </p>
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() =>
+                              setExpandedInterviewId((id) => (id === app.interview!.id ? null : app.interview!.id))
+                            }
+                          >
+                            {expandedInterviewId === app.interview.id ? "Hide transcript" : "View transcript"}
+                          </Button>
+                        </div>
+                        {app.interview.overallSummary && (
+                          <p className="mt-1 text-sm text-foreground">{app.interview.overallSummary}</p>
+                        )}
+                        {expandedInterviewId === app.interview.id && (
+                          <div className="mt-3 flex flex-col gap-3 border-t border-border pt-3">
+                            {app.interview.questions.map((q, i) => (
+                              <div key={q.id}>
+                                <p className="text-sm font-medium text-foreground">
+                                  {i + 1}. {q.question}
+                                </p>
+                                {q.videoUrl && (
+                                  <video
+                                    controls
+                                    src={`/api/jobs/${jobId}/interview/questions/${q.id}/video`}
+                                    className="mt-1 w-full max-w-sm rounded-md bg-black"
+                                  />
+                                )}
+                                <p className="mt-1 text-sm text-muted-foreground">{q.answer || "(no answer)"}</p>
+                                {q.feedback && (
+                                  <p className="mt-1 text-xs text-foreground">Feedback: {q.feedback}</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
                     {app.accommodationRequestText && (
                       <p className="mt-1 text-sm text-foreground">
                         Accommodation request: &ldquo;{app.accommodationRequestText}&rdquo;

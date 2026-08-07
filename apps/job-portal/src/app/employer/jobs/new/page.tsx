@@ -28,6 +28,7 @@ export default function NewJobPage() {
   const [targetCategories, setTargetCategories] = useState<string[]>([]);
   const [accommodationTypes, setAccommodationTypes] = useState<string[]>([]);
   const [remote, setRemote] = useState(false);
+  const [requiresAiInterview, setRequiresAiInterview] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [insights, setInsights] = useState<AssistiveTechInsight[] | null>(null);
@@ -76,6 +77,7 @@ export default function NewJobPage() {
         requiredExperienceLevel: form.get("requiredExperienceLevel") || undefined,
         requiredSkills: splitList(String(form.get("requiredSkills") ?? "")),
         preferredAssistiveTechnologies: splitList(String(form.get("preferredAssistiveTechnologies") ?? "")),
+        requiresAiInterview,
       };
       const { job } = await apiRequest<{ job: { id: string } }>("/api/jobs", {
         method: "POST",
@@ -315,6 +317,23 @@ export default function NewJobPage() {
           />
           Remote role
         </label>
+
+        <div className="flex flex-col gap-2 rounded-md border border-border p-3">
+          <label className="flex items-center gap-2 text-sm text-foreground">
+            <input
+              type="checkbox"
+              checked={requiresAiInterview}
+              onChange={(e) => setRequiresAiInterview(e.target.checked)}
+              className="size-5"
+            />
+            Require an AI interview before I see applicant details
+          </label>
+          <p className="text-xs text-muted-foreground">
+            Candidates applying to this role will first answer a short set of AI-generated questions based on
+            their skills and projects. You&apos;ll see their score, a summary, and the full transcript
+            alongside their profile.
+          </p>
+        </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="accommodationsOffered" className="text-sm font-medium text-foreground">
