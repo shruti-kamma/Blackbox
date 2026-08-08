@@ -18,6 +18,24 @@ interface Overview {
       organizationName: string;
       flaggedAt: string;
     }[];
+    guaranteedInterviewSkips: {
+      applicationId: string | null;
+      candidateName: string;
+      jobTitle: string;
+      organizationId: string;
+      organizationName: string;
+      flaggedAt: string;
+    }[];
+    staleInProgressInterviews: {
+      id: string;
+      mode: "TEXT" | "VIDEO";
+      candidateId: string;
+      candidateName: string;
+      jobTitle: string;
+      organizationId: string;
+      organizationName: string;
+      startedAt: string;
+    }[];
   };
   trends: { weekStart: string; candidateSignups: number; employerSignups: number; applications: number; hires: number }[];
   stats: {
@@ -29,6 +47,16 @@ interface Overview {
     totalHires: number;
     accommodationGapsFlagged: number;
     guaranteedInterviewSkipsFlagged: number;
+  };
+  aiInterviews: {
+    jobsRequiringAiInterview: number;
+    totalStarted: number;
+    completed: number;
+    inProgress: number;
+    completionRate: number | null;
+    averageScore: number | null;
+    video: number;
+    text: number;
   };
   applicationsByStatus: { status: ApplicationStatus; count: number }[];
   recentHires: { id: string; candidateName: string; jobTitle: string; organizationName: string; offeredAt: string }[];
@@ -94,7 +122,9 @@ export default function AdminOverviewPage() {
   const attentionCount = data
     ? data.needsAttention.deadListings.length +
       data.needsAttention.zeroMatchCandidates.length +
-      data.needsAttention.stalePendingAccommodations.length
+      data.needsAttention.stalePendingAccommodations.length +
+      data.needsAttention.guaranteedInterviewSkips.length +
+      data.needsAttention.staleInProgressInterviews.length
     : 0;
 
   return (
@@ -151,6 +181,28 @@ export default function AdminOverviewPage() {
                     {new Date(a.flaggedAt).toLocaleDateString()}.
                   </div>
                 ))}
+                {data.needsAttention.guaranteedInterviewSkips.map((s, i) => (
+                  <div
+                    key={s.applicationId ?? i}
+                    className="rounded-md border border-danger bg-danger/10 p-3 text-sm text-foreground"
+                  >
+                    <Link href={`/admin/employers/${s.organizationId}`} className="font-medium underline">
+                      {s.organizationName}
+                    </Link>{" "}
+                    rejected {s.candidateName} for {s.jobTitle} without an interview, despite committing to one
+                    — {new Date(s.flaggedAt).toLocaleDateString()}.
+                  </div>
+                ))}
+                {data.needsAttention.staleInProgressInterviews.map((i) => (
+                  <div key={i.id} className="rounded-md border border-danger bg-danger/10 p-3 text-sm text-foreground">
+                    <Link href={`/admin/candidates/${i.candidateId}`} className="font-medium underline">
+                      {i.candidateName}
+                    </Link>{" "}
+                    started a {i.mode === "VIDEO" ? "video" : "text"} AI interview for {i.jobTitle} at{" "}
+                    {i.organizationName} on {new Date(i.startedAt).toLocaleDateString()} and never finished it —
+                    worth checking whether the interview flow itself is the barrier.
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -187,6 +239,40 @@ export default function AdminOverviewPage() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-lg font-semibold text-foreground">AI interviews</h2>
+            <p className="mb-3 text-sm text-muted-foreground">
+              {data.aiInterviews.jobsRequiringAiInterview} of {data.stats.totalJobs} jobs require one before the
+              employer sees an applicant.
+            </p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="rounded-md border border-border p-3">
+                <p className="text-2xl font-semibold tabular-nums text-foreground">{data.aiInterviews.totalStarted}</p>
+                <p className="text-xs text-muted-foreground">Started</p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="text-2xl font-semibold tabular-nums text-foreground">
+                  {data.aiInterviews.completionRate !== null ? `${data.aiInterviews.completionRate}%` : "—"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Completed ({data.aiInterviews.completed}/{data.aiInterviews.totalStarted})
+                </p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="text-2xl font-semibold tabular-nums text-foreground">
+                  {data.aiInterviews.averageScore !== null ? `${data.aiInterviews.averageScore}%` : "—"}
+                </p>
+                <p className="text-xs text-muted-foreground">Average score</p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="text-2xl font-semibold tabular-nums text-foreground">
+                  {data.aiInterviews.video}/{data.aiInterviews.text}
+                </p>
+                <p className="text-xs text-muted-foreground">Video / text mode</p>
+              </div>
             </div>
           </div>
 

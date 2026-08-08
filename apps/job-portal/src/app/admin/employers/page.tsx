@@ -24,6 +24,7 @@ type SortKey = "name" | "jobsCount" | "applicationsCount" | "hiresCount" | "last
 export default function AdminEmployersPage() {
   const [employers, setEmployers] = useState<EmployerRow[] | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("lastActivityAt");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     apiRequest<{ employers: EmployerRow[] }>("/api/admin/employers").then(({ employers }) => setEmployers(employers));
@@ -31,22 +32,41 @@ export default function AdminEmployersPage() {
 
   const sorted = useMemo(() => {
     if (!employers) return null;
-    const copy = [...employers];
+    const query = search.trim().toLowerCase();
+    const filtered = query === "" ? employers : employers.filter((e) => e.name.toLowerCase().includes(query));
+    const copy = [...filtered];
     copy.sort((a, b) => {
       if (sortKey === "name") return a.name.localeCompare(b.name);
       if (sortKey === "lastActivityAt") return new Date(b.lastActivityAt).getTime() - new Date(a.lastActivityAt).getTime();
       return b[sortKey] - a[sortKey];
     });
     return copy;
-  }, [employers, sortKey]);
+  }, [employers, sortKey, search]);
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-12">
       <h1 className="mb-2 text-2xl font-semibold text-foreground">Employers</h1>
       <p className="mb-6 text-sm text-muted-foreground">Every organization on the platform.</p>
 
+      <input
+        type="search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search by company name…"
+        aria-label="Search employers"
+        className="h-touch-target mb-3 w-full max-w-sm rounded-md border border-border bg-background px-3 text-sm text-foreground"
+      />
+
+      {employers && (
+        <p className="mb-3 text-xs text-muted-foreground">
+          Showing {sorted?.length ?? 0} of {employers.length} employers
+        </p>
+      )}
+
       {sorted === null ? (
         <p className="text-muted-foreground">Loading…</p>
+      ) : sorted.length === 0 ? (
+        <p className="text-muted-foreground">No employers match your search.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">

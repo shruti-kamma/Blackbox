@@ -52,9 +52,17 @@ export async function GET() {
       deadListingsRaw,
       zeroMatchCandidatesRaw,
       staleGapNotifications,
+      guaranteedInterviewSkipNotifications,
       signupsRaw,
       applicationsRaw,
       hiresRaw,
+      totalInterviewsStarted,
+      completedInterviews,
+      inProgressInterviews,
+      completedInterviewScoreAgg,
+      videoInterviews,
+      jobsRequiringAiInterview,
+      staleInProgressInterviewsRaw,
     ] = await Promise.all([
       prisma.user.count({ where: { role: "CANDIDATE" } }),
       prisma.organization.count(),
@@ -102,6 +110,16 @@ export async function GET() {
         where: { type: "ACCOMMODATION_GAP", createdAt: { lt: threeDaysAgo } },
         select: { id: true, createdAt: true, payload: true },
       }),
+      // No "still relevant" check needed here unlike accommodation gaps — a
+      // skip is a permanent historical fact, not something that later gets
+      // resolved. Capped like recentApplications rather than unbounded,
+      // since nothing ever removes old entries from this list.
+      prisma.notification.findMany({
+        where: { type: "GUARANTEED_INTERVIEW_SKIPPED" },
+        orderBy: { createdAt: "desc" },
+        take: 20,
+        select: { id: true, createdAt: true, payload: true },
+      }),
       prisma.user.findMany({
         where: { role: { in: ["CANDIDATE", "EMPLOYER"] }, createdAt: { gte: eightWeeksAgo } },
         select: { role: true, createdAt: true },
@@ -113,6 +131,30 @@ export async function GET() {
       prisma.application.findMany({
         where: { status: "OFFERED", updatedAt: { gte: eightWeeksAgo } },
         select: { updatedAt: true },
+      }),
+      prisma.interview.count(),
+      prisma.interview.count({ where: { status: "COMPLETED" } }),
+      prisma.interview.count({ where: { status: "IN_PROGRESS" } }),
+      prisma.interview.aggregate({
+        where: { status: "COMPLETED", overallScore: { not: null } },
+        _avg: { overallScore: true },
+      }),
+      prisma.interview.count({ where: { mode: "VIDEO" } }),
+      prisma.job.count({ where: { requiresAiInterview: true } }),
+      // Started but never finished, and old enough that it's not just a
+      // candidate mid-interview right now — the platform's own accessibility
+      // signal: if this list is never empty, something about the interview
+      // flow itself may be turning candidates away partway through.
+      prisma.interview.findMany({
+        where: { status: "IN_PROGRESS", createdAt: { lt: threeDaysAgo } },
+        orderBy: { createdAt: "asc" },
+        select: {
+          id: true,
+          mode: true,
+          createdAt: true,
+          candidateProfile: { select: { id: true, fullName: true } },
+          job: { select: { title: true, organization: { select: { id: true, name: true } } } },
+        },
       }),
     ]);
 
@@ -156,6 +198,51 @@ export async function GET() {
       })
       .filter((x): x is NonNullable<typeof x> => x !== null);
 
+    // The notification payload only has jobId + candidateName (see the
+    // route that creates it), so job title/organization is resolved fresh
+    // here rather than trusting a stale copy.
+    const skipJobIds = [
+      ...new Set(
+        guaranteedInterviewSkipNotifications
+          .map((n) => (n.payload as { jobId?: string }).jobId)
+          .filter((id): id is string => Boolean(id)),
+      ),
+    ];
+    const skipJobs =
+      skipJobIds.length > 0
+        ? await prisma.job.findMany({
+            where: { id: { in: skipJobIds } },
+            select: { id: true, title: true, organization: { select: { id: true, name: true } } },
+          })
+        : [];
+    const skipJobById = new Map(skipJobs.map((j) => [j.id, j]));
+    const guaranteedInterviewSkips = guaranteedInterviewSkipNotifications
+      .map((n) => {
+        const payload = n.payload as { jobId?: string; applicationId?: string; candidateName?: string };
+        const job = payload.jobId ? skipJobById.get(payload.jobId) : undefined;
+        if (!job || !payload.candidateName) return null;
+        return {
+          applicationId: payload.applicationId ?? null,
+          candidateName: payload.candidateName,
+          jobTitle: job.title,
+          organizationId: job.organization.id,
+          organizationName: job.organization.name,
+          flaggedAt: n.createdAt,
+        };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null);
+
+    const staleInProgressInterviews = staleInProgressInterviewsRaw.map((i) => ({
+      id: i.id,
+      mode: i.mode,
+      candidateId: i.candidateProfile.id,
+      candidateName: i.candidateProfile.fullName,
+      jobTitle: i.job.title,
+      organizationId: i.job.organization.id,
+      organizationName: i.job.organization.name,
+      startedAt: i.createdAt,
+    }));
+
     const weekStarts = Array.from({ length: WEEKS_OF_TRENDS }, (_, i) =>
       new Date(eightWeeksAgo.getTime() + i * 7 * DAY_MS).toISOString(),
     );
@@ -198,6 +285,8 @@ export async function GET() {
           signedUpAt: c.createdAt,
         })),
         stalePendingAccommodations,
+        guaranteedInterviewSkips,
+        staleInProgressInterviews,
       },
       trends,
       stats: {
@@ -209,6 +298,20 @@ export async function GET() {
         totalHires,
         accommodationGapsFlagged,
         guaranteedInterviewSkipsFlagged,
+      },
+      aiInterviews: {
+        jobsRequiringAiInterview,
+        totalStarted: totalInterviewsStarted,
+        completed: completedInterviews,
+        inProgress: inProgressInterviews,
+        completionRate:
+          totalInterviewsStarted > 0 ? Math.round((completedInterviews / totalInterviewsStarted) * 100) : null,
+        averageScore:
+          completedInterviewScoreAgg._avg.overallScore !== null
+            ? Math.round(completedInterviewScoreAgg._avg.overallScore)
+            : null,
+        video: videoInterviews,
+        text: totalInterviewsStarted - videoInterviews,
       },
       applicationsByStatus,
       recentHires: recentHires.map((a) => ({

@@ -36,14 +36,27 @@ export default function EmployerHomePage() {
         .slice(0, 5)
     : [];
 
+  // Grouped by job rather than one flat list across the whole org — each
+  // job's full match list already lives on its own page (the Matches tab),
+  // so this only needs to preview the top few per job, sorted by whichever
+  // job has the most matches first.
+  const MATCHES_PREVIEW_PER_JOB = 3;
+  const jobGroups = matches
+    ? [...matches.reduce((acc, m) => {
+        const existing = acc.get(m.job.id);
+        if (existing) existing.push(m);
+        else acc.set(m.job.id, [m]);
+        return acc;
+      }, new Map<string, MatchRow[]>())].sort((a, b) => b[1].length - a[1].length)
+    : [];
+
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Matched candidates</h1>
           <p className="text-sm text-muted-foreground">
-            Every candidate matched to any of your open roles, across your whole organization — whether or
-            not they&apos;ve applied yet.
+            Grouped by job posting — click a candidate&apos;s name to see their full profile and resume.
           </p>
         </div>
         <Link href="/employer/jobs" className="whitespace-nowrap text-sm font-medium text-primary">
@@ -79,7 +92,7 @@ export default function EmployerHomePage() {
       ) : null}
 
       <div className="mb-4 border-t border-border pt-8">
-        <h2 className="text-lg font-semibold text-foreground">All matched candidates</h2>
+        <h2 className="text-lg font-semibold text-foreground">Matched candidates, by job</h2>
       </div>
 
       {matches === null ? (
@@ -93,25 +106,38 @@ export default function EmployerHomePage() {
           to start matching against candidate profiles.
         </p>
       ) : (
-        <ul className="flex flex-col gap-4">
-          {matches.map((m) => (
-            <li key={m.id}>
-              <CandidateCard
-                candidate={m.candidate}
-                score={m.score}
-                actions={
-                  <Link
-                    href={`/employer/jobs/${m.job.id}`}
-                    className="whitespace-nowrap text-xs font-medium text-primary"
-                  >
-                    {m.job.title} →
-                  </Link>
-                }
-              />
-              {m.hasApplied && <p className="mt-1 text-xs text-success">Already applied</p>}
-            </li>
+        <div className="flex flex-col gap-8">
+          {jobGroups.map(([jobId, jobMatches]) => (
+            <div key={jobId}>
+              <div className="mb-2 flex items-center justify-between gap-4">
+                <h3 className="font-medium text-foreground">{jobMatches[0].job.title}</h3>
+                <Link href={`/employer/jobs/${jobId}`} className="whitespace-nowrap text-sm font-medium text-primary">
+                  {jobMatches.length} {jobMatches.length === 1 ? "match" : "matches"} →
+                </Link>
+              </div>
+              <ul className="flex flex-col gap-3">
+                {jobMatches.slice(0, MATCHES_PREVIEW_PER_JOB).map((m) => (
+                  <li key={m.id}>
+                    <CandidateCard
+                      candidate={m.candidate}
+                      score={m.score}
+                      profileHref={`/employer/candidates/${m.candidate.id}`}
+                    />
+                    {m.hasApplied && <p className="mt-1 text-xs text-success">Already applied</p>}
+                  </li>
+                ))}
+              </ul>
+              {jobMatches.length > MATCHES_PREVIEW_PER_JOB && (
+                <Link
+                  href={`/employer/jobs/${jobId}`}
+                  className="mt-2 inline-block text-sm font-medium text-primary"
+                >
+                  + {jobMatches.length - MATCHES_PREVIEW_PER_JOB} more for this role →
+                </Link>
+              )}
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </main>
   );

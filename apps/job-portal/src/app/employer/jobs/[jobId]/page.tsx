@@ -185,6 +185,7 @@ export default function EmployerJobDetailPage() {
                     <CandidateCard
                       candidate={app.candidate}
                       score={app.matchScore}
+                      profileHref={`/employer/candidates/${app.candidate.id}`}
                       actions={
                         <div className="flex flex-col items-end gap-2">
                           <ApplicationStatusBadge status={app.status} />
@@ -322,7 +323,11 @@ export default function EmployerJobDetailPage() {
           ) : (
             matches.map((m) => (
               <div key={m.id}>
-                <CandidateCard candidate={m.candidate} score={m.score} />
+                <CandidateCard
+                  candidate={m.candidate}
+                  score={m.score}
+                  profileHref={`/employer/candidates/${m.candidate.id}`}
+                />
                 {m.hasApplied && <p className="text-xs text-success">Already applied</p>}
               </div>
             ))

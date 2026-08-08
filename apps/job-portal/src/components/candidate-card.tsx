@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { matchScoreColor } from "@/lib/match-score-color";
 import { ACCOMMODATION_TYPE_OPTIONS, BODY_PART_OPTIONS, DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
 
@@ -43,10 +44,15 @@ export function CandidateCard({
   candidate,
   score,
   actions,
+  profileHref,
 }: {
   candidate: CandidateSummary;
   score: number | null;
   actions?: React.ReactNode;
+  // When provided, the candidate's name links to their full profile (e.g.
+  // /employer/candidates/[id]) — omitted on pages that already are that
+  // profile (like the admin candidate detail page).
+  profileHref?: string;
 }) {
   const color = score !== null ? matchScoreColor(score) : null;
   return (
@@ -56,7 +62,13 @@ export function CandidateCard({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <p className="font-medium text-foreground">{candidate.fullName}</p>
+          {profileHref ? (
+            <Link href={profileHref} className="font-medium text-primary underline">
+              {candidate.fullName}
+            </Link>
+          ) : (
+            <p className="font-medium text-foreground">{candidate.fullName}</p>
+          )}
           {candidate.headline && <p className="text-sm text-muted-foreground">{candidate.headline}</p>}
           {candidate.skills.length > 0 && (
             <p className="mt-2 text-sm text-foreground">
