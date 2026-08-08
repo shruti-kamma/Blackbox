@@ -28,6 +28,7 @@ interface Overview {
     totalApplications: number;
     totalHires: number;
     accommodationGapsFlagged: number;
+    guaranteedInterviewSkipsFlagged: number;
   };
   applicationsByStatus: { status: ApplicationStatus; count: number }[];
   recentHires: { id: string; candidateName: string; jobTitle: string; organizationName: string; offeredAt: string }[];
@@ -50,6 +51,7 @@ const STAT_LABELS: Record<keyof Overview["stats"], string> = {
   totalApplications: "Applications",
   totalHires: "Hires",
   accommodationGapsFlagged: "Accommodation gaps flagged",
+  guaranteedInterviewSkipsFlagged: "Guaranteed interviews skipped",
 };
 
 const TREND_SERIES: { key: keyof Overview["trends"][number]; label: string; color: string }[] = [

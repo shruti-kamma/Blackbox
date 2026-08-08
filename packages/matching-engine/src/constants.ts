@@ -87,6 +87,48 @@ export function resolveWeightsForCandidate(categories: DisabilityCategory[]): Ma
   return averaged;
 }
 
+// Max combined weight (out of 1.0) shifted onto accommodationFit +
+// assistiveTechFit at 100% severity — split between the two proportionally
+// to their existing ratio in the resolved vector, taken proportionally from
+// every other criterion so the vector still sums to 1.0.
+const MAX_SEVERITY_WEIGHT_SHIFT = 0.08;
+
+// Severity (CandidateDisabilityDetail.severityPercentage, 0-100) is
+// per-category, while accommodationNeeds is a flat list — there's no clean
+// way to apply severity to an individual accommodation's score. Instead it
+// scales how much accommodation/assistive-tech fit counts toward the
+// overall match at all: the more significant a candidate's disability, the
+// more whether the job actually accommodates it should drive their score,
+// relative to criteria like education or location. Bounded and linear, not
+// a black box — severity 0 leaves weights untouched, severity 100 shifts
+// at most MAX_SEVERITY_WEIGHT_SHIFT combined onto the two criteria.
+export function applySeverityAdjustment(
+  weights: MatchWeights,
+  severityPercentage: number | null | undefined,
+): MatchWeights {
+  if (!severityPercentage || severityPercentage <= 0) return weights;
+  const factor = Math.min(severityPercentage, 100) / 100;
+  const shift = MAX_SEVERITY_WEIGHT_SHIFT * factor;
+
+  const accommodationShare =
+    weights.accommodationFit / (weights.accommodationFit + weights.assistiveTechFit || 1);
+  const accommodationBoost = shift * accommodationShare;
+  const assistiveTechBoost = shift - accommodationBoost;
+
+  const otherKeys = (Object.keys(weights) as (keyof MatchWeights)[]).filter(
+    (key) => key !== "accommodationFit" && key !== "assistiveTechFit",
+  );
+  const otherSum = otherKeys.reduce((sum, key) => sum + weights[key], 0);
+
+  const adjusted: MatchWeights = { ...weights };
+  adjusted.accommodationFit += accommodationBoost;
+  adjusted.assistiveTechFit += assistiveTechBoost;
+  for (const key of otherKeys) {
+    adjusted[key] -= shift * (weights[key] / otherSum);
+  }
+  return adjusted;
+}
+
 // A job only becomes visible to a candidate (and vice versa, in the
 // hiring-manager "matched candidates" view) once its score clears this bar.
 export const MATCH_THRESHOLD = 60;

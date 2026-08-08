@@ -23,8 +23,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ orgI
             title: true,
             isOpen: true,
             createdAt: true,
+            offersGuaranteedInterview: true,
             applications: { select: { id: true, status: true } },
           },
+        },
+        employerUsers: {
+          select: { id: true, email: true, hrTrainedOnDisabilityHiring: true, hrTrainingNotes: true },
         },
       },
     });
@@ -38,8 +42,25 @@ export async function GET(request: Request, { params }: { params: Promise<{ orgI
         status: true,
         matchScore: true,
         createdAt: true,
+        metEssentialCriteria: true,
         candidate: { select: { id: true, fullName: true } },
         job: { select: { title: true } },
+      },
+    });
+
+    // Unlike the public /api/employers/[orgId]/reviews (anonymized), admin
+    // sees who wrote each review — needed for the delete safety valve to be
+    // actionable if something abusive shows up.
+    const reviews = await prisma.employerReview.findMany({
+      where: { organizationId: orgId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        honoredAccommodations: true,
+        accessibleProcess: true,
+        comment: true,
+        createdAt: true,
+        candidateProfile: { select: { id: true, fullName: true } },
       },
     });
 
@@ -51,11 +72,18 @@ export async function GET(request: Request, { params }: { params: Promise<{ orgI
         website: organization.website,
         createdAt: organization.createdAt,
       },
+      hrTraining: organization.employerUsers.map((u) => ({
+        userId: u.id,
+        email: u.email,
+        trained: u.hrTrainedOnDisabilityHiring,
+        notes: u.hrTrainingNotes,
+      })),
       jobs: organization.jobs.map((j) => ({
         id: j.id,
         title: j.title,
         isOpen: j.isOpen,
         createdAt: j.createdAt,
+        offersGuaranteedInterview: j.offersGuaranteedInterview,
         applicationsCount: j.applications.length,
         hiresCount: j.applications.filter((a) => a.status === "OFFERED").length,
       })),
@@ -64,9 +92,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ orgI
         status: a.status,
         matchScore: a.matchScore,
         createdAt: a.createdAt,
+        metEssentialCriteria: a.metEssentialCriteria,
         candidateId: a.candidate.id,
         candidateName: a.candidate.fullName,
         jobTitle: a.job.title,
+      })),
+      reviews: reviews.map((r) => ({
+        id: r.id,
+        honoredAccommodations: r.honoredAccommodations,
+        accessibleProcess: r.accessibleProcess,
+        comment: r.comment,
+        createdAt: r.createdAt,
+        candidateId: r.candidateProfile.id,
+        candidateName: r.candidateProfile.fullName,
       })),
     });
   } catch (error) {

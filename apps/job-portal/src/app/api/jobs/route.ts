@@ -46,12 +46,16 @@ export async function POST(request: Request) {
           requiredEducationField: input.requiredEducationField || null,
           requiredExperienceLevel: input.requiredExperienceLevel ?? null,
           requiresAiInterview: input.requiresAiInterview,
+          offersGuaranteedInterview: input.offersGuaranteedInterview,
         },
       });
 
+      const essentialSet = new Set(input.essentialSkills.map((s) => s.toLowerCase()));
       for (const name of input.requiredSkills) {
         const skill = await tx.skill.upsert({ where: { name }, update: {}, create: { name } });
-        await tx.jobSkill.create({ data: { jobId: created.id, skillId: skill.id } });
+        await tx.jobSkill.create({
+          data: { jobId: created.id, skillId: skill.id, essential: essentialSet.has(name.toLowerCase()) },
+        });
       }
 
       for (const name of input.preferredAssistiveTechnologies) {

@@ -29,6 +29,7 @@ export default function NewJobPage() {
   const [accommodationTypes, setAccommodationTypes] = useState<string[]>([]);
   const [remote, setRemote] = useState(false);
   const [requiresAiInterview, setRequiresAiInterview] = useState(false);
+  const [offersGuaranteedInterview, setOffersGuaranteedInterview] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [insights, setInsights] = useState<AssistiveTechInsight[] | null>(null);
@@ -78,6 +79,8 @@ export default function NewJobPage() {
         requiredSkills: splitList(String(form.get("requiredSkills") ?? "")),
         preferredAssistiveTechnologies: splitList(String(form.get("preferredAssistiveTechnologies") ?? "")),
         requiresAiInterview,
+        offersGuaranteedInterview,
+        essentialSkills: splitList(String(form.get("essentialSkills") ?? "")),
       };
       const { job } = await apiRequest<{ job: { id: string } }>("/api/jobs", {
         method: "POST",
@@ -231,6 +234,39 @@ export default function NewJobPage() {
             placeholder="JavaScript, React, SQL"
             className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
           />
+        </div>
+
+        <div className="flex flex-col gap-2 rounded-md border border-border p-3">
+          <label className="flex items-center gap-2 text-sm text-foreground">
+            <input
+              type="checkbox"
+              checked={offersGuaranteedInterview}
+              onChange={(e) => setOffersGuaranteedInterview(e.target.checked)}
+              className="size-5"
+            />
+            Guarantee an interview to candidates who meet my must-have skills
+          </label>
+          <p className="text-xs text-muted-foreground">
+            Shown to candidates as a badge on this job. Not tied to overall match score — just the specific
+            skills you mark essential below, so the promise is something you defined yourself.
+          </p>
+          {offersGuaranteedInterview && (
+            <div className="flex flex-col gap-1.5 pt-1">
+              <label htmlFor="essentialSkills" className="text-sm font-medium text-foreground">
+                Which required skills are must-haves? (comma-separated, subset of the list above)
+              </label>
+              <input
+                id="essentialSkills"
+                name="essentialSkills"
+                placeholder="JavaScript, React"
+                className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+              />
+              <p className="text-xs text-muted-foreground">
+                Leave blank if you don&apos;t want to require any specific skill — any matched candidate will
+                then qualify for the guarantee.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">

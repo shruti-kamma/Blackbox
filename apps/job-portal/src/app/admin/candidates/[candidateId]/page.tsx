@@ -9,6 +9,8 @@ import type { ApplicationStatus } from "@/lib/application-status";
 
 interface CandidateDetail {
   candidate: CandidateSummary;
+  profileCompletionPercent: number;
+  nextBestAction: string | null;
   matches: { id: string; score: number; jobId: string; jobTitle: string; organizationName: string }[];
   applications: {
     id: string;
@@ -43,6 +45,15 @@ export default function AdminCandidateDetailPage() {
 
       <div className="mb-10">
         <CandidateCard candidate={data.candidate} score={null} />
+        <p className="mt-2 text-sm text-muted-foreground">
+          Profile {data.profileCompletionPercent}% complete
+          {data.nextBestAction && (
+            <>
+              {" — next: "}
+              <span className="font-medium text-foreground">{data.nextBestAction}</span>
+            </>
+          )}
+        </p>
       </div>
 
       <div className="mb-10">

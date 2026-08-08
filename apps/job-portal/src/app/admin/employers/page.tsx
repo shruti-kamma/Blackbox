@@ -13,6 +13,10 @@ interface EmployerRow {
   applicationsCount: number;
   hiresCount: number;
   lastActivityAt: string;
+  guaranteedInterviewJobsCount: number;
+  hrTeamSize: number;
+  hrRespondedCount: number;
+  hrTrainedCount: number;
 }
 
 type SortKey = "name" | "jobsCount" | "applicationsCount" | "hiresCount" | "lastActivityAt";
@@ -69,11 +73,13 @@ export default function AdminEmployersPage() {
                     Hires
                   </button>
                 </th>
-                <th className="py-2">
+                <th className="py-2 pr-4">
                   <button onClick={() => setSortKey("lastActivityAt")} className="font-medium hover:text-foreground">
                     Last activity
                   </button>
                 </th>
+                <th className="py-2 pr-4">Guaranteed-interview jobs</th>
+                <th className="py-2">HR trained</th>
               </tr>
             </thead>
             <tbody>
@@ -90,8 +96,14 @@ export default function AdminEmployersPage() {
                   </td>
                   <td className="py-2 pr-4 tabular-nums">{e.applicationsCount}</td>
                   <td className="py-2 pr-4 tabular-nums">{e.hiresCount}</td>
-                  <td className="py-2 text-xs text-muted-foreground">
+                  <td className="py-2 pr-4 text-xs text-muted-foreground">
                     {new Date(e.lastActivityAt).toLocaleDateString()}
+                  </td>
+                  <td className="py-2 pr-4 tabular-nums">{e.guaranteedInterviewJobsCount}</td>
+                  <td className="py-2 text-xs text-muted-foreground">
+                    {e.hrRespondedCount === 0
+                      ? "Not answered"
+                      : `${e.hrTrainedCount}/${e.hrRespondedCount} trained`}
                   </td>
                 </tr>
               ))}

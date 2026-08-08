@@ -13,6 +13,10 @@ export const signupSchema = z.discriminatedUnion("role", [
     password: z.string().min(8),
     organizationName: z.string().min(1),
     organizationType: z.enum(["COMPANY", "UNIVERSITY"]).default("COMPANY"),
+    // Optional — never required to sign up. Internal-only for now, see
+    // User.hrTrainedOnDisabilityHiring.
+    hrTrainedOnDisabilityHiring: z.boolean().optional(),
+    hrTrainingNotes: z.string().trim().max(1000).optional(),
   }),
 ]);
 

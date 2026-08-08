@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireRole } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
+import { computeProfileCompletion } from "@/lib/profile-completion";
 
 export async function GET(request: Request, { params }: { params: Promise<{ candidateId: string }> }) {
   try {
@@ -19,6 +20,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ cand
       },
     });
     if (!candidate) return NextResponse.json({ error: "Candidate not found" }, { status: 404 });
+
+    const { percent, nextBestAction } = computeProfileCompletion({
+      headline: candidate.headline,
+      disabilityCategories: candidate.disabilityCategories,
+      experienceLevel: candidate.experienceLevel,
+      preferredLocations: candidate.preferredLocations,
+      openToRemote: candidate.openToRemote,
+      education: candidate.education,
+      workExperience: candidate.workExperience,
+      skills: candidate.skills,
+      accommodationNeeds: candidate.accommodationNeeds,
+      confirmedNoAccommodationNeeds: candidate.confirmedNoAccommodationNeeds,
+    });
 
     const [matches, applications] = await Promise.all([
       prisma.match.findMany({
@@ -45,6 +59,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ cand
 
     return NextResponse.json({
       candidate,
+      profileCompletionPercent: percent,
+      nextBestAction,
       matches: matches.map((m) => ({
         id: m.id,
         score: m.score,

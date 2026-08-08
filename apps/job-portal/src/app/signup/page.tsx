@@ -9,6 +9,7 @@ import { apiRequest, ApiClientError } from "@/lib/api-client";
 export default function SignupPage() {
   const router = useRouter();
   const [role, setRole] = useState<"CANDIDATE" | "EMPLOYER">("CANDIDATE");
+  const [hrTrained, setHrTrained] = useState<"" | "YES" | "NO">("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -31,6 +32,8 @@ export default function SignupPage() {
             password: form.get("password"),
             organizationName: form.get("organizationName"),
             organizationType: form.get("organizationType"),
+            hrTrainedOnDisabilityHiring: hrTrained === "" ? undefined : hrTrained === "YES",
+            hrTrainingNotes: form.get("hrTrainingNotes") || undefined,
           };
     try {
       await apiRequest("/api/auth/signup", { method: "POST", body: JSON.stringify(payload) });
@@ -140,6 +143,49 @@ export default function SignupPage() {
                 <option value="UNIVERSITY">University</option>
               </select>
             </div>
+
+            <fieldset className="flex flex-col gap-1.5">
+              <legend className="text-sm font-medium text-foreground">
+                Have you (or your HR team) received training on hiring people with disabilities?
+              </legend>
+              <p className="text-xs text-muted-foreground">
+                Optional — not required to sign up. Kept internal to help us understand who&apos;s on the
+                platform, not shown to candidates.
+              </p>
+              <select
+                aria-label="Have you received training on hiring people with disabilities?"
+                value={hrTrained}
+                onChange={(e) => setHrTrained(e.target.value as "" | "YES" | "NO")}
+                className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+              >
+                <option value="">Prefer not to say</option>
+                <option value="YES">Yes</option>
+                <option value="NO">No</option>
+              </select>
+              {hrTrained === "NO" && (
+                <p className="rounded-md bg-muted px-3 py-2 text-xs text-foreground">
+                  No problem — the{" "}
+                  <a
+                    href="https://askjan.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-primary underline"
+                  >
+                    Job Accommodation Network (askjan.org)
+                  </a>{" "}
+                  has free, practical guidance on interviewing and accommodating disabled candidates if you&apos;d
+                  like a starting point.
+                </p>
+              )}
+              {hrTrained !== "" && (
+                <textarea
+                  name="hrTrainingNotes"
+                  rows={2}
+                  placeholder="Anything you'd like to add? (optional)"
+                  className="rounded-md border border-border bg-background p-2 text-sm text-foreground"
+                />
+              )}
+            </fieldset>
           </>
         )}
 

@@ -19,9 +19,11 @@ export async function GET() {
           select: {
             isOpen: true,
             createdAt: true,
+            offersGuaranteedInterview: true,
             applications: { select: { status: true, createdAt: true } },
           },
         },
+        employerUsers: { select: { hrTrainedOnDisabilityHiring: true } },
       },
       orderBy: { name: "asc" },
     });
@@ -38,6 +40,10 @@ export async function GET() {
         ...applications.map((a) => a.createdAt),
       ];
       const lastActivityAt = new Date(Math.max(...activityDates.map((d) => d.getTime())));
+      const guaranteedInterviewJobsCount = org.jobs.filter((j) => j.offersGuaranteedInterview).length;
+      const hrTeamSize = org.employerUsers.length;
+      const hrRespondedCount = org.employerUsers.filter((u) => u.hrTrainedOnDisabilityHiring !== null).length;
+      const hrTrainedCount = org.employerUsers.filter((u) => u.hrTrainedOnDisabilityHiring === true).length;
 
       return {
         id: org.id,
@@ -48,6 +54,10 @@ export async function GET() {
         applicationsCount,
         hiresCount,
         lastActivityAt,
+        guaranteedInterviewJobsCount,
+        hrTeamSize,
+        hrRespondedCount,
+        hrTrainedCount,
       };
     });
 

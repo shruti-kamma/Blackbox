@@ -30,6 +30,7 @@ interface ApplicationRow {
   needsAccommodationApproval: boolean;
   missingAccommodations: string[];
   rejectionReason: string | null;
+  metEssentialCriteria: boolean;
   interview: {
     id: string;
     mode: "TEXT" | "VIDEO";
@@ -212,6 +213,11 @@ export default function EmployerJobDetailPage() {
                         </div>
                       }
                     />
+                    {app.metEssentialCriteria && (
+                      <p className="mt-1 text-sm font-medium text-success">
+                        ✓ Meets your stated must-haves — guaranteed interview applies
+                      </p>
+                    )}
                     {app.coverNote && <p className="mt-1 text-sm text-foreground">“{app.coverNote}”</p>}
                     {app.interview && (
                       <div className="mt-2 rounded-md border border-border p-3">

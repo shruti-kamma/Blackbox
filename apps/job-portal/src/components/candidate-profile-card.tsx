@@ -2,12 +2,22 @@ import Link from "next/link";
 import { Button } from "@blackbox/ui";
 import { computeProfileCompletion, type ProfileCompletionInput } from "@/lib/profile-completion";
 import { matchScoreColor } from "@/lib/match-score-color";
+import { ACCOMMODATION_TYPE_OPTIONS, DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
+
+const ACCOMMODATION_LABELS = Object.fromEntries(
+  ACCOMMODATION_TYPE_OPTIONS.map((opt) => [opt.value, opt.label]),
+) as Record<string, string>;
+
+const DISABILITY_LABELS = Object.fromEntries(
+  DISABILITY_CATEGORY_OPTIONS.map((opt) => [opt.value, opt.label]),
+) as Record<string, string>;
 
 interface CandidateProfileCardProps {
   profile: ProfileCompletionInput & {
     fullName: string;
     updatedAt: string;
     education: { level: string; fieldOfStudy: string | null; institution: string }[];
+    assistiveTechnologies: { assistiveTechnology: { name: string } }[];
   };
   matchCount: number;
   employerActionCount: number;
@@ -65,7 +75,7 @@ function CompletionRing({ percent, children }: { percent: number; children: Reac
 }
 
 export function CandidateProfileCard({ profile, matchCount, employerActionCount }: CandidateProfileCardProps) {
-  const { percent } = computeProfileCompletion(profile);
+  const { percent, nextBestAction } = computeProfileCompletion(profile);
   const topEducation = profile.education[0];
 
   return (
@@ -74,6 +84,11 @@ export function CandidateProfileCard({ profile, matchCount, employerActionCount 
       <p className="text-sm font-semibold" style={{ color: matchScoreColor(percent).text }}>
         {percent}%
       </p>
+      {nextBestAction && (
+        <p className="text-xs text-muted-foreground">
+          Next: <span className="font-medium text-foreground">{nextBestAction}</span>
+        </p>
+      )}
 
       <div>
         <p className="font-medium text-foreground">{profile.fullName}</p>
@@ -102,6 +117,41 @@ export function CandidateProfileCard({ profile, matchCount, employerActionCount 
             <p className="text-xl font-semibold tabular-nums text-foreground">{employerActionCount}</p>
             <p className="text-xs text-muted-foreground">Employer actions</p>
           </div>
+        </div>
+      </div>
+
+      <div className="w-full rounded-md bg-muted p-4 text-left">
+        <p className="mb-3 text-sm font-medium text-foreground">
+          Accessibility profile <span className="font-normal text-muted-foreground">— what employers see</span>
+        </p>
+        <div className="flex flex-col gap-2 text-sm">
+          <p className="text-foreground">
+            Disability:{" "}
+            {profile.disabilityCategories.length > 0
+              ? profile.disabilityCategories.map((c) => DISABILITY_LABELS[c] ?? c).join(", ")
+              : "Not specified"}
+          </p>
+          <p className="text-foreground">
+            Assistive technology:{" "}
+            {profile.assistiveTechnologies.length > 0
+              ? profile.assistiveTechnologies.map((a) => a.assistiveTechnology.name).join(", ")
+              : "None listed"}
+          </p>
+          {profile.accommodationNeeds.length > 0 ? (
+            <p className="text-foreground">
+              Accommodations needed: {profile.accommodationNeeds.map((v) => ACCOMMODATION_LABELS[v] ?? v).join(", ")}
+            </p>
+          ) : profile.confirmedNoAccommodationNeeds ? (
+            <p className="text-muted-foreground">You&apos;ve confirmed you don&apos;t need accommodations.</p>
+          ) : (
+            <p className="text-danger">
+              Accommodation needs not yet specified —{" "}
+              <Link href="/candidate/profile" className="font-medium underline">
+                add them
+              </Link>{" "}
+              to improve your matches.
+            </p>
+          )}
         </div>
       </div>
     </div>

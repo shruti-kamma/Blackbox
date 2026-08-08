@@ -19,6 +19,8 @@ export async function GET() {
         experienceLevel: true,
         preferredLocations: true,
         openToRemote: true,
+        accommodationNeeds: true,
+        confirmedNoAccommodationNeeds: true,
         createdAt: true,
         _count: { select: { education: true, workExperience: true, skills: true, matches: true, applications: true } },
         applications: { select: { status: true } },
@@ -36,6 +38,8 @@ export async function GET() {
         education: Array(c._count.education).fill(null),
         workExperience: Array(c._count.workExperience).fill(null),
         skills: Array(c._count.skills).fill(null),
+        accommodationNeeds: c.accommodationNeeds,
+        confirmedNoAccommodationNeeds: c.confirmedNoAccommodationNeeds,
       });
 
       return {

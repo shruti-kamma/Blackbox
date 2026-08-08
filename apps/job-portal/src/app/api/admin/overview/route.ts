@@ -45,6 +45,7 @@ export async function GET() {
       totalApplications,
       totalHires,
       accommodationGapsFlagged,
+      guaranteedInterviewSkipsFlagged,
       applicationsByStatusRaw,
       recentHires,
       recentApplications,
@@ -62,6 +63,7 @@ export async function GET() {
       prisma.application.count(),
       prisma.application.count({ where: { status: "OFFERED" } }),
       prisma.notification.count({ where: { type: "ACCOMMODATION_GAP" } }),
+      prisma.notification.count({ where: { type: "GUARANTEED_INTERVIEW_SKIPPED" } }),
       prisma.application.groupBy({ by: ["status"], _count: true }),
       prisma.application.findMany({
         where: { status: "OFFERED" },
@@ -206,6 +208,7 @@ export async function GET() {
         totalApplications,
         totalHires,
         accommodationGapsFlagged,
+        guaranteedInterviewSkipsFlagged,
       },
       applicationsByStatus,
       recentHires: recentHires.map((a) => ({

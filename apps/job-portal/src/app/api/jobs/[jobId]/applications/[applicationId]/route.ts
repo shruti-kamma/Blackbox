@@ -87,6 +87,30 @@ export async function PATCH(
       }
     }
 
+    // The guaranteed-interview badge's accountability signal: this is the
+    // one moment the "before" status is still known, so it's the only
+    // reliable point to detect a skip — Application doesn't keep status
+    // history, so this can't be reconstructed after the fact. Informational
+    // only, same as ACCOMMODATION_GAP — never blocks the transition, since a
+    // single instance can have a legitimate reason.
+    const isSkippingGuaranteedInterview =
+      application.metEssentialCriteria &&
+      (application.status === "SUBMITTED" || application.status === "UNDER_REVIEW") &&
+      status === "REJECTED";
+    if (isSkippingGuaranteedInterview) {
+      await prisma.notification.create({
+        data: {
+          userId: user.id,
+          type: "GUARANTEED_INTERVIEW_SKIPPED",
+          payload: {
+            applicationId,
+            jobId,
+            candidateName: application.candidate.fullName,
+          },
+        },
+      });
+    }
+
     const updated = await prisma.application.update({
       where: { id: applicationId },
       data: { status: status as (typeof EMPLOYER_ASSIGNABLE_STATUSES)[number] },

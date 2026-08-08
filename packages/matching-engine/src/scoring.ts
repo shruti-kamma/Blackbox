@@ -1,4 +1,11 @@
-import { EDUCATION_RANK, EXPERIENCE_RANK, MATCH_THRESHOLD, resolveWeightsForCandidate } from "./constants";
+import { accommodationCredit } from "./accommodation-equivalence";
+import {
+  EDUCATION_RANK,
+  EXPERIENCE_RANK,
+  MATCH_THRESHOLD,
+  applySeverityAdjustment,
+  resolveWeightsForCandidate,
+} from "./constants";
 import { exactMatchSkillsSimilarity, type SkillsSimilarity } from "./skills-similarity";
 import type {
   CandidateForMatching,
@@ -46,9 +53,10 @@ function scoreDisability(
 
 // Coverage of the *candidate's* needs by the *job's* offerings — the
 // inverse direction of scoreSkills (which covers the job's requirements by
-// the candidate). AccommodationType is a closed enum, so exact-set overlap
-// is precise here; no pluggable-similarity extension point needed the way
-// skills has one for free-text names.
+// the candidate). AccommodationType is a closed enum, so most matching is
+// exact, but a small equivalence table (accommodation-equivalence.ts) gives
+// partial credit where one offering genuinely reduces a different need
+// (e.g. remote work reduces the need for accessible transportation).
 function scoreAccommodationFit(
   candidate: CandidateForMatching,
   job: JobForMatching,
@@ -57,11 +65,23 @@ function scoreAccommodationFit(
   if (candidate.accommodationNeeds.length === 0) {
     return criterion(1, weight, "Candidate hasn't specified accommodation needs");
   }
-  const offered = new Set(job.accommodationTypes);
-  const covered = candidate.accommodationNeeds.filter((need) => offered.has(need));
-  const score = covered.length / candidate.accommodationNeeds.length;
+  let creditSum = 0;
+  let exactCount = 0;
+  let partialCount = 0;
+  for (const need of candidate.accommodationNeeds) {
+    const credit = accommodationCredit(need, job.accommodationTypes);
+    creditSum += credit;
+    if (credit >= 1) exactCount++;
+    else if (credit > 0) partialCount++;
+  }
+  const score = creditSum / candidate.accommodationNeeds.length;
   const pct = Math.round(score * 100);
-  return criterion(score, weight, `Job offers ${pct}% of the candidate's specified accommodations`);
+  const detail = partialCount > 0 ? ` (${exactCount} exact, ${partialCount} partial)` : "";
+  return criterion(
+    score,
+    weight,
+    `Job offers ${pct}% of the candidate's specified accommodations${detail}`,
+  );
 }
 
 // Same direction as scoreSkills (coverage of the *job's* preferred list by
@@ -189,7 +209,12 @@ export function scoreCandidateAgainstJob(
   job: JobForMatching,
   options: ScoreOptions = {},
 ): MatchResult {
-  const weights = options.weights ?? resolveWeightsForCandidate(candidate.disabilityCategories);
+  const weights =
+    options.weights ??
+    applySeverityAdjustment(
+      resolveWeightsForCandidate(candidate.disabilityCategories),
+      candidate.maxDisabilitySeverity,
+    );
   const threshold = options.threshold ?? MATCH_THRESHOLD;
   const similarity = options.skillsSimilarity ?? exactMatchSkillsSimilarity;
 

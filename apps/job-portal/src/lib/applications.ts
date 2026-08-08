@@ -7,6 +7,29 @@ export class NotMatchedError extends Error {
   }
 }
 
+// Does this candidate have every skill the employer marked essential for a
+// job offering the guaranteed-interview commitment? Vacuously true if the
+// employer opted in but named no essential skills — no stated bar means the
+// guarantee already covers anyone matched, see JobSkill.essential.
+async function computeMetEssentialCriteria(jobId: string, candidateId: string): Promise<boolean> {
+  const job = await prisma.job.findUnique({
+    where: { id: jobId },
+    select: {
+      offersGuaranteedInterview: true,
+      requiredSkills: { where: { essential: true }, select: { skill: { select: { name: true } } } },
+    },
+  });
+  if (!job?.offersGuaranteedInterview) return false;
+  if (job.requiredSkills.length === 0) return true;
+
+  const candidateSkills = await prisma.candidateSkill.findMany({
+    where: { candidateProfileId: candidateId },
+    select: { skill: { select: { name: true } } },
+  });
+  const candidateSkillNames = new Set(candidateSkills.map((s) => s.skill.name.toLowerCase()));
+  return job.requiredSkills.every((s) => candidateSkillNames.has(s.skill.name.toLowerCase()));
+}
+
 // Shared by the plain apply route and the AI-interview submit route — both
 // ultimately create the same kind of Application, just gated differently
 // beforehand (a Match must exist either way).
@@ -23,6 +46,8 @@ export async function createApplicationFromMatch(input: {
     throw new NotMatchedError();
   }
 
+  const metEssentialCriteria = await computeMetEssentialCriteria(input.jobId, input.candidateId);
+
   return prisma.application.upsert({
     where: { jobId_candidateId: { jobId: input.jobId, candidateId: input.candidateId } },
     create: {
@@ -31,6 +56,7 @@ export async function createApplicationFromMatch(input: {
       coverNote: input.coverNote || null,
       matchScore: match.score,
       interviewId: input.interviewId ?? null,
+      metEssentialCriteria,
     },
     update: {},
   });

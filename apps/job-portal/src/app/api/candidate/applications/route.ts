@@ -12,7 +12,7 @@ export async function GET() {
     const applications = await prisma.application.findMany({
       where: { candidateId: user.candidateProfile!.id },
       orderBy: { updatedAt: "desc" },
-      include: { job: { include: { organization: { select: { name: true } } } } },
+      include: { job: { include: { organization: { select: { id: true, name: true } } } } },
     });
     return NextResponse.json({ applications });
   } catch (error) {

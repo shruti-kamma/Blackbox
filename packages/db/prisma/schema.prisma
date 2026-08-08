@@ -77,6 +77,14 @@ enum NotificationType {
   // candidate's accommodationNeeds aren't fully covered by the job's
   // accommodationTypes — informational only, never blocks the transition.
   ACCOMMODATION_GAP
+  // Fired when an employer rejects an application that had
+  // Application.metEssentialCriteria set, without it ever reaching
+  // INTERVIEWING — informational only, never blocks the transition. The
+  // accountability mechanism for the guaranteed-interview badge (see
+  // Job.offersGuaranteedInterview): deliberately a visible record rather
+  // than an automatic penalty, since a single instance could have a
+  // legitimate reason (role closed, candidate unresponsive, etc.).
+  GUARANTEED_INTERVIEW_SKIPPED
 }
 
 // Controlled vocabulary for accommodations, mirroring DisabilityCategory's
@@ -143,6 +151,15 @@ model User {
   employerOrgId String?
   employerOrg   Organization? @relation(fields: [employerOrgId], references: [id])
 
+  // Asked once at EMPLOYER signup: "have you received training on hiring
+  // people with disabilities?" Null = skipped (optional, not required to
+  // sign up) or not applicable to this role. Internal-only for now — not
+  // shown to candidates, since it's a self-reported claim with no
+  // verification behind it yet; see the guaranteed-interview badge's
+  // accountability design for the same reasoning applied there.
+  hrTrainedOnDisabilityHiring Boolean?
+  hrTrainingNotes             String?
+
   @@index([employerOrgId])
 }
 
@@ -186,6 +203,7 @@ model CandidateProfile {
   applications          Application[]
   matches               Match[]
   interviews            Interview[]
+  employerReviews       EmployerReview[]
 
   // Populated by the matching agent from résumé/profile text. Query via raw SQL
   // (Prisma has no native vector query API) — see services/matching-agent.
@@ -346,11 +364,41 @@ model Organization {
   crawlRuns           CrawlRun[]
   crawlFindings       CrawlFinding[]
   accessibilityScores AccessibilityScore[]
+  employerReviews     EmployerReview[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([type])
+}
+
+// A candidate's review of an employer's disability-inclusion practices —
+// deliberately narrow (did they honor accommodations, was the process
+// accessible) rather than a generic star rating, and gated to candidates
+// with a real application on record (enforced in the API route, not here).
+// One review per candidate per organization; @@unique makes re-submitting
+// an update rather than a duplicate. Shown to other candidates anonymized
+// (no candidate name) — see the review API route.
+model EmployerReview {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  // Null = the candidate didn't request any accommodations (not applicable),
+  // distinct from false ("requested, wasn't honored") — the submission form
+  // forces a choice among all three, not a default.
+  honoredAccommodations Boolean?
+  accessibleProcess     Boolean
+  comment               String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, candidateProfileId])
+  @@index([organizationId])
 }
 
 model Job {
@@ -370,6 +418,13 @@ model Job {
   // When true, a candidate must complete an AI-screened interview before
   // their Application (and profile) becomes visible to this job's employer.
   requiresAiInterview Boolean @default(false)
+
+  // When true, the employer commits to interviewing any candidate who has
+  // every skill marked JobSkill.essential — deliberately not tied to the
+  // overall match score, which blends unrelated factors (location,
+  // accommodation fit, ...) the employer didn't choose. See
+  // Application.metEssentialCriteria for the per-application computed flag.
+  offersGuaranteedInterview Boolean @default(false)
 
   // Empty array = open to all disability categories. Non-empty = the role is
   // specifically targeted/suited to these; used as the matching prefilter.
@@ -407,6 +462,16 @@ model JobSkill {
   job     Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
   skillId String
   skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  // Must-have vs. nice-to-have, set by the employer at posting time. Only
+  // meaningful when the job has offersGuaranteedInterview on. Column
+  // defaults to true so rows from before this field existed read as "was
+  // already required" rather than silently becoming optional; the job
+  // creation route itself sets this explicitly per skill for every new job,
+  // defaulting an unlisted skill to false (not essential) — an employer who
+  // opts into the guarantee without naming any essential skills has stated
+  // no particular bar, not "everything is mandatory."
+  essential Boolean @default(true)
 
   @@id([jobId, skillId])
   @@index([skillId])
@@ -458,6 +523,13 @@ model Application {
   // — the application is only created once that interview is COMPLETED.
   interviewId String?    @unique
   interview   Interview? @relation(fields: [interviewId], references: [id])
+
+  // Computed once at creation time (see createApplicationFromMatch): true
+  // when the job has offersGuaranteedInterview on and this candidate has
+  // every skill the employer marked essential. Snapshotted rather than
+  // recomputed live, same reasoning as matchScore above — an honest record
+  // of what was true when they applied.
+  metEssentialCriteria Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

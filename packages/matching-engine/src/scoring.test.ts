@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { MATCH_THRESHOLD, WEIGHT_ARCHETYPES, resolveWeightsForCandidate } from "./constants";
+import {
+  MATCH_THRESHOLD,
+  WEIGHT_ARCHETYPES,
+  applySeverityAdjustment,
+  resolveWeightsForCandidate,
+} from "./constants";
 import { scoreCandidateAgainstJob } from "./scoring";
 import type { SkillsSimilarity } from "./skills-similarity";
 import type { CandidateForMatching, JobForMatching } from "./types";
@@ -225,6 +230,33 @@ describe("scoreCandidateAgainstJob", () => {
       );
       expect(result.breakdown.accommodationFit.score).toBe(1);
     });
+
+    it("gives partial credit via the equivalence table when a related accommodation is offered instead", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: ["FLEXIBLE_HOURS", "ACCESSIBLE_TRANSPORTATION"] }),
+        makeJob({ accommodationTypes: ["REMOTE_FRIENDLY"] }),
+      );
+      // REMOTE_FRIENDLY covers FLEXIBLE_HOURS at 0.6 and ACCESSIBLE_TRANSPORTATION at 0.7
+      expect(result.breakdown.accommodationFit.score).toBeCloseTo((0.6 + 0.7) / 2);
+      expect(result.breakdown.accommodationFit.reason).toContain("partial");
+    });
+
+    it("prefers an exact match over equivalence credit when both are available", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: ["FLEXIBLE_HOURS"] }),
+        makeJob({ accommodationTypes: ["FLEXIBLE_HOURS", "REMOTE_FRIENDLY"] }),
+      );
+      expect(result.breakdown.accommodationFit.score).toBe(1);
+      expect(result.breakdown.accommodationFit.reason).not.toContain("partial");
+    });
+
+    it("gives no equivalence credit for pairings that aren't in the table", () => {
+      const result = scoreCandidateAgainstJob(
+        makeCandidate({ accommodationNeeds: ["WHEELCHAIR_ACCESSIBLE_WORKSPACE"] }),
+        makeJob({ accommodationTypes: ["FLEXIBLE_HOURS"] }),
+      );
+      expect(result.breakdown.accommodationFit.score).toBe(0);
+    });
   });
 
   describe("scoreAssistiveTechFit (via breakdown)", () => {
@@ -296,5 +328,45 @@ describe("resolveWeightsForCandidate", () => {
     const resolved = resolveWeightsForCandidate(["MOBILITY", "VISUAL", "COGNITIVE"]);
     const sum = Object.values(resolved).reduce((a, b) => a + b, 0);
     expect(sum).toBeCloseTo(1);
+  });
+});
+
+describe("applySeverityAdjustment", () => {
+  it("leaves weights unchanged when severity is null, undefined, or zero", () => {
+    const base = WEIGHT_ARCHETYPES.DEFAULT;
+    expect(applySeverityAdjustment(base, null)).toEqual(base);
+    expect(applySeverityAdjustment(base, undefined)).toEqual(base);
+    expect(applySeverityAdjustment(base, 0)).toEqual(base);
+  });
+
+  it("shifts weight onto accommodationFit and assistiveTechFit as severity increases", () => {
+    const base = WEIGHT_ARCHETYPES.DEFAULT;
+    const mild = applySeverityAdjustment(base, 20);
+    const severe = applySeverityAdjustment(base, 100);
+
+    expect(mild.accommodationFit).toBeGreaterThan(base.accommodationFit);
+    expect(severe.accommodationFit).toBeGreaterThan(mild.accommodationFit);
+    expect(severe.assistiveTechFit).toBeGreaterThan(base.assistiveTechFit);
+  });
+
+  it("always sums back to 1 regardless of severity", () => {
+    const base = WEIGHT_ARCHETYPES.PHYSICAL_ACCESS;
+    for (const severity of [10, 40, 75, 100]) {
+      const adjusted = applySeverityAdjustment(base, severity);
+      const sum = Object.values(adjusted).reduce((a, b) => a + b, 0);
+      expect(sum).toBeCloseTo(1);
+    }
+  });
+
+  it("a higher-severity candidate gets more accommodationFit weight in the full score than a lower-severity one", () => {
+    const mild = scoreCandidateAgainstJob(
+      makeCandidate({ disabilityCategories: ["MOBILITY"], maxDisabilitySeverity: 10 }),
+      makeJob(),
+    );
+    const severe = scoreCandidateAgainstJob(
+      makeCandidate({ disabilityCategories: ["MOBILITY"], maxDisabilitySeverity: 90 }),
+      makeJob(),
+    );
+    expect(severe.breakdown.accommodationFit.weight).toBeGreaterThan(mild.breakdown.accommodationFit.weight);
   });
 });

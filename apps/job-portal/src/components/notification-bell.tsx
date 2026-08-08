@@ -37,6 +37,19 @@ function NotificationContent({ n }: { n: Notification }) {
       </>
     );
   }
+  if (n.type === "GUARANTEED_INTERVIEW_SKIPPED") {
+    return (
+      <>
+        <strong>{n.payload.candidateName}</strong> met your must-have skills for this job but was rejected
+        before an interview — your guaranteed-interview commitment applied here.{" "}
+        {n.payload.jobId && (
+          <Link href={`/employer/jobs/${n.payload.jobId}`} className="text-primary underline">
+            View
+          </Link>
+        )}
+      </>
+    );
+  }
   return (
     <>
       New match — {n.payload.score}% fit.{" "}

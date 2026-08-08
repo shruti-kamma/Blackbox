@@ -31,6 +31,8 @@ export async function POST(request: Request) {
               email: body.email,
               passwordHash,
               role: "EMPLOYER",
+              hrTrainedOnDisabilityHiring: body.hrTrainedOnDisabilityHiring ?? null,
+              hrTrainingNotes: body.hrTrainingNotes || null,
               employerOrg: {
                 connectOrCreate: {
                   where: { name: body.organizationName },

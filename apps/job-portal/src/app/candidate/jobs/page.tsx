@@ -28,6 +28,11 @@ interface MatchRow {
   jobId: string;
   score: number;
   applicationStatus: ApplicationStatus | null;
+  reviewAggregate: {
+    reviewCount: number;
+    accommodationsHonoredRate: number | null;
+    accessibleProcessRate: number;
+  } | null;
   job: {
     id: string;
     title: string;
@@ -37,6 +42,7 @@ interface MatchRow {
     remote: boolean;
     accommodationTypes: string[];
     requiresAiInterview: boolean;
+    offersGuaranteedInterview: boolean;
     organization: { name: string };
   };
 }
@@ -46,6 +52,7 @@ interface Profile {
   headline: string | null;
   disabilityCategories: string[];
   accommodationNeeds: string[];
+  confirmedNoAccommodationNeeds: boolean;
   experienceLevel: string | null;
   preferredLocations: string[];
   openToRemote: boolean;
@@ -53,6 +60,7 @@ interface Profile {
   education: { level: string; fieldOfStudy: string | null; institution: string }[];
   workExperience: unknown[];
   skills: unknown[];
+  assistiveTechnologies: { assistiveTechnology: { name: string } }[];
 }
 
 export default function CandidateJobsPage() {
@@ -241,6 +249,20 @@ export default function CandidateJobsPage() {
                       {m.job.organization.name} · {m.job.category} ·{" "}
                       {m.job.remote ? "Remote" : m.job.location ?? "Location not specified"}
                     </p>
+                    {m.job.offersGuaranteedInterview && (
+                      <span className="mt-2 inline-block rounded-full bg-success/10 px-2.5 py-0.5 text-xs font-medium text-success">
+                        Guaranteed interview if you meet the must-have skills
+                      </span>
+                    )}
+                    {m.reviewAggregate && (
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        From {m.reviewAggregate.reviewCount} candidate{m.reviewAggregate.reviewCount === 1 ? "" : "s"}{" "}
+                        who applied here: {m.reviewAggregate.accessibleProcessRate}% found the process accessible
+                        {m.reviewAggregate.accommodationsHonoredRate !== null &&
+                          `, ${m.reviewAggregate.accommodationsHonoredRate}% said accommodations were honored`}
+                        .
+                      </p>
+                    )}
                     <p className="mt-2 text-sm text-foreground">{m.job.description}</p>
                     {needs.length > 0 && missing.length > 0 && (
                       <p className="mt-2 text-xs text-muted-foreground">

@@ -53,6 +53,11 @@ export interface CandidateForMatching {
   openToRemote: boolean;
   education: CandidateEducation[];
   skills: string[]; // skill names
+  // Highest severityPercentage (0-100) across the candidate's disability
+  // categories, if any are on file. Used to weight how much accommodation
+  // availability should matter in the overall score — not read by any
+  // single scoring function, see applySeverityAdjustment in constants.ts.
+  maxDisabilitySeverity?: number | null;
 }
 
 export interface JobForMatching {

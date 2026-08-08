@@ -5,6 +5,7 @@ export const candidateMatchingInclude = {
   education: { select: { level: true, fieldOfStudy: true } },
   skills: { select: { skill: { select: { name: true } } } },
   assistiveTechnologies: { select: { assistiveTechnology: { select: { name: true } } } },
+  disabilityDetails: { select: { severityPercentage: true } },
 } satisfies Prisma.CandidateProfileInclude;
 
 export type CandidateForMatchingRow = Prisma.CandidateProfileGetPayload<{
@@ -25,6 +26,10 @@ export function toCandidateForMatching(candidate: CandidateForMatchingRow): Cand
       fieldOfStudy: edu.fieldOfStudy,
     })),
     skills: candidate.skills.map((s) => s.skill.name),
+    maxDisabilitySeverity: candidate.disabilityDetails.reduce<number | null>((max, d) => {
+      if (d.severityPercentage == null) return max;
+      return max == null ? d.severityPercentage : Math.max(max, d.severityPercentage);
+    }, null),
   };
 }
 
