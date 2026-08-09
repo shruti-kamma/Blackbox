@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireRole } from "@/lib/auth/current-user";
+import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 
@@ -12,7 +12,7 @@ const requestSchema = z.object({ text: z.string().trim().min(1).max(2000) });
 // blind before an employer has shown any real interest.
 export async function POST(request: Request, { params }: { params: Promise<{ applicationId: string }> }) {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const { applicationId } = await params;
     const { text } = requestSchema.parse(await request.json());
 

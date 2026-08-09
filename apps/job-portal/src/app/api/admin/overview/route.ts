@@ -46,6 +46,7 @@ export async function GET() {
       totalHires,
       accommodationGapsFlagged,
       guaranteedInterviewSkipsFlagged,
+      pendingKycCandidates,
       applicationsByStatusRaw,
       recentHires,
       recentApplications,
@@ -56,13 +57,11 @@ export async function GET() {
       signupsRaw,
       applicationsRaw,
       hiresRaw,
-      totalInterviewsStarted,
-      completedInterviews,
-      inProgressInterviews,
-      completedInterviewScoreAgg,
-      videoInterviews,
-      jobsRequiringAiInterview,
-      staleInProgressInterviewsRaw,
+      totalAssessmentsStarted,
+      completedAssessments,
+      completedAssessmentScoreAgg,
+      pendingAssessmentCandidates,
+      staleInProgressAssessmentsRaw,
     ] = await Promise.all([
       prisma.user.count({ where: { role: "CANDIDATE" } }),
       prisma.organization.count(),
@@ -72,6 +71,9 @@ export async function GET() {
       prisma.application.count({ where: { status: "OFFERED" } }),
       prisma.notification.count({ where: { type: "ACCOMMODATION_GAP" } }),
       prisma.notification.count({ where: { type: "GUARANTEED_INTERVIEW_SKIPPED" } }),
+      prisma.user.count({
+        where: { role: "CANDIDATE", OR: [{ emailVerified: false }, { phoneVerified: false }] },
+      }),
       prisma.application.groupBy({ by: ["status"], _count: true }),
       prisma.application.findMany({
         where: { status: "OFFERED" },
@@ -132,28 +134,24 @@ export async function GET() {
         where: { status: "OFFERED", updatedAt: { gte: eightWeeksAgo } },
         select: { updatedAt: true },
       }),
-      prisma.interview.count(),
-      prisma.interview.count({ where: { status: "COMPLETED" } }),
-      prisma.interview.count({ where: { status: "IN_PROGRESS" } }),
-      prisma.interview.aggregate({
-        where: { status: "COMPLETED", overallScore: { not: null } },
-        _avg: { overallScore: true },
+      prisma.candidateAssessment.count(),
+      prisma.candidateAssessment.count({ where: { status: "COMPLETED" } }),
+      prisma.candidateAssessment.aggregate({
+        where: { status: "COMPLETED" },
+        _avg: { score: true },
       }),
-      prisma.interview.count({ where: { mode: "VIDEO" } }),
-      prisma.job.count({ where: { requiresAiInterview: true } }),
+      prisma.candidateProfile.count({ where: { NOT: { candidateAssessment: { status: "COMPLETED" } } } }),
       // Started but never finished, and old enough that it's not just a
-      // candidate mid-interview right now — the platform's own accessibility
-      // signal: if this list is never empty, something about the interview
-      // flow itself may be turning candidates away partway through.
-      prisma.interview.findMany({
-        where: { status: "IN_PROGRESS", createdAt: { lt: threeDaysAgo } },
-        orderBy: { createdAt: "asc" },
+      // candidate mid-exam right now — the platform's own accessibility
+      // signal: if this list is never empty, something about the assessment
+      // itself may be turning candidates away partway through.
+      prisma.candidateAssessment.findMany({
+        where: { status: "IN_PROGRESS", startedAt: { lt: threeDaysAgo } },
+        orderBy: { startedAt: "asc" },
         select: {
           id: true,
-          mode: true,
-          createdAt: true,
+          startedAt: true,
           candidateProfile: { select: { id: true, fullName: true } },
-          job: { select: { title: true, organization: { select: { id: true, name: true } } } },
         },
       }),
     ]);
@@ -232,15 +230,11 @@ export async function GET() {
       })
       .filter((x): x is NonNullable<typeof x> => x !== null);
 
-    const staleInProgressInterviews = staleInProgressInterviewsRaw.map((i) => ({
-      id: i.id,
-      mode: i.mode,
-      candidateId: i.candidateProfile.id,
-      candidateName: i.candidateProfile.fullName,
-      jobTitle: i.job.title,
-      organizationId: i.job.organization.id,
-      organizationName: i.job.organization.name,
-      startedAt: i.createdAt,
+    const staleInProgressAssessments = staleInProgressAssessmentsRaw.map((a) => ({
+      id: a.id,
+      candidateId: a.candidateProfile.id,
+      candidateName: a.candidateProfile.fullName,
+      startedAt: a.startedAt,
     }));
 
     const weekStarts = Array.from({ length: WEEKS_OF_TRENDS }, (_, i) =>
@@ -286,7 +280,7 @@ export async function GET() {
         })),
         stalePendingAccommodations,
         guaranteedInterviewSkips,
-        staleInProgressInterviews,
+        staleInProgressAssessments,
       },
       trends,
       stats: {
@@ -298,20 +292,16 @@ export async function GET() {
         totalHires,
         accommodationGapsFlagged,
         guaranteedInterviewSkipsFlagged,
+        pendingKycCandidates,
       },
-      aiInterviews: {
-        jobsRequiringAiInterview,
-        totalStarted: totalInterviewsStarted,
-        completed: completedInterviews,
-        inProgress: inProgressInterviews,
+      assessments: {
+        totalStarted: totalAssessmentsStarted,
+        completed: completedAssessments,
+        pending: pendingAssessmentCandidates,
         completionRate:
-          totalInterviewsStarted > 0 ? Math.round((completedInterviews / totalInterviewsStarted) * 100) : null,
+          totalAssessmentsStarted > 0 ? Math.round((completedAssessments / totalAssessmentsStarted) * 100) : null,
         averageScore:
-          completedInterviewScoreAgg._avg.overallScore !== null
-            ? Math.round(completedInterviewScoreAgg._avg.overallScore)
-            : null,
-        video: videoInterviews,
-        text: totalInterviewsStarted - videoInterviews,
+          completedAssessmentScoreAgg._avg.score !== null ? Math.round(completedAssessmentScoreAgg._avg.score) : null,
       },
       applicationsByStatus,
       recentHires: recentHires.map((a) => ({

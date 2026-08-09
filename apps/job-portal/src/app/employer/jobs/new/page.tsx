@@ -23,16 +23,33 @@ interface AssistiveTechInsight {
   count: number;
 }
 
+interface DisabilityCategoryCount {
+  category: string;
+  label: string;
+  candidateCount: number;
+}
+
 export default function NewJobPage() {
   const router = useRouter();
   const [targetCategories, setTargetCategories] = useState<string[]>([]);
   const [accommodationTypes, setAccommodationTypes] = useState<string[]>([]);
   const [remote, setRemote] = useState(false);
-  const [requiresAiInterview, setRequiresAiInterview] = useState(false);
   const [offersGuaranteedInterview, setOffersGuaranteedInterview] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [insights, setInsights] = useState<AssistiveTechInsight[] | null>(null);
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number> | null>(null);
+
+  // Platform-wide, fetched once on load — not dependent on which categories
+  // are checked, so the count is visible right at the point of selection
+  // rather than only after picking one.
+  useEffect(() => {
+    apiRequest<{ counts: DisabilityCategoryCount[] }>("/api/employer/disability-category-counts")
+      .then(({ counts }) =>
+        setCategoryCounts(Object.fromEntries(counts.map((c) => [c.category, c.candidateCount]))),
+      )
+      .catch(() => setCategoryCounts(null));
+  }, []);
 
   function toggleCategory(value: string) {
     setTargetCategories((prev) =>
@@ -78,7 +95,6 @@ export default function NewJobPage() {
         requiredExperienceLevel: form.get("requiredExperienceLevel") || undefined,
         requiredSkills: splitList(String(form.get("requiredSkills") ?? "")),
         preferredAssistiveTechnologies: splitList(String(form.get("preferredAssistiveTechnologies") ?? "")),
-        requiresAiInterview,
         offersGuaranteedInterview,
         essentialSkills: splitList(String(form.get("essentialSkills") ?? "")),
       };
@@ -148,6 +164,11 @@ export default function NewJobPage() {
                   className="size-5"
                 />
                 {opt.label}
+                <span className="text-xs text-muted-foreground">
+                  {categoryCounts
+                    ? `(${categoryCounts[opt.value] ?? 0} candidate${categoryCounts[opt.value] === 1 ? "" : "s"})`
+                    : ""}
+                </span>
               </label>
             ))}
           </div>
@@ -353,23 +374,6 @@ export default function NewJobPage() {
           />
           Remote role
         </label>
-
-        <div className="flex flex-col gap-2 rounded-md border border-border p-3">
-          <label className="flex items-center gap-2 text-sm text-foreground">
-            <input
-              type="checkbox"
-              checked={requiresAiInterview}
-              onChange={(e) => setRequiresAiInterview(e.target.checked)}
-              className="size-5"
-            />
-            Require an AI interview before I see applicant details
-          </label>
-          <p className="text-xs text-muted-foreground">
-            Candidates applying to this role will first answer a short set of AI-generated questions based on
-            their skills and projects. You&apos;ll see their score, a summary, and the full transcript
-            alongside their profile.
-          </p>
-        </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="accommodationsOffered" className="text-sm font-medium text-foreground">

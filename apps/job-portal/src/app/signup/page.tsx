@@ -25,6 +25,7 @@ export default function SignupPage() {
             email: form.get("email"),
             password: form.get("password"),
             fullName: form.get("fullName"),
+            phone: form.get("phone"),
           }
         : {
             role,
@@ -37,7 +38,7 @@ export default function SignupPage() {
           };
     try {
       await apiRequest("/api/auth/signup", { method: "POST", body: JSON.stringify(payload) });
-      router.push(role === "EMPLOYER" ? "/employer/jobs/new" : "/candidate/profile");
+      router.push(role === "EMPLOYER" ? "/employer/jobs/new" : "/signup/verify");
       router.refresh();
     } catch (err) {
       setError(err instanceof ApiClientError ? err.message : "Something went wrong");
@@ -102,19 +103,39 @@ export default function SignupPage() {
         </div>
 
         {role === "CANDIDATE" ? (
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="fullName" className="text-sm font-medium text-foreground">
-              Full name
-            </label>
-            <input
-              id="fullName"
-              name="fullName"
-              type="text"
-              required
-              autoComplete="name"
-              className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
-            />
-          </div>
+          <>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="fullName" className="text-sm font-medium text-foreground">
+                Full name
+              </label>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                required
+                autoComplete="name"
+                className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="phone" className="text-sm font-medium text-foreground">
+                Phone number
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+                minLength={7}
+                autoComplete="tel"
+                placeholder="+91 98765 43210"
+                className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+              />
+              <p className="text-xs text-muted-foreground">
+                We&apos;ll send a one-time code here to verify it&apos;s really you, right after this step.
+              </p>
+            </div>
+          </>
         ) : (
           <>
             <div className="flex flex-col gap-1.5">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireRole, requireUser } from "@/lib/auth/current-user";
+import { requireVerifiedCandidate, requireUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 
@@ -77,7 +77,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ orgI
 
 export async function POST(request: Request, { params }: { params: Promise<{ orgId: string }> }) {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const { orgId } = await params;
     const input = reviewInputSchema.parse(await request.json());
     const candidateId = user.candidateProfile!.id;

@@ -112,6 +112,30 @@ const EDUCATION_LEVEL_LABELS: Record<string, string> = {
   OTHER: "Other",
 };
 
+// Centered, low-opacity brand mark on every generated resume — confirms the
+// document came from Blackbox Jobs wherever it ends up (shared outside the
+// platform, forwarded by an employer, ...). Subtle by design: legible text
+// underneath, not a stamp. See `.resume-watermark` in globals.css for why
+// this is `position: absolute` rather than `fixed`.
+function ResumeWatermark() {
+  return (
+    <div
+      className="resume-watermark z-0"
+      aria-hidden="true"
+      style={{
+        fontSize: "54px",
+        fontWeight: 800,
+        letterSpacing: "0.08em",
+        color: NAVY,
+        opacity: 0.08,
+        textTransform: "uppercase",
+      }}
+    >
+      Blackbox Jobs
+    </div>
+  );
+}
+
 export function ResumeTemplate({ profile, email }: { profile: ResumeProfile; email: string | null }) {
   const contactLine = [
     email,
@@ -126,7 +150,9 @@ export function ResumeTemplate({ profile, email }: { profile: ResumeProfile; ema
     .join("  ·  ");
 
   return (
-    <article className="bg-white px-10 py-8 text-neutral-900">
+    <article className="resume-document relative bg-white px-10 py-8 text-neutral-900">
+      <ResumeWatermark />
+      <div className="relative z-10">
       <header className="text-center">
         <h1 className="text-[19px] font-bold tracking-wide uppercase" style={{ color: NAVY }}>
           {profile.fullName}
@@ -222,6 +248,7 @@ export function ResumeTemplate({ profile, email }: { profile: ResumeProfile; ema
           </p>
         </section>
       )}
+      </div>
     </article>
   );
 }

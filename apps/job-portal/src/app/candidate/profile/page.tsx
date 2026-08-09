@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
+import { TagSearchSelect, ComboSearchSelect } from "@/components/search-select";
+import { DatePicker } from "@/components/date-picker";
 import {
   ACCOMMODATION_TYPE_OPTIONS,
   BODY_PART_OPTIONS,
   DISABILITY_CATEGORY_OPTIONS,
   EDUCATION_LEVEL_OPTIONS,
   EXPERIENCE_LEVEL_OPTIONS,
+  PREFERRED_COMMUNICATION_MODE_OPTIONS,
 } from "@/lib/matching-options";
 
 interface DisabilityDetailRow {
@@ -52,6 +56,7 @@ interface ProfileFormState {
   fullName: string;
   headline: string;
   phone: string;
+  dateOfBirth: string;
   resumeUrl: string;
   accessibilityNeeds: string;
   disabilityCategories: string[];
@@ -59,12 +64,13 @@ interface ProfileFormState {
   disabilityDetails: Partial<Record<string, DisabilityDetailRow>>;
   accommodationNeeds: string[];
   confirmedNoAccommodationNeeds: boolean;
+  preferredCommunicationModes: string[];
   assistiveTechnologies: string;
   experienceLevel: string;
-  preferredCategories: string;
-  preferredLocations: string;
+  preferredCategories: string[];
+  preferredLocations: string[];
   openToRemote: boolean;
-  skills: string;
+  skills: string[];
   education: EducationRow[];
   workExperience: WorkExperienceRow[];
   projects: ProjectRow[];
@@ -75,6 +81,7 @@ const emptyForm: ProfileFormState = {
   fullName: "",
   headline: "",
   phone: "",
+  dateOfBirth: "",
   resumeUrl: "",
   accessibilityNeeds: "",
   disabilityCategories: [],
@@ -82,12 +89,13 @@ const emptyForm: ProfileFormState = {
   disabilityDetails: {},
   accommodationNeeds: [],
   confirmedNoAccommodationNeeds: false,
+  preferredCommunicationModes: [],
   assistiveTechnologies: "",
   experienceLevel: "",
-  preferredCategories: "",
-  preferredLocations: "",
+  preferredCategories: [],
+  preferredLocations: [],
   openToRemote: false,
-  skills: "",
+  skills: [],
   education: [],
   workExperience: [],
   projects: [],
@@ -134,6 +142,7 @@ interface ProfileApiResponse {
     fullName: string;
     headline: string | null;
     phone: string | null;
+    dateOfBirth: string | null;
     resumeUrl: string | null;
     accessibilityNeeds: string[];
     disabilityCategories: string[];
@@ -145,6 +154,7 @@ interface ProfileApiResponse {
     }[];
     accommodationNeeds: string[];
     confirmedNoAccommodationNeeds: boolean;
+    preferredCommunicationModes: string[];
     assistiveTechnologies: { assistiveTechnology: { name: string } }[];
     experienceLevel: string | null;
     preferredCategories: string[];
@@ -159,6 +169,7 @@ interface ProfileApiResponse {
 }
 
 export default function CandidateProfilePage() {
+  const router = useRouter();
   const [form, setForm] = useState<ProfileFormState>(emptyForm);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -174,6 +185,7 @@ export default function CandidateProfilePage() {
           fullName: profile.fullName,
           headline: profile.headline ?? "",
           phone: profile.phone ?? "",
+          dateOfBirth: profile.dateOfBirth ? profile.dateOfBirth.slice(0, 10) : "",
           resumeUrl: profile.resumeUrl ?? "",
           accessibilityNeeds: profile.accessibilityNeeds.join(", "),
           disabilityCategories: profile.disabilityCategories,
@@ -189,12 +201,13 @@ export default function CandidateProfilePage() {
           ),
           accommodationNeeds: profile.accommodationNeeds,
           confirmedNoAccommodationNeeds: profile.confirmedNoAccommodationNeeds,
+          preferredCommunicationModes: profile.preferredCommunicationModes,
           assistiveTechnologies: profile.assistiveTechnologies.map((a) => a.assistiveTechnology.name).join(", "),
           experienceLevel: profile.experienceLevel ?? "",
-          preferredCategories: profile.preferredCategories.join(", "),
-          preferredLocations: profile.preferredLocations.join(", "),
+          preferredCategories: profile.preferredCategories,
+          preferredLocations: profile.preferredLocations,
           openToRemote: profile.openToRemote,
-          skills: profile.skills.map((s) => s.skill.name).join(", "),
+          skills: profile.skills.map((s) => s.skill.name),
           education: profile.education.map((e) => ({
             level: e.level,
             fieldOfStudy: e.fieldOfStudy ?? "",
@@ -225,7 +238,13 @@ export default function CandidateProfilePage() {
           })),
         });
       })
-      .catch((err) => setError(err instanceof ApiClientError ? err.message : "Failed to load profile"))
+      .catch((err) => {
+        if (err instanceof ApiClientError && err.code === "KYC_REQUIRED") {
+          router.replace("/signup/verify");
+          return;
+        }
+        setError(err instanceof ApiClientError ? err.message : "Failed to load profile");
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -259,6 +278,15 @@ export default function CandidateProfilePage() {
       accommodationNeeds: f.accommodationNeeds.includes(value)
         ? f.accommodationNeeds.filter((v) => v !== value)
         : [...f.accommodationNeeds, value],
+    }));
+  }
+
+  function toggleCommunicationMode(value: string) {
+    setForm((f) => ({
+      ...f,
+      preferredCommunicationModes: f.preferredCommunicationModes.includes(value)
+        ? f.preferredCommunicationModes.filter((v) => v !== value)
+        : [...f.preferredCommunicationModes, value],
     }));
   }
 
@@ -360,6 +388,7 @@ export default function CandidateProfilePage() {
         fullName: form.fullName,
         headline: form.headline || undefined,
         phone: form.phone || undefined,
+        dateOfBirth: form.dateOfBirth || undefined,
         resumeUrl: form.resumeUrl || undefined,
         accessibilityNeeds: splitList(form.accessibilityNeeds),
         disabilityCategories: form.disabilityCategories,
@@ -376,12 +405,13 @@ export default function CandidateProfilePage() {
           }),
         accommodationNeeds: form.accommodationNeeds,
         confirmedNoAccommodationNeeds: form.confirmedNoAccommodationNeeds || confirmedNoNeedsOverride,
+        preferredCommunicationModes: form.preferredCommunicationModes,
         assistiveTechnologies: splitList(form.assistiveTechnologies),
         experienceLevel: form.experienceLevel || undefined,
-        preferredCategories: splitList(form.preferredCategories),
-        preferredLocations: splitList(form.preferredLocations),
+        preferredCategories: form.preferredCategories,
+        preferredLocations: form.preferredLocations,
         openToRemote: form.openToRemote,
-        skills: splitList(form.skills),
+        skills: form.skills,
         education: form.education
           .filter((e) => e.institution)
           .map((e) => ({
@@ -484,6 +514,13 @@ export default function CandidateProfilePage() {
             />
             <p className="text-xs text-muted-foreground">Shown on your downloadable resume, not on your profile.</p>
           </div>
+          <DatePicker
+            id="dateOfBirth"
+            label="Date of birth"
+            value={form.dateOfBirth}
+            onChange={(v) => setForm((f) => ({ ...f, dateOfBirth: v }))}
+            helperText="Optional — not shown to employers."
+          />
           <div className="flex flex-col gap-1.5">
             <label htmlFor="resumeUrl" className="text-sm font-medium text-foreground">
               Résumé URL
@@ -611,6 +648,29 @@ export default function CandidateProfilePage() {
           </p>
         </fieldset>
 
+        <fieldset id="communication-modes-fieldset" className="flex flex-col gap-2">
+          <legend className="text-sm font-medium text-foreground">
+            How you&apos;d prefer to be communicated with during hiring
+          </legend>
+          <div className="flex flex-wrap gap-3">
+            {PREFERRED_COMMUNICATION_MODE_OPTIONS.map((opt) => (
+              <label key={opt.value} className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.preferredCommunicationModes.includes(opt.value)}
+                  onChange={() => toggleCommunicationMode(opt.value)}
+                  className="size-5"
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Optional — for interviews and correspondence, not scored in matching. Leave everything unchecked if
+            you don&apos;t have a specific preference.
+          </p>
+        </fieldset>
+
         <div className="flex flex-col gap-1.5">
           <label htmlFor="assistiveTechnologies" className="text-sm font-medium text-foreground">
             Assistive technology you use (comma-separated)
@@ -659,43 +719,32 @@ export default function CandidateProfilePage() {
           </select>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="skills" className="text-sm font-medium text-foreground">
-            Skills (comma-separated)
-          </label>
-          <input
-            id="skills"
-            value={form.skills}
-            onChange={(e) => setForm((f) => ({ ...f, skills: e.target.value }))}
-            placeholder="JavaScript, React, SQL"
-            className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
-          />
-        </div>
+        <TagSearchSelect
+          id="skills"
+          label="Skills"
+          field="skills"
+          value={form.skills}
+          onChange={(v) => setForm((f) => ({ ...f, skills: v }))}
+          placeholder="Search skills, e.g. JavaScript…"
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="preferredCategories" className="text-sm font-medium text-foreground">
-            Preferred job categories (comma-separated)
-          </label>
-          <input
-            id="preferredCategories"
-            value={form.preferredCategories}
-            onChange={(e) => setForm((f) => ({ ...f, preferredCategories: e.target.value }))}
-            className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
-          />
-        </div>
+        <TagSearchSelect
+          id="preferredCategories"
+          label="Preferred job categories"
+          field="categories"
+          value={form.preferredCategories}
+          onChange={(v) => setForm((f) => ({ ...f, preferredCategories: v }))}
+          placeholder="Search job categories…"
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="preferredLocations" className="text-sm font-medium text-foreground">
-            Preferred locations (comma-separated)
-          </label>
-          <input
-            id="preferredLocations"
-            value={form.preferredLocations}
-            onChange={(e) => setForm((f) => ({ ...f, preferredLocations: e.target.value }))}
-            placeholder="Bengaluru, Mumbai"
-            className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
-          />
-        </div>
+        <TagSearchSelect
+          id="preferredLocations"
+          label="Preferred locations"
+          field="locations"
+          value={form.preferredLocations}
+          onChange={(v) => setForm((f) => ({ ...f, preferredLocations: v }))}
+          placeholder="Search locations, e.g. Bengaluru…"
+        />
 
         <label className="flex items-center gap-2 text-sm text-foreground">
           <input
@@ -729,19 +778,22 @@ export default function CandidateProfilePage() {
                     </option>
                   ))}
                 </select>
-                <input
-                  aria-label="Field of study"
-                  placeholder="Field of study"
+                <ComboSearchSelect
+                  id={`education-field-${i}`}
+                  label="Field of study"
+                  field="fieldsOfStudy"
                   value={row.fieldOfStudy}
-                  onChange={(e) => updateEducation(i, { fieldOfStudy: e.target.value })}
-                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                  onChange={(v) => updateEducation(i, { fieldOfStudy: v })}
+                  placeholder="Field of study"
                 />
-                <input
-                  aria-label="Institution"
-                  placeholder="Institution"
+                <ComboSearchSelect
+                  id={`education-institution-${i}`}
+                  label="Institution"
+                  field="institutions"
                   value={row.institution}
-                  onChange={(e) => updateEducation(i, { institution: e.target.value })}
-                  className="h-touch-target rounded-md border border-border bg-background px-2 text-foreground"
+                  onChange={(v) => updateEducation(i, { institution: v })}
+                  placeholder="Institution / college"
+                  required
                 />
                 <input
                   aria-label="Graduation year"

@@ -58,6 +58,12 @@ export interface CandidateForMatching {
   // availability should matter in the overall score — not read by any
   // single scoring function, see applySeverityAdjustment in constants.ts.
   maxDisabilitySeverity?: number | null;
+  // 0-100 score on the one-time platform-wide MCQ assessment, or null if the
+  // candidate hasn't completed it yet — matches get computed continuously
+  // regardless of assessment status, so this is commonly null early on. See
+  // scoreAssessment in scoring.ts for how null is handled (partial credit,
+  // not a penalty).
+  assessmentScore?: number | null;
 }
 
 export interface JobForMatching {
@@ -88,6 +94,7 @@ export interface MatchBreakdown {
   education: CriterionResult;
   experience: CriterionResult;
   location: CriterionResult;
+  assessment: CriterionResult;
 }
 
 export interface MatchResult {
@@ -104,4 +111,5 @@ export interface MatchWeights {
   education: number;
   experience: number;
   location: number;
+  assessment: number;
 }

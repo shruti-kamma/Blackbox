@@ -29,10 +29,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ jobI
             skills: { include: { skill: true } },
             assistiveTechnologies: { include: { assistiveTechnology: true } },
             disabilityDetails: true,
+            candidateAssessment: {
+              select: { status: true, score: true, languageScore: true, aptitudeScore: true, skillScore: true },
+            },
           },
-        },
-        interview: {
-          include: { questions: { orderBy: { order: "asc" } } },
         },
       },
     });

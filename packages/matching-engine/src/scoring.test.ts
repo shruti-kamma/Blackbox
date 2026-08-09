@@ -20,6 +20,7 @@ function makeCandidate(overrides: Partial<CandidateForMatching> = {}): Candidate
     openToRemote: true,
     education: [{ level: "BACHELORS", fieldOfStudy: "Computer Science" }],
     skills: ["JavaScript", "React", "SQL"],
+    assessmentScore: 100,
     ...overrides,
   };
 }
@@ -143,11 +144,35 @@ describe("scoreCandidateAgainstJob", () => {
     expect(result.breakdown.location.score).toBe(0.6);
   });
 
-  it("zeroes location when preferences are set but don't overlap", () => {
+  it("zeroes location when preferences are set but don't overlap and are far apart", () => {
     const result = scoreCandidateAgainstJob(
       makeCandidate({ openToRemote: false, preferredLocations: ["Delhi"] }),
       makeJob({ remote: false, location: "Chennai" }),
     );
+    // Delhi-Chennai is ~1700km, well beyond MAX_LOCATION_DISTANCE_KM (300),
+    // so this is still 0 even with real-distance scoring.
+    expect(result.breakdown.location.score).toBe(0);
+  });
+
+  it("gives partial credit for a nearby-but-not-exact preferred location", () => {
+    const result = scoreCandidateAgainstJob(
+      makeCandidate({ openToRemote: false, preferredLocations: ["Pune"] }),
+      makeJob({ remote: false, location: "Mumbai" }),
+    );
+    // Pune-Mumbai is ~120km — inside the 300km falloff radius, so this
+    // should score above 0 (proximity credit) but below 1 (not an exact
+    // preferred-location match).
+    expect(result.breakdown.location.score).toBeGreaterThan(0);
+    expect(result.breakdown.location.score).toBeLessThan(1);
+  });
+
+  it("gives zero location credit when neither the job nor the candidate's locations are resolvable cities", () => {
+    const result = scoreCandidateAgainstJob(
+      makeCandidate({ openToRemote: false, preferredLocations: ["Nowheresville"] }),
+      makeJob({ remote: false, location: "Someplace Fictional" }),
+    );
+    // Falls back to the old exact-string-match behavior when distance can't
+    // be resolved — same as before real-distance scoring existed.
     expect(result.breakdown.location.score).toBe(0);
   });
 
@@ -193,6 +218,7 @@ describe("scoreCandidateAgainstJob", () => {
           education: 0.5,
           experience: 0,
           location: 0,
+          assessment: 0,
         },
       }),
     ).toThrow();
@@ -290,6 +316,29 @@ describe("scoreCandidateAgainstJob", () => {
         makeJob({ preferredAssistiveTechnologies: ["JAWS"] }),
       );
       expect(result.breakdown.assistiveTechFit.score).toBe(1);
+    });
+  });
+
+  describe("scoreAssessment (via breakdown)", () => {
+    it("gives full credit for a 100% assessment score", () => {
+      const result = scoreCandidateAgainstJob(makeCandidate({ assessmentScore: 100 }), makeJob());
+      expect(result.breakdown.assessment.score).toBe(1);
+    });
+
+    it("scores proportionally to the assessment percentage", () => {
+      const result = scoreCandidateAgainstJob(makeCandidate({ assessmentScore: 80 }), makeJob());
+      expect(result.breakdown.assessment.score).toBeCloseTo(0.8);
+    });
+
+    it("gives neutral partial credit when the candidate hasn't completed the assessment yet", () => {
+      const notStarted = scoreCandidateAgainstJob(makeCandidate({ assessmentScore: null }), makeJob());
+      const notProvided = scoreCandidateAgainstJob(makeCandidate({ assessmentScore: undefined }), makeJob());
+      expect(notStarted.breakdown.assessment.score).toBe(0.7);
+      expect(notProvided.breakdown.assessment.score).toBe(0.7);
+      // Neutral, not full or zero credit — doesn't penalize a candidate for
+      // not having reached the assessment yet, but doesn't reward it either.
+      expect(notStarted.breakdown.assessment.score).toBeLessThan(1);
+      expect(notStarted.breakdown.assessment.score).toBeGreaterThan(0);
     });
   });
 });

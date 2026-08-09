@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/auth/current-user";
+import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 import { candidateProfileInputSchema } from "@/lib/validation/candidate-profile";
@@ -18,7 +18,7 @@ const profileInclude = {
 
 export async function GET() {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const profile = await prisma.candidateProfile.findUnique({
       where: { userId: user.id },
       include: profileInclude,
@@ -31,7 +31,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const input = candidateProfileInputSchema.parse(await request.json());
 
     const before = await prisma.candidateProfile.findUnique({
@@ -49,12 +49,14 @@ export async function PUT(request: Request) {
           fullName: input.fullName,
           headline: input.headline || null,
           phone: input.phone || null,
+          dateOfBirth: input.dateOfBirth ? new Date(input.dateOfBirth) : null,
           resumeUrl: input.resumeUrl || null,
           accessibilityNeeds: input.accessibilityNeeds,
           disabilityCategories: input.disabilityCategories,
           disabilityOther: input.disabilityOther || null,
           accommodationNeeds: input.accommodationNeeds,
           confirmedNoAccommodationNeeds: input.confirmedNoAccommodationNeeds,
+          preferredCommunicationModes: input.preferredCommunicationModes,
           experienceLevel: input.experienceLevel ?? null,
           preferredCategories: input.preferredCategories,
           preferredLocations: input.preferredLocations,

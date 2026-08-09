@@ -2,3 +2,4 @@ export * from "./types";
 export * from "./constants";
 export * from "./scoring";
 export * from "./skills-similarity";
+export * from "./geo";

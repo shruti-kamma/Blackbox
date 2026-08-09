@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/auth/current-user";
+import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 
@@ -8,7 +8,7 @@ import { handleApiError } from "@/lib/api-error";
 // which can only move an application forward, never withdraw it.
 export async function POST(request: Request, { params }: { params: Promise<{ applicationId: string }> }) {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const { applicationId } = await params;
 
     const application = await prisma.application.findUnique({ where: { id: applicationId } });

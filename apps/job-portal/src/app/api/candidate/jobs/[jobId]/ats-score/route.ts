@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/auth/current-user";
+import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 import { computeAtsScore } from "@/lib/ats-score";
 
 export async function GET(request: Request, { params }: { params: Promise<{ jobId: string }> }) {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const { jobId } = await params;
 
     const [candidate, job] = await Promise.all([

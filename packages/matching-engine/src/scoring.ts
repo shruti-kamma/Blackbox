@@ -3,9 +3,11 @@ import {
   EDUCATION_RANK,
   EXPERIENCE_RANK,
   MATCH_THRESHOLD,
+  MAX_LOCATION_DISTANCE_KM,
   applySeverityAdjustment,
   resolveWeightsForCandidate,
 } from "./constants";
+import { resolveNearestDistanceKm } from "./geo";
 import { exactMatchSkillsSimilarity, type SkillsSimilarity } from "./skills-similarity";
 import type {
   CandidateForMatching,
@@ -184,6 +186,27 @@ function scoreExperience(
   return criterion(score, weight, `Below required experience level by ${gap} tier(s)`);
 }
 
+// Candidates a matching engine job might score before they've completed the
+// one-time platform-wide assessment (matches are computed continuously, not
+// gated on it — only *applying* is, see requireAssessedCandidate on the app
+// side) get a neutral default rather than a penalty: same "partial credit
+// for unknown" reasoning scoreLocation already uses for a candidate with no
+// location preference on file.
+const ASSESSMENT_NEUTRAL_SCORE = 0.7;
+
+function scoreAssessment(candidate: CandidateForMatching, weight: number): CriterionResult {
+  if (candidate.assessmentScore === null || candidate.assessmentScore === undefined) {
+    return criterion(ASSESSMENT_NEUTRAL_SCORE, weight, "Candidate hasn't completed the assessment yet");
+  }
+  const score = candidate.assessmentScore / 100;
+  return criterion(score, weight, `Candidate scored ${candidate.assessmentScore}% on the assessment`);
+}
+
+// Linear falloff from full credit at 0km to zero at MAX_LOCATION_DISTANCE_KM.
+function distanceToScore(distanceKm: number): number {
+  return Math.max(0, 1 - distanceKm / MAX_LOCATION_DISTANCE_KM);
+}
+
 function scoreLocation(
   candidate: CandidateForMatching,
   job: JobForMatching,
@@ -197,6 +220,16 @@ function scoreLocation(
       (loc) => loc.trim().toLowerCase() === job.location!.trim().toLowerCase(),
     );
     if (wants) return criterion(1, weight, `Job location (${job.location}) is a preferred location`);
+
+    // Real proximity credit when both the job and at least one preferred
+    // location resolve to known coordinates (see geo.ts) — "nearest first,"
+    // not just exact city-name matching. Falls through to the 0-credit path
+    // below when neither side is resolvable, same as before this existed.
+    const distanceKm = resolveNearestDistanceKm(candidate.preferredLocations, job.location);
+    if (distanceKm !== null) {
+      const score = distanceToScore(distanceKm);
+      return criterion(score, weight, `${Math.round(distanceKm)} km from a preferred location`);
+    }
   }
   if (candidate.preferredLocations.length === 0 && !candidate.openToRemote) {
     return criterion(0.6, weight, "Candidate has no location preference on file");
@@ -233,6 +266,7 @@ export function scoreCandidateAgainstJob(
     education: scoreEducation(candidate, job, weights.education),
     experience: scoreExperience(candidate, job, weights.experience),
     location: scoreLocation(candidate, job, weights.location),
+    assessment: scoreAssessment(candidate, weights.assessment),
   };
 
   const total = Object.values(breakdown).reduce((sum, c) => sum + c.contribution, 0);

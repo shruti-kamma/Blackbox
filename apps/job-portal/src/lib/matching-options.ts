@@ -41,6 +41,15 @@ export const ACCOMMODATION_TYPE_OPTIONS = [
   { value: "OTHER", label: "Other" },
 ] as const;
 
+export const PREFERRED_COMMUNICATION_MODE_OPTIONS = [
+  { value: "SIGN_LANGUAGE_INTERPRETER", label: "Sign language interpreter" },
+  { value: "SCREEN_READER_COMPATIBLE", label: "Screen-reader-compatible materials" },
+  { value: "CAPTIONS_OR_TRANSCRIPT", label: "Captions / live transcript" },
+  { value: "EXTRA_RESPONSE_TIME", label: "Extra response time" },
+  { value: "WRITTEN_ONLY", label: "Written communication only" },
+  { value: "OTHER", label: "Other" },
+] as const;
+
 export const BODY_PART_OPTIONS = [
   { value: "LEFT_ARM", label: "Left arm" },
   { value: "RIGHT_ARM", label: "Right arm" },

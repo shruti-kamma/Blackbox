@@ -18,6 +18,8 @@ interface CandidateRow {
   applicationsCount: number;
   hiresCount: number;
   signedUpAt: string;
+  kycVerified: boolean;
+  assessmentScore: number | null;
 }
 
 type SortKey = "fullName" | "profileCompletionPercent" | "matchesCount" | "applicationsCount" | "signedUpAt";
@@ -103,6 +105,8 @@ export default function AdminCandidatesPage() {
                   </button>
                 </th>
                 <th className="py-2 pr-4">Disability categories</th>
+                <th className="py-2 pr-4">KYC</th>
+                <th className="py-2 pr-4">Assessment</th>
                 <th className="py-2 pr-4">
                   <button
                     onClick={() => setSortKey("profileCompletionPercent")}
@@ -142,6 +146,18 @@ export default function AdminCandidatesPage() {
                   </td>
                   <td className="py-2 pr-4 text-xs text-muted-foreground">
                     {c.disabilityCategories.map((d) => DISABILITY_LABELS[d] ?? d).join(", ") || "—"}
+                  </td>
+                  <td className="py-2 pr-4">
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                        c.kycVerified ? "bg-muted text-foreground" : "bg-danger/10 text-danger"
+                      }`}
+                    >
+                      {c.kycVerified ? "Verified" : "Pending"}
+                    </span>
+                  </td>
+                  <td className="py-2 pr-4 tabular-nums">
+                    {c.assessmentScore !== null ? `${c.assessmentScore}%` : "—"}
                   </td>
                   <td className="py-2 pr-4 tabular-nums">{c.profileCompletionPercent}%</td>
                   <td className="py-2 pr-4 tabular-nums">{c.matchesCount}</td>

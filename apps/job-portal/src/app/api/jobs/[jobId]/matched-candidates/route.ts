@@ -28,6 +28,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ jobI
             skills: { include: { skill: true } },
             assistiveTechnologies: { include: { assistiveTechnology: true } },
             disabilityDetails: true,
+            candidateAssessment: { select: { status: true, score: true } },
           },
         },
       },

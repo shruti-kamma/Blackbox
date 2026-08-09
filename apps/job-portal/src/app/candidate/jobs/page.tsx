@@ -27,6 +27,7 @@ interface MatchRow {
   id: string;
   jobId: string;
   score: number;
+  distanceKm: number | null;
   applicationStatus: ApplicationStatus | null;
   reviewAggregate: {
     reviewCount: number;
@@ -41,7 +42,6 @@ interface MatchRow {
     location: string | null;
     remote: boolean;
     accommodationTypes: string[];
-    requiresAiInterview: boolean;
     offersGuaranteedInterview: boolean;
     organization: { name: string };
   };
@@ -53,6 +53,7 @@ interface Profile {
   disabilityCategories: string[];
   accommodationNeeds: string[];
   confirmedNoAccommodationNeeds: boolean;
+  preferredCommunicationModes: string[];
   experienceLevel: string | null;
   preferredLocations: string[];
   openToRemote: boolean;
@@ -71,11 +72,18 @@ export default function CandidateJobsPage() {
   const [error, setError] = useState<string | null>(null);
   const [applyingId, setApplyingId] = useState<string | null>(null);
   const [atsScores, setAtsScores] = useState<Record<string, AtsScoreResult | "loading">>({});
+  const [assessmentCompleted, setAssessmentCompleted] = useState<boolean | null>(null);
 
   function load() {
     apiRequest<{ matches: MatchRow[] }>("/api/candidate/matches")
       .then(({ matches }) => setMatches(matches))
-      .catch((err) => setError(err instanceof ApiClientError ? err.message : "Failed to load matches"));
+      .catch((err) => {
+        if (err instanceof ApiClientError && err.code === "KYC_REQUIRED") {
+          router.replace("/signup/verify");
+          return;
+        }
+        setError(err instanceof ApiClientError ? err.message : "Failed to load matches");
+      });
   }
 
   useEffect(() => {
@@ -83,6 +91,9 @@ export default function CandidateJobsPage() {
     apiRequest<{ profile: Profile }>("/api/candidate/profile").then(({ profile }) => setProfile(profile));
     apiRequest<{ applications: { status: ApplicationStatus }[] }>("/api/candidate/applications").then(
       ({ applications }) => setApplications(applications),
+    );
+    apiRequest<{ status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED" }>("/api/candidate/assessment").then(
+      ({ status }) => setAssessmentCompleted(status === "COMPLETED"),
     );
   }, []);
 
@@ -125,17 +136,17 @@ export default function CandidateJobsPage() {
     }
   }
 
-  async function apply(jobId: string, requiresAiInterview: boolean) {
-    if (requiresAiInterview) {
-      router.push(`/candidate/jobs/${jobId}/interview`);
-      return;
-    }
+  async function apply(jobId: string) {
     setApplyingId(jobId);
     setError(null);
     try {
       await apiRequest(`/api/jobs/${jobId}/apply`, { method: "POST", body: JSON.stringify({}) });
       load();
     } catch (err) {
+      if (err instanceof ApiClientError && err.code === "ASSESSMENT_REQUIRED") {
+        router.push("/candidate/assessment");
+        return;
+      }
       setError(err instanceof ApiClientError ? err.message : "Failed to apply");
     } finally {
       setApplyingId(null);
@@ -167,6 +178,20 @@ export default function CandidateJobsPage() {
             <p role="alert" className="mb-6 text-sm text-danger">
               {error}
             </p>
+          )}
+
+          {assessmentCompleted === false && (
+            <div className="mb-6 flex items-center justify-between gap-4 rounded-md border border-primary/30 bg-primary/5 p-4">
+              <p className="text-sm text-foreground">
+                Complete your assessment to apply for jobs — a one-time, 40-question exam, self-paced with no timer.
+              </p>
+              <Link
+                href="/candidate/assessment"
+                className="whitespace-nowrap rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground"
+              >
+                Take assessment →
+              </Link>
+            </div>
           )}
 
           {(applications && applications.length > 0) || topEmployers.length > 0 ? (
@@ -201,12 +226,13 @@ export default function CandidateJobsPage() {
             </div>
           ) : null}
 
-          <div className="mb-4 flex items-center justify-between gap-4 border-t border-border pt-8">
+          <div className="mb-1 flex items-center justify-between gap-4 border-t border-border pt-8">
             <h2 className="text-lg font-semibold text-foreground">Jobs waiting on you</h2>
             <Link href="/candidate/resume" className="whitespace-nowrap text-sm font-medium text-primary">
               View resume →
             </Link>
           </div>
+          <p className="mb-4 text-xs text-muted-foreground">Sorted nearest to your preferred locations first.</p>
 
           {appliedCount > 0 && (
             <p className="mb-4 text-sm text-muted-foreground">
@@ -248,6 +274,7 @@ export default function CandidateJobsPage() {
                     <p className="text-sm text-muted-foreground">
                       {m.job.organization.name} · {m.job.category} ·{" "}
                       {m.job.remote ? "Remote" : m.job.location ?? "Location not specified"}
+                      {m.distanceKm !== null && !m.job.remote && ` · ${Math.round(m.distanceKm)} km away`}
                     </p>
                     {m.job.offersGuaranteedInterview && (
                       <span className="mt-2 inline-block rounded-full bg-success/10 px-2.5 py-0.5 text-xs font-medium text-success">
@@ -273,22 +300,9 @@ export default function CandidateJobsPage() {
                               .join(", ")} — you may want to confirm before applying.`}
                       </p>
                     )}
-                    {m.job.requiresAiInterview && (
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        This role requires a short AI interview before the employer sees your application.
-                      </p>
-                    )}
                     <div className="mt-3 flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        disabled={applyingId === m.jobId}
-                        onClick={() => apply(m.jobId, m.job.requiresAiInterview)}
-                      >
-                        {applyingId === m.jobId
-                          ? "Applying…"
-                          : m.job.requiresAiInterview
-                            ? "Start AI interview"
-                            : "Apply"}
+                      <Button size="sm" disabled={applyingId === m.jobId} onClick={() => apply(m.jobId)}>
+                        {applyingId === m.jobId ? "Applying…" : "Apply"}
                       </Button>
                       <Button size="sm" variant="secondary" onClick={() => checkAtsScore(m.jobId)}>
                         {atsScores[m.jobId] ? "Hide ATS score" : "Check ATS score"}

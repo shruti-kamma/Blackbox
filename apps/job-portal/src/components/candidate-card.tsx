@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { matchScoreColor } from "@/lib/match-score-color";
-import { ACCOMMODATION_TYPE_OPTIONS, BODY_PART_OPTIONS, DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
+import {
+  ACCOMMODATION_TYPE_OPTIONS,
+  BODY_PART_OPTIONS,
+  DISABILITY_CATEGORY_OPTIONS,
+  PREFERRED_COMMUNICATION_MODE_OPTIONS,
+} from "@/lib/matching-options";
 
 export interface CandidateSummary {
   id: string;
@@ -10,14 +15,20 @@ export interface CandidateSummary {
   accessibilityNeeds: string[];
   accommodationNeeds: string[];
   confirmedNoAccommodationNeeds: boolean;
+  preferredCommunicationModes: string[];
   assistiveTechnologies: { assistiveTechnology: { name: string } }[];
   disabilityDetails: { category: string; severityPercentage: number | null; affectedBodyPart: string | null }[];
   education: { level: string; fieldOfStudy: string | null; institution: string }[];
   skills: { skill: { name: string } }[];
+  candidateAssessment: { status: string; score: number | null } | null;
 }
 
 const ACCOMMODATION_LABELS = Object.fromEntries(
   ACCOMMODATION_TYPE_OPTIONS.map((opt) => [opt.value, opt.label]),
+) as Record<string, string>;
+
+const COMMUNICATION_MODE_LABELS = Object.fromEntries(
+  PREFERRED_COMMUNICATION_MODE_OPTIONS.map((opt) => [opt.value, opt.label]),
 ) as Record<string, string>;
 
 const DISABILITY_LABELS = Object.fromEntries(
@@ -105,9 +116,21 @@ export function CandidateCard({
               </p>
             )
           )}
+          {candidate.preferredCommunicationModes.length > 0 && (
+            <p className="text-sm text-foreground">
+              Prefers:{" "}
+              {candidate.preferredCommunicationModes.map((v) => COMMUNICATION_MODE_LABELS[v] ?? v).join(", ")}
+            </p>
+          )}
           {candidate.accessibilityNeeds.length > 0 && (
             <p className="text-sm text-foreground">Other notes: {candidate.accessibilityNeeds.join(", ")}</p>
           )}
+          <p className="mt-1 text-sm text-foreground">
+            Assessment:{" "}
+            {candidate.candidateAssessment?.status === "COMPLETED"
+              ? `${candidate.candidateAssessment.score}%`
+              : "Not yet completed"}
+          </p>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           {score !== null && (

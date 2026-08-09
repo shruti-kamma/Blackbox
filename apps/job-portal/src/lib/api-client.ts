@@ -2,6 +2,7 @@ export class ApiClientError extends Error {
   constructor(
     message: string,
     public status: number,
+    public code?: string,
   ) {
     super(message);
   }
@@ -14,7 +15,7 @@ export async function apiRequest<T>(url: string, init?: RequestInit): Promise<T>
   });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new ApiClientError(body.error ?? "Request failed", response.status);
+    throw new ApiClientError(body.error ?? "Request failed", response.status, body.code);
   }
   return body as T;
 }

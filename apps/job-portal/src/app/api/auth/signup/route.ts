@@ -23,7 +23,7 @@ export async function POST(request: Request) {
               email: body.email,
               passwordHash,
               role: "CANDIDATE",
-              candidateProfile: { create: { fullName: body.fullName } },
+              candidateProfile: { create: { fullName: body.fullName, phone: body.phone } },
             },
           })
         : await prisma.user.create({

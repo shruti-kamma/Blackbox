@@ -8,7 +8,7 @@ import { ApplicationStatusBadge } from "@/components/application-status";
 import type { ApplicationStatus } from "@/lib/application-status";
 
 interface CandidateDetail {
-  candidate: CandidateSummary;
+  candidate: CandidateSummary & { dateOfBirth: string | null };
   profileCompletionPercent: number;
   nextBestAction: string | null;
   matches: { id: string; score: number; jobId: string; jobTitle: string; organizationName: string }[];
@@ -45,6 +45,12 @@ export default function AdminCandidateDetailPage() {
 
       <div className="mb-10">
         <CandidateCard candidate={data.candidate} score={null} />
+        {data.candidate.dateOfBirth && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Date of birth: {new Date(data.candidate.dateOfBirth).toLocaleDateString()}{" "}
+            <span className="italic">— admin-only, not shown to employers</span>
+          </p>
+        )}
         <p className="mt-2 text-sm text-muted-foreground">
           Profile {data.profileCompletionPercent}% complete
           {data.nextBestAction && (

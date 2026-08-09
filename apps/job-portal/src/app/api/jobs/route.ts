@@ -45,7 +45,6 @@ export async function POST(request: Request) {
           requiredEducationLevel: input.requiredEducationLevel ?? null,
           requiredEducationField: input.requiredEducationField || null,
           requiredExperienceLevel: input.requiredExperienceLevel ?? null,
-          requiresAiInterview: input.requiresAiInterview,
           offersGuaranteedInterview: input.offersGuaranteedInterview,
         },
       });

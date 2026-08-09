@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/auth/current-user";
+import { resolveNearestDistanceKm } from "@blackbox/matching-engine";
+import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 
@@ -8,11 +9,26 @@ import { handleApiError } from "@/lib/api-error";
 // matching worker has scored it above the threshold.
 export async function GET() {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const matches = await prisma.match.findMany({
       where: { candidateId: user.candidateProfile!.id },
       orderBy: { score: "desc" },
       include: { job: { include: { organization: { select: { id: true, name: true } } } } },
+    });
+
+    // Nearest-first display order, like a real-estate/proximity listing —
+    // a secondary sort layered on top of match score, not a replacement for
+    // it. Ties (including "distance unknown for both") fall back to the
+    // existing score-desc order from the query above, since Array.sort is
+    // stable.
+    const preferredLocations = user.candidateProfile!.preferredLocations;
+    const distanceByJobId = new Map(
+      matches.map((m) => [m.jobId, resolveNearestDistanceKm(preferredLocations, m.job.location)]),
+    );
+    matches.sort((a, b) => {
+      const da = distanceByJobId.get(a.jobId);
+      const db = distanceByJobId.get(b.jobId);
+      return (da ?? Infinity) - (db ?? Infinity);
     });
 
     const applications = await prisma.application.findMany({
@@ -61,6 +77,7 @@ export async function GET() {
         ...m,
         applicationStatus: applicationByJobId.get(m.jobId) ?? null,
         reviewAggregate: reviewAggregateByOrgId.get(m.job.organization.id) ?? null,
+        distanceKm: distanceByJobId.get(m.jobId) ?? null,
       })),
     });
   } catch (error) {

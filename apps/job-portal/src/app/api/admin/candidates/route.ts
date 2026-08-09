@@ -24,6 +24,8 @@ export async function GET() {
         createdAt: true,
         _count: { select: { education: true, workExperience: true, skills: true, matches: true, applications: true } },
         applications: { select: { status: true } },
+        user: { select: { emailVerified: true, phoneVerified: true } },
+        candidateAssessment: { select: { status: true, score: true } },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -51,6 +53,8 @@ export async function GET() {
         applicationsCount: c._count.applications,
         hiresCount: c.applications.filter((a) => a.status === "OFFERED").length,
         signedUpAt: c.createdAt,
+        kycVerified: c.user.emailVerified && c.user.phoneVerified,
+        assessmentScore: c.candidateAssessment?.status === "COMPLETED" ? c.candidateAssessment.score : null,
       };
     });
 

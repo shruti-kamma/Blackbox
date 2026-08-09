@@ -7,7 +7,7 @@ export async function Nav() {
   const user = await getCurrentUser();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border px-4">
+    <header className="no-print flex h-16 items-center justify-between border-b border-border px-4">
       <Link href="/" className="font-semibold text-foreground">
         Blackbox Jobs
       </Link>

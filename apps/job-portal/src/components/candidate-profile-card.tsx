@@ -2,7 +2,11 @@ import Link from "next/link";
 import { Button } from "@blackbox/ui";
 import { computeProfileCompletion, type ProfileCompletionInput } from "@/lib/profile-completion";
 import { matchScoreColor } from "@/lib/match-score-color";
-import { ACCOMMODATION_TYPE_OPTIONS, DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
+import {
+  ACCOMMODATION_TYPE_OPTIONS,
+  DISABILITY_CATEGORY_OPTIONS,
+  PREFERRED_COMMUNICATION_MODE_OPTIONS,
+} from "@/lib/matching-options";
 
 const ACCOMMODATION_LABELS = Object.fromEntries(
   ACCOMMODATION_TYPE_OPTIONS.map((opt) => [opt.value, opt.label]),
@@ -12,12 +16,17 @@ const DISABILITY_LABELS = Object.fromEntries(
   DISABILITY_CATEGORY_OPTIONS.map((opt) => [opt.value, opt.label]),
 ) as Record<string, string>;
 
+const COMMUNICATION_MODE_LABELS = Object.fromEntries(
+  PREFERRED_COMMUNICATION_MODE_OPTIONS.map((opt) => [opt.value, opt.label]),
+) as Record<string, string>;
+
 interface CandidateProfileCardProps {
   profile: ProfileCompletionInput & {
     fullName: string;
     updatedAt: string;
     education: { level: string; fieldOfStudy: string | null; institution: string }[];
     assistiveTechnologies: { assistiveTechnology: { name: string } }[];
+    preferredCommunicationModes: string[];
   };
   matchCount: number;
   employerActionCount: number;
@@ -137,6 +146,12 @@ export function CandidateProfileCard({ profile, matchCount, employerActionCount 
               ? profile.assistiveTechnologies.map((a) => a.assistiveTechnology.name).join(", ")
               : "None listed"}
           </p>
+          {profile.preferredCommunicationModes.length > 0 && (
+            <p className="text-foreground">
+              Prefers:{" "}
+              {profile.preferredCommunicationModes.map((v) => COMMUNICATION_MODE_LABELS[v] ?? v).join(", ")}
+            </p>
+          )}
           {profile.accommodationNeeds.length > 0 ? (
             <p className="text-foreground">
               Accommodations needed: {profile.accommodationNeeds.map((v) => ACCOMMODATION_LABELS[v] ?? v).join(", ")}

@@ -40,10 +40,6 @@ Thumbs.db
 # Prisma
 packages/db/generated/
 
-# Locally-stored uploads (AI interview recordings) — dev/testing only, needs
-# real object storage before production
-apps/job-portal/uploads/
-
 # Testing
 coverage/
 playwright-report/

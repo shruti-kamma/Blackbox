@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/auth/current-user";
+import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 
@@ -8,7 +8,7 @@ import { handleApiError } from "@/lib/api-error";
 // *could* apply to.
 export async function GET() {
   try {
-    const user = await requireRole("CANDIDATE");
+    const user = await requireVerifiedCandidate();
     const applications = await prisma.application.findMany({
       where: { candidateId: user.candidateProfile!.id },
       orderBy: { updatedAt: "desc" },

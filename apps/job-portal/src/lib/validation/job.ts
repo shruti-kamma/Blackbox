@@ -22,7 +22,6 @@ export const jobInputSchema = z
     requiredExperienceLevel: experienceLevelSchema.optional(),
     requiredSkills: z.array(z.string().trim().min(1)).default([]),
     preferredAssistiveTechnologies: z.array(z.string().trim().min(1)).default([]),
-    requiresAiInterview: z.boolean().default(false),
     offersGuaranteedInterview: z.boolean().default(false),
     // Subset of requiredSkills the employer is treating as must-have for the
     // guaranteed-interview commitment — see JobSkill.essential. Anything not

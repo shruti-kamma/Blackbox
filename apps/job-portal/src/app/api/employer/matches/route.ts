@@ -22,6 +22,7 @@ export async function GET() {
             skills: { include: { skill: true } },
             assistiveTechnologies: { include: { assistiveTechnology: true } },
             disabilityDetails: true,
+            candidateAssessment: { select: { status: true, score: true } },
           },
         },
       },

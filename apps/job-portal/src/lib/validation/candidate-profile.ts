@@ -38,6 +38,15 @@ export const accommodationTypeSchema = z.enum([
   "OTHER",
 ]);
 
+export const preferredCommunicationModeSchema = z.enum([
+  "SIGN_LANGUAGE_INTERPRETER",
+  "SCREEN_READER_COMPATIBLE",
+  "CAPTIONS_OR_TRANSCRIPT",
+  "EXTRA_RESPONSE_TIME",
+  "WRITTEN_ONLY",
+  "OTHER",
+]);
+
 export const bodyPartSchema = z.enum([
   "LEFT_ARM",
   "RIGHT_ARM",
@@ -93,12 +102,14 @@ export const candidateProfileInputSchema = z.object({
   fullName: z.string().trim().min(1),
   headline: z.string().trim().optional(),
   phone: z.string().trim().optional(),
+  dateOfBirth: z.string().trim().date().optional().or(z.literal("")),
   resumeUrl: z.string().trim().url().optional().or(z.literal("")),
   accessibilityNeeds: z.array(z.string().trim().min(1)).default([]),
   disabilityCategories: z.array(disabilityCategorySchema).default([]),
   disabilityOther: z.string().trim().optional(),
   accommodationNeeds: z.array(accommodationTypeSchema).default([]),
   confirmedNoAccommodationNeeds: z.boolean().default(false),
+  preferredCommunicationModes: z.array(preferredCommunicationModeSchema).default([]),
   disabilityDetails: z.array(disabilityDetailInputSchema).default([]),
   assistiveTechnologies: z.array(z.string().trim().min(1)).default([]),
   experienceLevel: experienceLevelSchema.optional(),

@@ -6,6 +6,7 @@ export const signupSchema = z.discriminatedUnion("role", [
     email: z.string().email(),
     password: z.string().min(8),
     fullName: z.string().min(1),
+    phone: z.string().trim().min(7).max(20),
   }),
   z.object({
     role: z.literal("EMPLOYER"),
@@ -23,4 +24,15 @@ export const signupSchema = z.discriminatedUnion("role", [
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
+});
+
+const verificationChannelSchema = z.enum(["EMAIL", "PHONE"]);
+
+export const sendCodeSchema = z.object({
+  channel: verificationChannelSchema,
+});
+
+export const verifyCodeSchema = z.object({
+  channel: verificationChannelSchema,
+  code: z.string().trim().length(6),
 });

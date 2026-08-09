@@ -6,14 +6,21 @@ import type { DisabilityCategory, EducationLevel, ExperienceLevel, MatchWeights 
 // stays what it was before assistiveTechFit existed — each archetype's prior
 // accommodationFit value is simply split into two numbers that sum back to
 // it, so every vector keeps summing to 1.0 by construction.
+//
+// `assessment` (the one-time platform-wide MCQ score) was added after the
+// other seven were tuned — rather than picking a number for it in isolation,
+// every archetype's original seven values are scaled by 0.9 and assessment
+// takes the freed-up 0.10, so each vector still sums to 1.0 and every
+// criterion's *relative* weight versus the others is unchanged.
 export const DEFAULT_WEIGHTS: MatchWeights = {
-  disability: 0.15,
-  accommodationFit: 0.07,
-  assistiveTechFit: 0.03,
-  skills: 0.3,
-  education: 0.15,
-  experience: 0.15,
-  location: 0.15,
+  disability: 0.135,
+  accommodationFit: 0.063,
+  assistiveTechFit: 0.027,
+  skills: 0.27,
+  education: 0.135,
+  experience: 0.135,
+  location: 0.135,
+  assessment: 0.1,
 };
 
 // Named weight profiles, keyed by which aspect of fit matters most for a
@@ -27,34 +34,37 @@ export const WEIGHT_ARCHETYPES: Record<WeightArchetype, MatchWeights> = {
   // Physical/remote access matters more than skill-overlap nuance;
   // assistive tech (mobility aids) still matters, second-most of the four.
   PHYSICAL_ACCESS: {
-    disability: 0.15,
-    accommodationFit: 0.09,
-    assistiveTechFit: 0.06,
-    skills: 0.25,
-    education: 0.15,
-    experience: 0.1,
-    location: 0.2,
+    disability: 0.135,
+    accommodationFit: 0.081,
+    assistiveTechFit: 0.054,
+    skills: 0.225,
+    education: 0.135,
+    experience: 0.09,
+    location: 0.18,
+    assessment: 0.1,
   },
   // Assistive-tech / communication accommodation-fit matters most — exactly
   // where JAWS/NVDA-type experience is most relevant.
   TOOLING_ACCOMMODATION: {
-    disability: 0.15,
-    accommodationFit: 0.12,
-    assistiveTechFit: 0.08,
-    skills: 0.25,
-    education: 0.15,
-    experience: 0.1,
-    location: 0.15,
+    disability: 0.135,
+    accommodationFit: 0.108,
+    assistiveTechFit: 0.072,
+    skills: 0.225,
+    education: 0.135,
+    experience: 0.09,
+    location: 0.135,
+    assessment: 0.1,
   },
   // Flexible hours/remote matter more; exact field-of-study match matters less.
   FLEXIBILITY: {
-    disability: 0.15,
-    accommodationFit: 0.13,
-    assistiveTechFit: 0.05,
-    skills: 0.25,
-    education: 0.12,
-    experience: 0.1,
-    location: 0.2,
+    disability: 0.135,
+    accommodationFit: 0.117,
+    assistiveTechFit: 0.045,
+    skills: 0.225,
+    education: 0.108,
+    experience: 0.09,
+    location: 0.18,
+    assessment: 0.1,
   },
 };
 
@@ -132,6 +142,12 @@ export function applySeverityAdjustment(
 // A job only becomes visible to a candidate (and vice versa, in the
 // hiring-manager "matched candidates" view) once its score clears this bar.
 export const MATCH_THRESHOLD = 60;
+
+// Distance (km) at which scoreLocation's proximity credit decays to zero —
+// linear falloff, full credit at 0km. 300km roughly covers "same metro
+// area or a realistic commute/relocation radius" vs. "different city
+// entirely" for the Indian city set in geo.ts; tune here, not in scoring.ts.
+export const MAX_LOCATION_DISTANCE_KM = 300;
 
 export const EDUCATION_RANK: Record<EducationLevel, number> = {
   HIGH_SCHOOL: 1,

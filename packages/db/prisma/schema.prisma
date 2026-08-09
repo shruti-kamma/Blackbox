@@ -106,6 +106,42 @@ enum AccommodationType {
   OTHER
 }
 
+// How a candidate prefers to be communicated with during the hiring
+// process itself (interviews, calls, correspondence) — a different axis
+// from AccommodationType (what the *workplace* provides) and
+// AssistiveTechnology (what device/software they use). A candidate can
+// have more than one, e.g. captions and extra response time together.
+enum PreferredCommunicationMode {
+  SIGN_LANGUAGE_INTERPRETER
+  SCREEN_READER_COMPATIBLE
+  CAPTIONS_OR_TRANSCRIPT
+  EXTRA_RESPONSE_TIME
+  WRITTEN_ONLY
+  OTHER
+}
+
+enum VerificationChannel {
+  EMAIL
+  PHONE
+}
+
+// One-time codes for the candidate KYC gate (see User.emailVerified /
+// phoneVerified). A new send invalidates prior unconsumed codes for the
+// same (userId, channel) rather than allowing several to be live at once.
+model VerificationCode {
+  id         String              @id @default(cuid())
+  userId     String
+  user       User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel    VerificationChannel
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int                 @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime            @default(now())
+
+  @@index([userId, channel])
+}
+
 // Groups AssistiveTechnology entries for display/filtering — the specific
 // entries themselves (JAWS, NVDA, crutches, ...) are an open, growing
 // vocabulary (see AssistiveTechnology), not a closed enum like the one above.
@@ -145,7 +181,15 @@ model User {
 
   candidateProfile       CandidateProfile?
   notifications          Notification[]
-  accommodationApprovals Application[]     @relation("ApplicationAccommodationApprover")
+  accommodationApprovals Application[]      @relation("ApplicationAccommodationApprover")
+  verificationCodes      VerificationCode[]
+
+  // KYC gate for candidates: signup creates the User immediately but every
+  // other candidate route is blocked (see requireVerifiedCandidate) until
+  // both flip true. Always true for EMPLOYER/ADMIN — KYC applies to
+  // candidates only.
+  emailVerified Boolean @default(false)
+  phoneVerified Boolean @default(false)
 
   // Set when role = EMPLOYER; the company this user posts jobs on behalf of.
   employerOrgId String?
@@ -171,6 +215,7 @@ model CandidateProfile {
   fullName           String
   headline           String?
   phone              String?
+  dateOfBirth        DateTime? @db.Date
   resumeUrl          String?
   accessibilityNeeds String[] // free-text supplementary notes, not read by scoring — see accommodationNeeds
 
@@ -182,6 +227,13 @@ model CandidateProfile {
   // Controlled accommodation needs, scored against Job.accommodationTypes
   // by the matching engine's accommodationFit criterion.
   accommodationNeeds AccommodationType[]
+
+  // How the candidate prefers to be communicated with during hiring itself
+  // (interviews, calls, correspondence) — not read by matching, purely
+  // informational for HR. Empty = no specific preference, a normal answer,
+  // not an unanswered question (unlike accommodationNeeds, no "confirm
+  // none" gate applies here).
+  preferredCommunicationModes PreferredCommunicationMode[]
 
   // True once the candidate has explicitly confirmed "I don't need
   // accommodations" from the empty-needs prompt — distinguishes that from
@@ -202,7 +254,7 @@ model CandidateProfile {
   disabilityDetails     CandidateDisabilityDetail[]
   applications          Application[]
   matches               Match[]
-  interviews            Interview[]
+  candidateAssessment   CandidateAssessment?
   employerReviews       EmployerReview[]
 
   // Populated by the matching agent from résumé/profile text. Query via raw SQL
@@ -415,10 +467,6 @@ model Job {
   accommodationsOffered String[] // free-text supplementary notes, not read by scoring — see accommodationTypes
   isOpen                Boolean  @default(true)
 
-  // When true, a candidate must complete an AI-screened interview before
-  // their Application (and profile) becomes visible to this job's employer.
-  requiresAiInterview Boolean @default(false)
-
   // When true, the employer commits to interviewing any candidate who has
   // every skill marked JobSkill.essential — deliberately not tied to the
   // overall match score, which blends unrelated factors (location,
@@ -442,7 +490,6 @@ model Job {
   preferredAssistiveTechnologies JobAssistiveTechnology[]
   applications                   Application[]
   matches                        Match[]
-  interviews                     Interview[]
 
   // Populated by the matching agent from the job description. Query via raw SQL.
   embedding Unsupported("vector(1536)")?
@@ -519,11 +566,6 @@ model Application {
   accommodationsApprovedByUserId String?
   accommodationsApprovedBy       User?     @relation("ApplicationAccommodationApprover", fields: [accommodationsApprovedByUserId], references: [id])
 
-  // Set when this application came through a job requiring an AI interview
-  // — the application is only created once that interview is COMPLETED.
-  interviewId String?    @unique
-  interview   Interview? @relation(fields: [interviewId], references: [id])
-
   // Computed once at creation time (see createApplicationFromMatch): true
   // when the job has offersGuaranteedInterview on and this candidate has
   // every skill the employer marked essential. Snapshotted rather than
@@ -537,58 +579,87 @@ model Application {
   @@unique([jobId, candidateId])
 }
 
-enum InterviewStatus {
+// Platform-wide, one-time MCQ assessment, taken once after profile building
+// and gating every job application from then on (not per-job — see
+// requireAssessedCandidate). Replaces the old per-job AI interview.
+enum AssessmentSection {
+  LISTENING
+  SPEAKING
+  READING
+  WRITING
+  APTITUDE
+  SKILL_BASED
+}
+
+enum AssessmentStatus {
   IN_PROGRESS
   COMPLETED
 }
 
-// Chosen once by the candidate before questions are generated — text stays a
-// first-class option alongside video so the interview itself never becomes
-// an accessibility barrier. See lib/ai-interview and video-answer-recorder.tsx.
-enum InterviewMode {
-  TEXT
-  VIDEO
+// The static, curated question bank — language (LISTENING/SPEAKING/READING/
+// WRITING) and APTITUDE sections only. The 10 SKILL_BASED questions per
+// candidate are AI-generated at assessment-start time from their listed
+// skills and never live here — see CandidateAssessmentAnswer, which
+// snapshots question content directly rather than referencing this table.
+model AssessmentQuestion {
+  id           String            @id @default(cuid())
+  section      AssessmentSection
+  prompt       String
+  passage      String? // reading passage / listening script (read aloud client-side)
+  options      String[] // exactly 4
+  correctIndex Int
+
+  createdAt DateTime @default(now())
+
+  @@index([section])
 }
 
-// An AI-conducted screening interview for one candidate/job pair, required
-// only when Job.requiresAiInterview is true. The Application isn't created
-// until this reaches COMPLETED — see interview/submit/route.ts.
-model Interview {
+// One per candidate, ever — candidateProfileId is unique, enforcing the
+// one-time rule. status COMPLETED is the gate checked by
+// requireAssessedCandidate; the score itself is not a pass/fail bar, just a
+// scored input into match weighting (see packages/matching-engine).
+model CandidateAssessment {
   id                 String           @id @default(cuid())
-  jobId              String
-  job                Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  candidateProfileId String
+  candidateProfileId String           @unique
   candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
 
-  status         InterviewStatus @default(IN_PROGRESS)
-  mode           InterviewMode   @default(TEXT)
-  overallScore   Int?
-  overallSummary String?
+  status AssessmentStatus @default(IN_PROGRESS)
 
-  questions   InterviewQuestion[]
-  application Application?
+  // 0-100 overall + per-section-group breakdown, shown to HR. Null until
+  // status flips to COMPLETED.
+  score         Int?
+  languageScore Int?
+  aptitudeScore Int?
+  skillScore    Int?
 
-  createdAt   DateTime  @default(now())
+  answers CandidateAssessmentAnswer[]
+
+  startedAt   DateTime  @default(now())
   completedAt DateTime?
-
-  @@unique([jobId, candidateProfileId])
 }
 
-model InterviewQuestion {
-  id          String    @id @default(cuid())
-  interviewId String
-  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
-  order       Int
-  question    String
-  answer      String?
-  feedback    String? // AI's per-question feedback, filled in at evaluation time
+// Snapshotted question content, not a reference to AssessmentQuestion.id —
+// required anyway since SKILL_BASED rows are AI-generated per-candidate and
+// never live in the bank, and it keeps an honest record of exactly what a
+// candidate was asked even if the bank changes later.
+model CandidateAssessmentAnswer {
+  id                    String              @id @default(cuid())
+  candidateAssessmentId String
+  candidateAssessment   CandidateAssessment @relation(fields: [candidateAssessmentId], references: [id], onDelete: Cascade)
 
-  // Set only when this question was answered by video — the locally-stored
-  // recording's relative path under uploads/interviews/, served through an
-  // authenticated route rather than a public URL.
-  videoUrl String?
+  order         Int
+  section       AssessmentSection
+  prompt        String
+  passage       String?
+  options       String[]
+  correctIndex  Int
+  selectedIndex Int? // null until answered
 
-  @@index([interviewId])
+  // Which of the candidate's listed skills this question targeted — only
+  // set for SKILL_BASED rows.
+  skillName String?
+
+  @@index([candidateAssessmentId])
 }
 
 // A stored, event-driven match produced by the matching engine — created when
