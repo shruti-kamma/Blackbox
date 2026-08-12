@@ -19,7 +19,7 @@ export const ASSESSMENT_COUNTS = {
   APTITUDE_FALLBACK: 25,
 } as const;
 
-function shuffle<T>(items: T[]): T[] {
+export function shuffle<T>(items: T[]): T[] {
   const copy = [...items];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

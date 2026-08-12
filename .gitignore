@@ -59,3 +59,6 @@ docs/handoff/
 # Reference/sample source documents (e.g. annual reports) — large binaries,
 # kept locally for pipeline testing, not committed
 docs/samples/
+
+# Uploaded files (candidate resumes, etc.) — local disk storage, dev only
+apps/job-portal/uploads/

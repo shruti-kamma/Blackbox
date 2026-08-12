@@ -216,7 +216,19 @@ model CandidateProfile {
   headline           String?
   phone              String?
   dateOfBirth        DateTime? @db.Date
+  // An uploaded resume file, not a candidate-typed link — see
+  // POST /api/candidate/resume-upload. resumeUrl holds the stored filename
+  // (e.g. "<candidateProfileId>.pdf") used to locate the file on disk;
+  // resumeFileName holds the original filename for display. Both are only
+  // ever written by the upload route, never by the general profile PATCH.
   resumeUrl          String?
+  resumeFileName     String?
+  // Gates the one-time "autofill from resume vs. enter manually" choice
+  // screen candidates see the first time they reach profile building — set
+  // true the moment either path is chosen (see
+  // POST /api/candidate/profile/onboarding-choice), not on full completion,
+  // so leaving the form partway through never re-shows the choice screen.
+  onboardingCompleted Boolean @default(false)
   accessibilityNeeds String[] // free-text supplementary notes, not read by scoring — see accommodationNeeds
 
   // Controlled disability self-identification, used as the first-pass filter
@@ -411,17 +423,60 @@ model Organization {
   website     String?
   description String?
 
+  // Added for the public rankings site (apps/ranking under job-portal) —
+  // see docs/plans/rankings-site-v1.md. industry/location/logoUrl are
+  // nullable because the current BRSR pipeline has no company-metadata
+  // classification step yet (see docs/decisions.md — "Scoring
+  // methodology"); real companies loaded today have these null rather
+  // than a guessed value. slug is backfilled for existing rows in the
+  // migration that introduced this column — see its migration.sql.
+  slug     String  @unique
+  logoUrl  String?
+  industry String?
+  location String?
+
   employerUsers       User[]
   jobs                Job[]
   crawlRuns           CrawlRun[]
   crawlFindings       CrawlFinding[]
   accessibilityScores AccessibilityScore[]
   employerReviews     EmployerReview[]
+  evidence            Evidence[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([type])
+}
+
+// One row per cited fact pulled from a company's BRSR filing or annual
+// report — an internal audit trail, never shown on the public site. Its
+// only purpose: if a published score is ever questioned, we can point to
+// the exact document, page, and quote that backed it (see
+// docs/decisions.md — "Evidence repository").
+//
+// Not append-only like AccessibilityScore — this is "the current best
+// citation set" for an org+fiscal-year, not a history, so
+// load_evidence.py replaces an org's rows wholesale on each reload rather
+// than accumulating duplicates across re-extractions.
+model Evidence {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  fyFrom Int
+  fyTo   Int
+  metric String // one of the 10 scoring metrics, or "Unmapped" if the field isn't tied to one
+  field  String // raw extraction schema field name, e.g. "policy_summary"
+  quote  String
+  source String // "BRSR" | "Annual Report"
+  sourceDocument String // local_path of the source PDF this citation came from
+  originalPage   Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, fyFrom, fyTo])
+  @@index([organizationId, metric])
 }
 
 // A candidate's review of an employer's disability-inclusion practices —

@@ -212,7 +212,7 @@ export function ComboSearchSelect({
         }}
         className={INPUT_CLASS}
       />
-      {open && options.length > 0 && (
+      {open && value.trim() && (
         <ul className="absolute top-full z-10 mt-1 max-h-56 w-full overflow-y-auto rounded-md border border-border bg-background shadow-md">
           {options.map((opt) => (
             <li key={opt}>
@@ -228,6 +228,11 @@ export function ComboSearchSelect({
               </button>
             </li>
           ))}
+          {options.length === 0 && (
+            <li className="px-3 py-2 text-xs text-muted-foreground">
+              No matches — &ldquo;{value.trim()}&rdquo; will be saved as you&apos;ve typed it.
+            </li>
+          )}
         </ul>
       )}
     </div>

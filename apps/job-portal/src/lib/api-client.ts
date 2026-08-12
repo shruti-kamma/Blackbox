@@ -9,9 +9,13 @@ export class ApiClientError extends Error {
 }
 
 export async function apiRequest<T>(url: string, init?: RequestInit): Promise<T> {
+  // A FormData body (file uploads) needs the browser to set its own
+  // multipart Content-Type with the correct boundary — forcing JSON here
+  // would break the upload.
+  const isFormData = typeof FormData !== "undefined" && init?.body instanceof FormData;
   const response = await fetch(url, {
     ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
+    headers: isFormData ? init?.headers : { "Content-Type": "application/json", ...init?.headers },
   });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {

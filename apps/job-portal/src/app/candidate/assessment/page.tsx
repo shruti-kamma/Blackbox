@@ -39,6 +39,14 @@ const SECTION_LABELS: Record<Section, string> = {
   SKILL_BASED: "Your skills",
 };
 
+// Fixed display order — LSRW together, then Aptitude, then Skills. The
+// underlying stored `order` column is insertion order and isn't reliable to
+// display by directly: a section reconciled after a disability-category
+// change (see lib/assessment/reconcile.ts) gets its top-up questions
+// appended at the end, which would otherwise scatter that section's
+// questions to the back of the exam.
+const SECTION_DISPLAY_ORDER: Section[] = ["LISTENING", "SPEAKING", "READING", "WRITING", "APTITUDE", "SKILL_BASED"];
+
 function speak(text: string) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   window.speechSynthesis.cancel();
@@ -63,6 +71,25 @@ export default function AssessmentPage() {
   const [starting, setStarting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // Listening passages are audio-only by default — showing the text would
+  // let a candidate just read it, defeating the point of the section. The
+  // transcript is available on demand as an accessibility fallback, not
+  // shown up front, and resets to hidden on every new question.
+  const [showTranscript, setShowTranscript] = useState(false);
+
+  // A stable-sorted view of the questions for display/navigation only —
+  // saveAnswerLocally below updates state.questions by id, not by position,
+  // so reordering this derived copy never breaks answer saving.
+  const orderedQuestions = useMemo(() => {
+    if (state.kind !== "in_progress") return [] as Question[];
+    return state.questions
+      .map((q, i) => ({ q, i }))
+      .sort((a, b) => {
+        const rankDiff = SECTION_DISPLAY_ORDER.indexOf(a.q.section) - SECTION_DISPLAY_ORDER.indexOf(b.q.section);
+        return rankDiff !== 0 ? rankDiff : a.i - b.i;
+      })
+      .map(({ q }) => q);
+  }, [state]);
 
   useEffect(() => {
     apiRequest<
@@ -96,10 +123,15 @@ export default function AssessmentPage() {
   // Mark the current question visited whenever it comes into view.
   useEffect(() => {
     if (state.kind !== "in_progress") return;
-    const current = state.questions[index];
+    const current = orderedQuestions[index];
     if (!current) return;
     setVisited((prev) => (prev.has(current.id) ? prev : new Set(prev).add(current.id)));
-  }, [state, index]);
+  }, [state, index, orderedQuestions]);
+
+  // Never carry a revealed transcript over to the next question.
+  useEffect(() => {
+    setShowTranscript(false);
+  }, [index]);
 
   async function startAssessment() {
     setStarting(true);
@@ -145,7 +177,7 @@ export default function AssessmentPage() {
 
   function goTo(i: number) {
     if (state.kind !== "in_progress") return;
-    setIndex(Math.max(0, Math.min(state.questions.length - 1, i)));
+    setIndex(Math.max(0, Math.min(orderedQuestions.length - 1, i)));
   }
 
   function saveAndNext() {
@@ -154,13 +186,13 @@ export default function AssessmentPage() {
 
   function markForReviewAndNext() {
     if (state.kind !== "in_progress") return;
-    toggleMarked(state.questions[index].id);
+    toggleMarked(orderedQuestions[index].id);
     goTo(index + 1);
   }
 
   function clearResponse() {
     if (state.kind !== "in_progress") return;
-    saveAnswer(state.questions[index].id, null);
+    saveAnswer(orderedQuestions[index].id, null);
   }
 
   async function submitAssessment() {
@@ -199,30 +231,20 @@ export default function AssessmentPage() {
     void submitAssessment();
   }
 
-  const current = state.kind === "in_progress" ? state.questions[index] : null;
+  const current = state.kind === "in_progress" ? orderedQuestions[index] : null;
 
-  const sectionOrder = useMemo(() => {
-    if (state.kind !== "in_progress") return [] as Section[];
-    const seen = new Set<Section>();
-    const order: Section[] = [];
-    for (const q of state.questions) {
-      if (!seen.has(q.section)) {
-        seen.add(q.section);
-        order.push(q.section);
-      }
-    }
-    return order;
-  }, [state]);
+  const sectionOrder = useMemo(
+    () => SECTION_DISPLAY_ORDER.filter((section) => orderedQuestions.some((q) => q.section === section)),
+    [orderedQuestions],
+  );
 
   const firstIndexOfSection = useMemo(() => {
     const map = new Map<Section, number>();
-    if (state.kind === "in_progress") {
-      state.questions.forEach((q, i) => {
-        if (!map.has(q.section)) map.set(q.section, i);
-      });
-    }
+    orderedQuestions.forEach((q, i) => {
+      if (!map.has(q.section)) map.set(q.section, i);
+    });
     return map;
-  }, [state]);
+  }, [orderedQuestions]);
 
   const answeredCount = useMemo(
     () => (state.kind === "in_progress" ? state.questions.filter((q) => q.selectedIndex !== null).length : 0),
@@ -348,26 +370,28 @@ export default function AssessmentPage() {
 
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>
-              Question {index + 1} of {state.questions.length} · {SECTION_LABELS[current.section]}
+              Question {index + 1} of {orderedQuestions.length} · {SECTION_LABELS[current.section]}
             </span>
             <span>{answeredCount} answered</span>
           </div>
 
           <div className="flex flex-col gap-4 rounded-md border border-border p-5">
-            {current.passage && (
+            {current.passage && current.section === "LISTENING" && (
               <div className="rounded-md bg-muted p-3">
-                <p className="text-sm text-foreground">{current.passage}</p>
-                {current.section === "LISTENING" && (
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => speak(current.passage!)}
-                  >
+                <div className="flex flex-wrap gap-2">
+                  <Button type="button" variant="secondary" size="sm" onClick={() => speak(current.passage!)}>
                     🔊 Play audio
                   </Button>
-                )}
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setShowTranscript((v) => !v)}>
+                    {showTranscript ? "Hide transcript" : "Show transcript"}
+                  </Button>
+                </div>
+                {showTranscript && <p className="mt-2 text-sm text-foreground">{current.passage}</p>}
+              </div>
+            )}
+            {current.passage && current.section !== "LISTENING" && (
+              <div className="rounded-md bg-muted p-3">
+                <p className="text-sm text-foreground">{current.passage}</p>
               </div>
             )}
             <fieldset>
@@ -410,7 +434,7 @@ export default function AssessmentPage() {
               </Button>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button type="button" variant="secondary" disabled={index === state.questions.length - 1} onClick={saveAndNext}>
+              <Button type="button" variant="secondary" disabled={index === orderedQuestions.length - 1} onClick={saveAndNext}>
                 Save &amp; Next
               </Button>
               <Button type="button" onClick={handleSubmitClick} disabled={submitting}>
@@ -424,7 +448,7 @@ export default function AssessmentPage() {
           <div className="rounded-md border border-border p-3">
             <p className="text-sm font-medium text-foreground">Your progress</p>
             <p className="text-xs text-muted-foreground">
-              {answeredCount} of {state.questions.length} answered
+              {answeredCount} of {orderedQuestions.length} answered
             </p>
           </div>
 
@@ -447,7 +471,7 @@ export default function AssessmentPage() {
                   {SECTION_LABELS[section]}
                 </p>
                 <div className="grid grid-cols-5 gap-1.5">
-                  {state.questions.map((q, i) =>
+                  {orderedQuestions.map((q, i) =>
                     q.section === section ? (
                       <button
                         key={q.id}

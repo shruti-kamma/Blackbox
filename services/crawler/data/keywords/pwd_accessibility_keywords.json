@@ -1,0 +1,64 @@
+{
+  "_comment": "Keyword list used to triage which pages of a BRSR PDF get sent to the LLM for extraction. Edit freely — add terms as you find gaps during review. Matching is case-insensitive substring matching, so keep entries as short/canonical as reasonably possible.",
+
+  "disability_terms": [
+    "persons with disabilities",
+    "person with disability",
+    "PwD",
+    "PwDs",
+    "differently abled",
+    "differently-abled",
+    "specially abled",
+    "divyang",
+    "disability",
+    "disabilities",
+    "disabled employee",
+    "disabled person",
+    "handicapped",
+    "physically challenged",
+    "visually impaired",
+    "hearing impaired",
+    "speech impaired",
+    "wheelchair",
+    "neurodivergent",
+    "neurodiversity"
+  ],
+
+  "accessibility_terms": [
+    "accessibility",
+    "accessible",
+    "barrier-free",
+    "barrier free",
+    "reasonable accommodation",
+    "reasonable accommodations",
+    "assistive technology",
+    "assistive device",
+    "ramp",
+    "accessible infrastructure",
+    "accessible washroom",
+    "accessible restroom",
+    "accessible toilet",
+    "sign language",
+    "screen reader",
+    "braille",
+    "universal design",
+    "inclusive design",
+    "inclusive workplace",
+    "diversity and inclusion",
+    "inclusion and diversity",
+    "equal opportunity policy"
+  ],
+
+  "_comment_anchors": "These aren't keywords to scan for — they're BRSR section headers used to locate Principle 3 and Principle 5 (the sections SEBI's format requires disability/accessibility disclosure under, even when a company's discussion is minimal). The extraction script finds and includes these sections regardless of keyword hits.",
+  "structural_anchors": {
+    "principle_3_start": ["Principle 3"],
+    "principle_4_start": ["Principle 4"],
+    "principle_5_start": ["Principle 5"],
+    "principle_6_start": ["Principle 6"],
+    "table_headers": [
+      "Differently Abled Employees and Workers",
+      "measures for the well-being of employees",
+      "grievance redressal"
+    ]
+  }
+}

@@ -50,7 +50,8 @@ export async function PUT(request: Request) {
           headline: input.headline || null,
           phone: input.phone || null,
           dateOfBirth: input.dateOfBirth ? new Date(input.dateOfBirth) : null,
-          resumeUrl: input.resumeUrl || null,
+          // resumeUrl / resumeFileName are intentionally not written here —
+          // they're only ever set by POST /api/candidate/resume-upload.
           accessibilityNeeds: input.accessibilityNeeds,
           disabilityCategories: input.disabilityCategories,
           disabilityOther: input.disabilityOther || null,

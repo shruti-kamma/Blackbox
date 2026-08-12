@@ -30,8 +30,17 @@
   --spacing-touch-target: 2.75rem;
 }
 
+/*
+ * `@theme` is a Tailwind build-time directive (it emits :root variables +
+ * generates utilities) — nesting it inside @media doesn't preserve the
+ * conditional, so the "dark" values silently won unconditionally regardless
+ * of actual OS preference. Plain :root custom-property overrides here are
+ * genuine runtime CSS, so the media query works as intended. (Confirmed via
+ * the same fix independently made on the rankings site — see
+ * apps/rankings' original globals.css history.)
+ */
 @media (prefers-color-scheme: dark) {
-  @theme {
+  :root {
     --color-background: #0a0a0a;
     --color-foreground: #ededed;
     --color-muted: #1c1c1f;
@@ -53,4 +62,58 @@
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
+}
+
+/*
+ * Accessibility modes, set as [data-a11y="<DisabilityCategory>"] on <html>
+ * by the portal-select flow (see apps/job-portal/src/lib/a11y). Values match
+ * the DisabilityCategory enum exactly. Overriding the same custom properties
+ * @theme already declared above works the same way the dark-mode block
+ * does — Tailwind's generated utilities (bg-primary, text-muted-foreground,
+ * h-touch-target, ...) read these variables at paint time, not build time,
+ * so no new utilities need generating here.
+ *
+ * Hearing / Speech / Chronic illness / Other intentionally have no rules
+ * yet — the attribute is still set for future policy work (captions-by-
+ * default, no-voice-requirement, autosave-everywhere) that isn't a pure CSS
+ * lever. Cognitive's copy-simplification is likewise a content change, not
+ * a CSS one — only its motion reduction is handled here.
+ */
+
+/* Visual: larger base text, low-contrast secondary text removed, stronger focus rings */
+[data-a11y="VISUAL"] {
+  font-size: 118%;
+  --color-muted-foreground: var(--color-foreground);
+}
+[data-a11y="VISUAL"] :focus-visible {
+  outline-width: 3px;
+  outline-offset: 3px;
+}
+
+/* Mobility: every element using h-touch-target/w-touch-target grows platform-wide */
+[data-a11y="MOBILITY"] {
+  --spacing-touch-target: 3.25rem;
+}
+
+/* Cognitive + Mental health: no motion, ever, regardless of OS setting */
+[data-a11y="COGNITIVE"] *,
+[data-a11y="COGNITIVE"] *::before,
+[data-a11y="COGNITIVE"] *::after,
+[data-a11y="MENTAL_HEALTH"] *,
+[data-a11y="MENTAL_HEALTH"] *::before,
+[data-a11y="MENTAL_HEALTH"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Mental health: a deliberately softer, less saturated primary color */
+[data-a11y="MENTAL_HEALTH"] {
+  --color-primary: #5c7a93;
+}
+@media (prefers-color-scheme: dark) {
+  [data-a11y="MENTAL_HEALTH"] {
+    --color-primary: #90abbf;
+  }
 }

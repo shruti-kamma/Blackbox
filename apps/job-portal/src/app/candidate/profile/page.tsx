@@ -6,6 +6,7 @@ import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 import { TagSearchSelect, ComboSearchSelect } from "@/components/search-select";
 import { DatePicker } from "@/components/date-picker";
+import { readA11yCookieClient } from "@/lib/a11y/cookie";
 import {
   ACCOMMODATION_TYPE_OPTIONS,
   BODY_PART_OPTIONS,
@@ -57,7 +58,6 @@ interface ProfileFormState {
   headline: string;
   phone: string;
   dateOfBirth: string;
-  resumeUrl: string;
   accessibilityNeeds: string;
   disabilityCategories: string[];
   disabilityOther: string;
@@ -82,7 +82,6 @@ const emptyForm: ProfileFormState = {
   headline: "",
   phone: "",
   dateOfBirth: "",
-  resumeUrl: "",
   accessibilityNeeds: "",
   disabilityCategories: [],
   disabilityOther: "",
@@ -144,6 +143,8 @@ interface ProfileApiResponse {
     phone: string | null;
     dateOfBirth: string | null;
     resumeUrl: string | null;
+    resumeFileName: string | null;
+    onboardingCompleted: boolean;
     accessibilityNeeds: string[];
     disabilityCategories: string[];
     disabilityOther: string | null;
@@ -176,19 +177,43 @@ export default function CandidateProfilePage() {
   const [status, setStatus] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [showEmptyNeedsPrompt, setShowEmptyNeedsPrompt] = useState(false);
+  // Resume file state lives outside the form — uploading goes through its
+  // own endpoint (multipart, immediate) rather than the JSON profile PUT.
+  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
+  const [resumeUploading, setResumeUploading] = useState(false);
+  const [resumeError, setResumeError] = useState<string | null>(null);
+  const [resumeDragOver, setResumeDragOver] = useState(false);
+
+  // First-time "autofill from resume vs. enter manually" choice — "form" is
+  // the safe default (shown once onboardingCompleted comes back true, or
+  // while still loading, so there's no flash of the choice screen for
+  // anyone who's already past it).
+  const [step, setStep] = useState<"choice" | "autofill" | "form">("form");
+  const [autofillUploading, setAutofillUploading] = useState(false);
+  const [autofillError, setAutofillError] = useState<string | null>(null);
+  const [autofillDragOver, setAutofillDragOver] = useState(false);
 
   useEffect(() => {
     apiRequest<ProfileApiResponse>("/api/candidate/profile")
       .then(({ profile }) => {
         if (!profile) return;
+        setResumeFileName(profile.resumeFileName);
+        setStep(profile.onboardingCompleted ? "form" : "choice");
         setForm({
           fullName: profile.fullName,
           headline: profile.headline ?? "",
           phone: profile.phone ?? "",
           dateOfBirth: profile.dateOfBirth ? profile.dateOfBirth.slice(0, 10) : "",
-          resumeUrl: profile.resumeUrl ?? "",
           accessibilityNeeds: profile.accessibilityNeeds.join(", "),
-          disabilityCategories: profile.disabilityCategories,
+          // Non-destructive prefill from the portal-select modal's choice —
+          // only applied when the profile has no categories saved yet, and
+          // the candidate still has to hit Save for it to actually persist.
+          disabilityCategories:
+            profile.disabilityCategories.length > 0
+              ? profile.disabilityCategories
+              : readA11yCookieClient()
+                ? [readA11yCookieClient() as string]
+                : [],
           disabilityOther: profile.disabilityOther ?? "",
           disabilityDetails: Object.fromEntries(
             profile.disabilityDetails.map((d) => [
@@ -255,6 +280,91 @@ export default function CandidateProfilePage() {
         ? f.disabilityCategories.filter((v) => v !== value)
         : [...f.disabilityCategories, value],
     }));
+  }
+
+  async function uploadResume(file: File) {
+    setResumeError(null);
+    setResumeUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const result = await apiRequest<{ resumeFileName: string }>("/api/candidate/resume-upload", {
+        method: "POST",
+        body: formData,
+      });
+      setResumeFileName(result.resumeFileName);
+    } catch (err) {
+      setResumeError(err instanceof ApiClientError ? err.message : "Failed to upload resume");
+    } finally {
+      setResumeUploading(false);
+    }
+  }
+
+  async function removeResume() {
+    setResumeError(null);
+    try {
+      await apiRequest("/api/candidate/resume-upload", { method: "DELETE" });
+      setResumeFileName(null);
+    } catch (err) {
+      setResumeError(err instanceof ApiClientError ? err.message : "Failed to remove resume");
+    }
+  }
+
+  async function markOnboardingChoiceMade() {
+    await apiRequest("/api/candidate/profile/onboarding-choice", { method: "POST" }).catch(() => {});
+  }
+
+  async function chooseManualEntry() {
+    await markOnboardingChoiceMade();
+    setStep("form");
+  }
+
+  async function uploadForAutofill(file: File) {
+    setAutofillError(null);
+    setAutofillUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const result = await apiRequest<{
+        resumeFileName: string;
+        parsed: {
+          fullName: string;
+          headline: string;
+          phone: string;
+          education: EducationRow[];
+          workExperience: WorkExperienceRow[];
+          skills: string[];
+          certifications: CertificationRow[];
+          projects: ProjectRow[];
+        };
+      }>("/api/candidate/resume-autofill", { method: "POST", body: formData });
+
+      setResumeFileName(result.resumeFileName);
+      const p = result.parsed;
+      setForm((f) => ({
+        ...f,
+        fullName: p.fullName || f.fullName,
+        headline: p.headline || f.headline,
+        phone: p.phone || f.phone,
+        education: p.education.length > 0 ? p.education : f.education,
+        workExperience: p.workExperience.length > 0 ? p.workExperience : f.workExperience,
+        skills: p.skills.length > 0 ? Array.from(new Set([...f.skills, ...p.skills])) : f.skills,
+        certifications: p.certifications.length > 0 ? p.certifications : f.certifications,
+        projects: p.projects.length > 0 ? p.projects : f.projects,
+      }));
+      await markOnboardingChoiceMade();
+      setStep("form");
+    } catch (err) {
+      setAutofillError(err instanceof ApiClientError ? err.message : "Failed to parse resume");
+      // The file itself is saved before parsing is attempted server-side —
+      // reflect that here even on a parse failure, so switching to manual
+      // entry doesn't ask the candidate to upload it again.
+      apiRequest<ProfileApiResponse>("/api/candidate/profile")
+        .then(({ profile }) => profile && setResumeFileName(profile.resumeFileName))
+        .catch(() => {});
+    } finally {
+      setAutofillUploading(false);
+    }
   }
 
   function updateDisabilityDetail(category: string, patch: Partial<DisabilityDetailRow>) {
@@ -389,7 +499,6 @@ export default function CandidateProfilePage() {
         headline: form.headline || undefined,
         phone: form.phone || undefined,
         dateOfBirth: form.dateOfBirth || undefined,
-        resumeUrl: form.resumeUrl || undefined,
         accessibilityNeeds: splitList(form.accessibilityNeeds),
         disabilityCategories: form.disabilityCategories,
         disabilityOther: form.disabilityOther || undefined,
@@ -473,6 +582,110 @@ export default function CandidateProfilePage() {
     );
   }
 
+  if (step === "choice") {
+    return (
+      <main className="mx-auto w-full max-w-2xl px-4 py-16">
+        <h1 className="text-2xl font-semibold text-foreground">Let&apos;s build your profile</h1>
+        <p className="mt-2 text-muted-foreground">How would you like to get started?</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <button
+            type="button"
+            onClick={() => setStep("autofill")}
+            className="flex flex-col items-start gap-2 rounded-lg border-2 border-primary bg-primary/5 p-6 text-left hover:shadow-md"
+          >
+            <span className="text-2xl">📄</span>
+            <span className="text-base font-semibold text-foreground">Autofill using resume</span>
+            <span className="text-sm text-muted-foreground">
+              Drop in your résumé and we&apos;ll fill in your education, skills, and experience for you to
+              review.
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={() => void chooseManualEntry()}
+            className="flex flex-col items-start gap-2 rounded-lg border border-border p-6 text-left hover:shadow-sm"
+          >
+            <span className="text-2xl">⌨️</span>
+            <span className="text-base font-semibold text-foreground">Enter details manually</span>
+            <span className="text-sm text-muted-foreground">
+              Fill in your profile yourself, field by field. You can still attach a résumé along the way.
+            </span>
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (step === "autofill") {
+    return (
+      <main className="mx-auto w-full max-w-2xl px-4 py-16">
+        <button
+          type="button"
+          onClick={() => setStep("choice")}
+          className="text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
+          ← Back
+        </button>
+        <h1 className="mt-3 text-2xl font-semibold text-foreground">Autofill from your résumé</h1>
+        <p className="mt-2 text-muted-foreground">PDF or DOCX — we&apos;ll pull out what we can find.</p>
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setAutofillDragOver(true);
+          }}
+          onDragLeave={() => setAutofillDragOver(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setAutofillDragOver(false);
+            const file = e.dataTransfer.files[0];
+            if (file) void uploadForAutofill(file);
+          }}
+          className={`mt-6 flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-10 text-center ${
+            autofillDragOver ? "border-primary bg-primary/5" : "border-border"
+          }`}
+        >
+          {autofillUploading ? (
+            <p className="text-sm text-muted-foreground">Reading your résumé…</p>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground">Drag and drop your résumé here, or</p>
+              <label htmlFor="autofillFile" className="cursor-pointer text-sm font-medium text-primary underline">
+                browse from your computer
+              </label>
+              <p className="text-xs text-muted-foreground">PDF or DOCX — up to 5MB</p>
+            </>
+          )}
+          <input
+            id="autofillFile"
+            type="file"
+            accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            className="hidden"
+            disabled={autofillUploading}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) void uploadForAutofill(file);
+              e.target.value = "";
+            }}
+          />
+        </div>
+        {autofillError && (
+          <div className="mt-3 flex flex-col gap-2">
+            <p role="alert" className="text-sm text-danger">
+              {autofillError}
+            </p>
+            <button
+              type="button"
+              onClick={() => void chooseManualEntry()}
+              className="self-start text-sm font-medium text-primary underline"
+            >
+              Enter details manually instead
+            </button>
+          </div>
+        )}
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
       <h1 className="mb-6 text-2xl font-semibold text-foreground">Your profile</h1>
@@ -522,16 +735,68 @@ export default function CandidateProfilePage() {
             helperText="Optional — not shown to employers."
           />
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="resumeUrl" className="text-sm font-medium text-foreground">
-              Résumé URL
+            <label htmlFor="resumeFile" className="text-sm font-medium text-foreground">
+              Résumé
             </label>
-            <input
-              id="resumeUrl"
-              type="url"
-              value={form.resumeUrl}
-              onChange={(e) => setForm((f) => ({ ...f, resumeUrl: e.target.value }))}
-              className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
-            />
+            <div
+              onDragOver={(e) => {
+                e.preventDefault();
+                setResumeDragOver(true);
+              }}
+              onDragLeave={() => setResumeDragOver(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setResumeDragOver(false);
+                const file = e.dataTransfer.files[0];
+                if (file) void uploadResume(file);
+              }}
+              className={`flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-6 text-center ${
+                resumeDragOver ? "border-primary bg-primary/5" : "border-border"
+              }`}
+            >
+              {resumeFileName ? (
+                <>
+                  <p className="text-sm font-medium text-foreground">📄 {resumeFileName}</p>
+                  <div className="flex gap-3">
+                    <label htmlFor="resumeFile" className="cursor-pointer text-sm font-medium text-primary underline">
+                      Replace
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => void removeResume()}
+                      className="text-sm font-medium text-danger underline"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-muted-foreground">Drag and drop your résumé here, or</p>
+                  <label htmlFor="resumeFile" className="cursor-pointer text-sm font-medium text-primary underline">
+                    browse from your computer
+                  </label>
+                  <p className="text-xs text-muted-foreground">PDF, DOC, or DOCX — up to 5MB</p>
+                </>
+              )}
+              {resumeUploading && <p className="text-xs text-muted-foreground">Uploading…</p>}
+              <input
+                id="resumeFile"
+                type="file"
+                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadResume(file);
+                  e.target.value = "";
+                }}
+              />
+            </div>
+            {resumeError && (
+              <p role="alert" className="text-sm text-danger">
+                {resumeError}
+              </p>
+            )}
           </div>
         </section>
 

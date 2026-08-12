@@ -4,6 +4,8 @@ import { AssessmentRequiredError, ForbiddenError, KycRequiredError, Unauthorized
 import { AssessmentGenerationError } from "@/lib/assessment/skill-question-generator";
 import { NotMatchedError } from "@/lib/applications";
 import { NoDestinationError, RateLimitedError } from "@/lib/kyc/otp";
+import { ResumeParsingError } from "@/lib/resume-parsing/extract-fields";
+import { UnsupportedResumeFormatError } from "@/lib/resume-parsing/extract-text";
 
 export function handleApiError(error: unknown) {
   if (error instanceof UnauthorizedError) {
@@ -32,6 +34,9 @@ export function handleApiError(error: unknown) {
   }
   if (error instanceof AssessmentGenerationError) {
     return NextResponse.json({ error: error.message }, { status: 502 });
+  }
+  if (error instanceof UnsupportedResumeFormatError || error instanceof ResumeParsingError) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
   console.error(error);
   return NextResponse.json({ error: "Internal server error" }, { status: 500 });

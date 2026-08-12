@@ -103,7 +103,8 @@ export const candidateProfileInputSchema = z.object({
   headline: z.string().trim().optional(),
   phone: z.string().trim().optional(),
   dateOfBirth: z.string().trim().date().optional().or(z.literal("")),
-  resumeUrl: z.string().trim().url().optional().or(z.literal("")),
+  // resumeUrl / resumeFileName are set only via POST /api/candidate/resume-upload,
+  // never through this general profile input.
   accessibilityNeeds: z.array(z.string().trim().min(1)).default([]),
   disabilityCategories: z.array(disabilityCategorySchema).default([]),
   disabilityOther: z.string().trim().optional(),
