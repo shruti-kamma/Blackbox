@@ -7,10 +7,10 @@ import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
 import { PortalSelectTrigger } from "@/components/a11y/portal-select-trigger";
 
 // The umbrella "Blackbox" landing page — the actual front door of the site.
-// Blackbox Jobs (this app) is one product reachable from here via the
-// portal-select modal; Blackbox Rankings is a second, separate product that
-// doesn't exist yet (apps/rankings is an empty scaffold) so it's shown here
-// honestly as "coming soon", not linked anywhere real.
+// Blackbox Jobs is one product reachable from here via the portal-select
+// modal; Blackbox Rankings (ported from the shruti branch) is the second,
+// living at /ranking — see app/ranking/layout.tsx for how its own font/
+// theme/nav are scoped so they don't leak into the rest of this site.
 export default async function Home() {
   const user = await getCurrentUser();
   if (user?.role === "CANDIDATE") redirect("/candidate/jobs");
@@ -41,9 +41,12 @@ export default async function Home() {
             <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:opacity-90">
               Job portal →
             </PortalSelectTrigger>
-            <span className="flex h-touch-target items-center justify-center rounded-md border border-dashed border-border px-6 text-sm font-medium text-muted-foreground">
-              Rankings — coming soon
-            </span>
+            <Link
+              href="/ranking"
+              className="flex h-touch-target items-center justify-center rounded-md border border-border px-6 text-sm font-medium text-foreground hover:bg-muted"
+            >
+              Rankings →
+            </Link>
           </div>
         </div>
       </section>
@@ -63,16 +66,20 @@ export default async function Home() {
             <span className="mt-1 text-sm font-semibold text-primary">Enter Blackbox Jobs →</span>
           </PortalSelectTrigger>
 
-          <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-background p-7 text-left opacity-70">
+          <Link
+            href="/ranking"
+            className="flex flex-col items-start gap-3 rounded-lg border-2 border-border bg-background p-7 text-left hover:shadow-md"
+          >
             <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold tracking-wide text-muted-foreground uppercase">
-              Blackbox Rankings · Coming soon
+              Blackbox Rankings
             </span>
             <h2 className="text-xl font-semibold text-foreground">The accountability layer</h2>
             <p className="text-sm text-muted-foreground">
               A public, ongoing score of how well employers actually deliver on disability inclusion — built
               from real candidate reviews and accommodation history, not a self-submitted survey.
             </p>
-          </div>
+            <span className="mt-1 text-sm font-semibold text-foreground">See the rankings →</span>
+          </Link>
         </div>
       </section>
 
@@ -105,13 +112,16 @@ export default async function Home() {
         <div className="mx-auto w-full max-w-3xl px-4 py-16 text-center">
           <p className="text-xs font-semibold tracking-wide text-primary uppercase">Why one website, not two</p>
           <h2 className="mt-2 text-2xl font-semibold text-balance text-foreground">
-            Jobs and Rankings will run on the same data — so the site is built to feel like it.
+            Jobs and Rankings run on the same data — so the site is built to feel like it.
           </h2>
           <p className="mt-3 text-muted-foreground">
-            A ranking won&apos;t be a separate opinion about a company; it will be built from the same
-            accommodation history and candidate reviews the hiring side already tracks. A job listing will show
-            that employer&apos;s live accessibility score; a ranking page will link straight through to that
-            employer&apos;s open, matched roles.
+            A ranking isn&apos;t a separate opinion about a company; it&apos;s built from the same accommodation
+            history and candidate reviews the hiring side already tracks. The scoring pipeline that populates it
+            is still catching up on real company data — see{" "}
+            <Link href="/ranking/methodology" className="font-medium text-primary underline">
+              the methodology
+            </Link>{" "}
+            for how it works.
           </p>
         </div>
       </section>

@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "@blackbox/config/tailwind/theme.css";
 
+/* Tailwind's automatic content detection only scans this app's own
+   directory tree. The /ranking section's feature code lives in sibling
+   `packages/module-*` packages (ported from the shruti branch), so each
+   one needs an explicit @source or its class names get purged from the
+   production build even though dev looks fine. */
+@source "../../../../packages/module-methodology/src/**/*.tsx";
+@source "../../../../packages/module-leaderboards/src/**/*.tsx";
+@source "../../../../packages/module-org-snapshot/src/**/*.tsx";
+@source "../../../../packages/module-claim/src/**/*.tsx";
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

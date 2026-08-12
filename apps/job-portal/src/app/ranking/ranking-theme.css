@@ -1,0 +1,50 @@
+/*
+ * Rankings-section theme overrides, ported from apps/rankings' globals.css
+ * (shruti branch) — with every selector rescoped from bare :root /
+ * :root[data-theme] to #ranking-root, since this now shares one document
+ * with the rest of job-portal instead of being its own standalone <html>.
+ * Scoping this way means the indigo accent, card token, and Lexend font
+ * only apply inside the /ranking section — everything else on the site
+ * keeps job-portal's own Geist font and blue accent untouched.
+ */
+
+#ranking-root {
+  --font-sans: var(--font-lexend);
+  --font-serif: var(--font-lexend);
+
+  /* Minimal MVP theme: black/white/gray from the shared base theme, with a
+     single indigo accent for interactive/primary elements. */
+  --color-primary: #06038d;
+  --color-focus-ring: #06038d;
+  --color-card: #ffffff;
+
+  font-family: var(--font-sans), sans-serif;
+}
+
+/* No-JS / no-stored-preference fallback — ThemeToggle overrides this via
+   [data-theme] on #ranking-root once a preference exists. Lighter indigo in
+   dark mode, since the light-mode value is too close to the near-black
+   background to read as an accent. */
+@media (prefers-color-scheme: dark) {
+  #ranking-root:not([data-theme="light"]) {
+    --color-primary: #6a67ff;
+    --color-focus-ring: #6a67ff;
+    --color-card: #0a0a0a;
+  }
+}
+
+/* Explicit theme, set on #ranking-root by the blocking init script in
+   ranking/layout.tsx and by ThemeToggle — takes priority over the
+   system-preference fallback above regardless of source order, since an
+   attribute selector always out-specifies a plain selector. */
+#ranking-root[data-theme="light"] {
+  --color-primary: #06038d;
+  --color-focus-ring: #06038d;
+  --color-card: #ffffff;
+}
+
+#ranking-root[data-theme="dark"] {
+  --color-primary: #6a67ff;
+  --color-focus-ring: #6a67ff;
+  --color-card: #0a0a0a;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@blackbox/module-leaderboards",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@blackbox/rankings-data": "workspace:*",
+    "@blackbox/ui": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": "^16",
+    "react": "^19"
+  },
+  "devDependencies": {
+    "@blackbox/config": "workspace:*",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "next": "16.2.10",
+    "typescript": "^5"
+  }
+}

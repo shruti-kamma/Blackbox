@@ -36,7 +36,7 @@ export async function Nav() {
             <PortalSelectTrigger className={LINK_CLASS} style={{ color: NAV_TEXT_SOFT }}>
               Job portal
             </PortalSelectTrigger>
-            <Link href="/#rankings" className={LINK_CLASS} style={{ color: NAV_TEXT_SOFT }}>
+            <Link href="/ranking" className={LINK_CLASS} style={{ color: NAV_TEXT_SOFT }}>
               Rankings
             </Link>
             <Link href="/#mission" className={LINK_CLASS} style={{ color: NAV_TEXT_SOFT }}>

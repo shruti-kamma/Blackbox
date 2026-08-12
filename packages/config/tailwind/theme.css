@@ -30,8 +30,17 @@
   --spacing-touch-target: 2.75rem;
 }
 
+/*
+ * `@theme` is a Tailwind build-time directive (it emits :root variables +
+ * generates utilities) — nesting it inside @media doesn't preserve the
+ * conditional, so the "dark" values silently won unconditionally regardless
+ * of actual OS preference. Plain :root custom-property overrides here are
+ * genuine runtime CSS, so the media query works as intended. (Confirmed via
+ * the same fix independently made on the rankings site — see
+ * apps/rankings' original globals.css history.)
+ */
 @media (prefers-color-scheme: dark) {
-  @theme {
+  :root {
     --color-background: #0a0a0a;
     --color-foreground: #ededed;
     --color-muted: #1c1c1f;

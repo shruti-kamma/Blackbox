@@ -4,6 +4,7 @@ import { createSessionToken, sessionCookieOptions } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
 import { signupSchema } from "@/lib/validation/auth";
 import { handleApiError } from "@/lib/api-error";
+import { uniqueOrgSlug } from "@/lib/slugify";
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +16,13 @@ export async function POST(request: Request) {
     }
 
     const passwordHash = await hashPassword(body.password);
+
+    // Only needed if this signup ends up creating a brand-new Organization
+    // (connectOrCreate below just connects if one with this name already
+    // exists) — computed up front since Organization.slug is required
+    // (the rankings site, ported from the shruti branch, links to an org
+    // by slug).
+    const newOrgSlug = body.role === "EMPLOYER" ? await uniqueOrgSlug(body.organizationName) : undefined;
 
     const user =
       body.role === "CANDIDATE"
@@ -36,7 +44,7 @@ export async function POST(request: Request) {
               employerOrg: {
                 connectOrCreate: {
                   where: { name: body.organizationName },
-                  create: { name: body.organizationName, type: body.organizationType },
+                  create: { name: body.organizationName, type: body.organizationType, slug: newOrgSlug! },
                 },
               },
             },
