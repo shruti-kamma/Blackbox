@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Lexend, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { Nav } from "@/components/nav";
 import { PortalSelectProvider } from "@/components/a11y/portal-select-provider";
 import { A11Y_COOKIE_NAME } from "@/lib/a11y/cookie";
-import { RANKING_THEME_INIT_SCRIPT } from "@/lib/ranking-theme";
 
 // Sitewide editorial redesign (see docs/decisions.md — "Editorial
 // redesign"), extended here from its original /ranking-only scope —
@@ -45,12 +43,6 @@ export default async function RootLayout({
       data-a11y={a11yMode || undefined}
     >
       <body className="min-h-full flex flex-col">
-        {/* beforeInteractive is only valid declared in the root layout —
-            this script no-ops everywhere except /ranking (it targets
-            #ranking-root, which only exists there); see lib/ranking-theme.ts */}
-        <Script id="ranking-theme-init" strategy="beforeInteractive">
-          {RANKING_THEME_INIT_SCRIPT}
-        </Script>
         <PortalSelectProvider>
           <Nav />
           {children}

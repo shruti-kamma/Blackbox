@@ -24,24 +24,14 @@
    base theme's default blue (#1d4ed8). ranking-theme.css's #ranking-root
    scoping still re-declares the same values within /ranking — now
    redundant there but harmless (identical values), left alone rather than
-   risk destabilizing that section's own working theme-toggle mechanism. */
+   risk destabilizing that section's own working theme-toggle mechanism.
+   Light mode is the deliberate default sitewide, regardless of OS
+   preference — see packages/config/tailwind/theme.css's own comment on
+   why there's no @media (prefers-color-scheme: dark) fallback anywhere. */
 @theme {
   --color-primary: #06038d;
   --color-secondary: #7c3ca1;
   --color-focus-ring: #06038d;
-}
-
-/* Placeholder-safe dark values only (not a dark-mode design pass — see
-   docs/decisions.md, this redesign is light-mode-first) — prevents navy
-   from going low-contrast against the shared base theme's existing dark
-   background for OS-dark-mode users. Same values already used for
-   /ranking's own dark-mode fallback. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #6a67ff;
-    --color-secondary: #b28ce0;
-    --color-focus-ring: #6a67ff;
-  }
 }
 
 body {
