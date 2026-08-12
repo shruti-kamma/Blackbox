@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 import { ASSESSMENT_COUNTS, pickAptitudeQuestions, pickLanguageQuestions, type BankQuestion } from "@/lib/assessment/question-bank";
 import { generateSkillQuestions } from "@/lib/assessment/skill-question-generator";
+import { reconcileLanguageSections } from "@/lib/assessment/reconcile";
 
 export async function POST() {
   try {
@@ -18,9 +19,20 @@ export async function POST() {
       include: { answers: { orderBy: { order: "asc" } } },
     });
     if (existing) {
+      if (existing.status === "IN_PROGRESS") {
+        const profile = await prisma.candidateProfile.findUniqueOrThrow({
+          where: { id: candidateProfileId },
+          select: { disabilityCategories: true },
+        });
+        await reconcileLanguageSections(existing.id, profile.disabilityCategories);
+      }
+      const answers = await prisma.candidateAssessmentAnswer.findMany({
+        where: { candidateAssessmentId: existing.id },
+        orderBy: { order: "asc" },
+      });
       return NextResponse.json({
         status: existing.status,
-        questions: existing.answers.map((a) => ({
+        questions: answers.map((a) => ({
           id: a.id,
           order: a.order,
           section: a.section,

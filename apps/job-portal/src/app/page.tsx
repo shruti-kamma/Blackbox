@@ -4,7 +4,13 @@ import { MATCH_THRESHOLD } from "@blackbox/matching-engine";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
+import { PortalSelectTrigger } from "@/components/a11y/portal-select-trigger";
 
+// The umbrella "Blackbox" landing page — the actual front door of the site.
+// Blackbox Jobs (this app) is one product reachable from here via the
+// portal-select modal; Blackbox Rankings is a second, separate product that
+// doesn't exist yet (apps/rankings is an empty scaffold) so it's shown here
+// honestly as "coming soon", not linked anywhere real.
 export default async function Home() {
   const user = await getCurrentUser();
   if (user?.role === "CANDIDATE") redirect("/candidate/jobs");
@@ -20,75 +26,58 @@ export default async function Home() {
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="border-b border-border">
-        <div className="mx-auto grid w-full max-w-5xl gap-10 px-4 py-20 md:grid-cols-2 md:items-center md:py-28">
-          <div>
-            <h1 className="text-4xl font-semibold text-balance text-foreground md:text-5xl">
-              Hiring, matched on what actually fits.
-            </h1>
-            <p className="mt-4 max-w-lg text-lg text-muted-foreground">
-              Blackbox Jobs scores every candidate against every role on disability-category fit, skills,
-              education, experience, and location — so candidates only see roles they clear a{" "}
-              {MATCH_THRESHOLD}% bar for, and hiring managers only review applicants who already do.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/signup"
-                className="flex h-touch-target items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:opacity-90"
-              >
-                Find a matched job
-              </Link>
-              <Link
-                href="/signup"
-                className="flex h-touch-target items-center justify-center rounded-md border border-border px-6 text-sm font-medium text-foreground hover:bg-muted"
-              >
-                Post a role
-              </Link>
-              <Link
-                href="/login"
-                className="flex h-touch-target items-center justify-center px-3 text-sm font-medium text-primary"
-              >
-                Sign in →
-              </Link>
-            </div>
+        <div className="mx-auto w-full max-w-3xl px-4 py-20 text-center md:py-28">
+          <p className="text-xs font-semibold tracking-wide text-primary uppercase">
+            Blackbox · An accessibility-first hiring ecosystem
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold text-balance text-foreground md:text-5xl">
+            Hiring, and accountability for it, in one place.
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
+            One platform where candidates with disabilities find genuinely matched roles, and employers hire
+            against real, enforced accommodation commitments — not just promises.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:opacity-90">
+              Job portal →
+            </PortalSelectTrigger>
+            <span className="flex h-touch-target items-center justify-center rounded-md border border-dashed border-border px-6 text-sm font-medium text-muted-foreground">
+              Rankings — coming soon
+            </span>
           </div>
+        </div>
+      </section>
 
-          {/* Illustrative example match card, styled the same as the real matched-jobs feed */}
-          <div className="justify-self-center md:justify-self-end">
-            <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              Example match
+      {/* Two products */}
+      <section id="rankings" className="border-b border-border bg-muted">
+        <div className="mx-auto grid w-full max-w-5xl gap-5 px-4 py-14 md:grid-cols-2">
+          <PortalSelectTrigger className="flex flex-col items-start gap-3 rounded-lg border-2 border-primary bg-background p-7 text-left hover:shadow-md">
+            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-wide text-primary uppercase">
+              Blackbox Jobs
+            </span>
+            <h2 className="text-xl font-semibold text-foreground">The hiring platform</h2>
+            <p className="text-sm text-muted-foreground">
+              Candidates build a verified profile, take one accessibility-adjusted assessment, and get matched
+              to roles that already fit. Employers hire against enforced accommodation commitments.
             </p>
-            <div
-              className="w-full max-w-sm rounded-md border-2 p-4"
-              style={{ borderColor: "hsl(112.6 65% 40%)", backgroundColor: "hsl(112.6 70% 45% / 0.08)" }}
-            >
-              <div className="flex items-center justify-between">
-                <h2 className="font-medium text-foreground">Frontend Developer</h2>
-                <span className="text-sm font-semibold" style={{ color: "hsl(112.6 70% 32%)" }}>
-                  92% match
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground">TechNova Solutions · Software Engineering · Remote</p>
-              <dl className="mt-3 flex flex-col gap-1 text-xs text-muted-foreground">
-                <div className="flex justify-between gap-2">
-                  <dt>Skills coverage</dt>
-                  <dd className="text-foreground">3 of 3 required skills</dd>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <dt>Education</dt>
-                  <dd className="text-foreground">Meets required level and field</dd>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <dt>Location</dt>
-                  <dd className="text-foreground">Remote, open to remote work</dd>
-                </div>
-              </dl>
-            </div>
+            <span className="mt-1 text-sm font-semibold text-primary">Enter Blackbox Jobs →</span>
+          </PortalSelectTrigger>
+
+          <div className="flex flex-col items-start gap-3 rounded-lg border border-border bg-background p-7 text-left opacity-70">
+            <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold tracking-wide text-muted-foreground uppercase">
+              Blackbox Rankings · Coming soon
+            </span>
+            <h2 className="text-xl font-semibold text-foreground">The accountability layer</h2>
+            <p className="text-sm text-muted-foreground">
+              A public, ongoing score of how well employers actually deliver on disability inclusion — built
+              from real candidate reviews and accommodation history, not a self-submitted survey.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Real, live stats */}
-      <section className="border-b border-border bg-muted">
+      <section className="border-b border-border">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4">
           <div>
             <p className="text-3xl font-semibold tabular-nums text-foreground">{openJobsCount}</p>
@@ -111,87 +100,37 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="border-b border-border">
-        <div className="mx-auto w-full max-w-5xl px-4 py-16">
-          <h2 className="text-2xl font-semibold text-foreground">How it works</h2>
-          <div className="mt-8 grid gap-10 md:grid-cols-2">
-            <div>
-              <h3 className="text-sm font-semibold tracking-wide text-primary uppercase">For candidates</h3>
-              <ol className="mt-4 flex flex-col gap-5">
-                {[
-                  ["Build one profile", "Disability categories, education, skills, experience, accommodations you need — filled in once."],
-                  ["Get matched automatically", "Every new posting is scored against your profile the moment it goes live. No searching required."],
-                  ["Apply with confidence", `You only ever see roles that already clear the ${MATCH_THRESHOLD}% fit threshold.`],
-                ].map(([title, body], i) => (
-                  <li key={title} className="flex gap-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                      {i + 1}
-                    </span>
-                    <div>
-                      <p className="font-medium text-foreground">{title}</p>
-                      <p className="text-sm text-muted-foreground">{body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold tracking-wide text-primary uppercase">For employers</h3>
-              <ol className="mt-4 flex flex-col gap-5">
-                {[
-                  ["Post a role", "Target specific disability categories, or leave it open to all — your call."],
-                  ["We do the matching", "Candidates are scored the moment you publish. No manual search or resume pile."],
-                  ["Review real fits", "See match scores and the full criteria breakdown before you open a single application."],
-                ].map(([title, body], i) => (
-                  <li key={title} className="flex gap-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                      {i + 1}
-                    </span>
-                    <div>
-                      <p className="font-medium text-foreground">{title}</p>
-                      <p className="text-sm text-muted-foreground">{body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Accessibility commitment */}
+      {/* Why one website, not two */}
       <section className="border-b border-border bg-muted">
-        <div className="mx-auto w-full max-w-5xl px-4 py-16">
-          <h2 className="text-2xl font-semibold text-foreground">Built around disability categories, not around resumes</h2>
-          <p className="mt-3 max-w-2xl text-muted-foreground">
-            Every profile and every posting is scored on real accommodation and category fit, not just
-            keyword overlap. Candidates list the accommodations they need; employers list what they offer.
+        <div className="mx-auto w-full max-w-3xl px-4 py-16 text-center">
+          <p className="text-xs font-semibold tracking-wide text-primary uppercase">Why one website, not two</p>
+          <h2 className="mt-2 text-2xl font-semibold text-balance text-foreground">
+            Jobs and Rankings will run on the same data — so the site is built to feel like it.
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            A ranking won&apos;t be a separate opinion about a company; it will be built from the same
+            accommodation history and candidate reviews the hiring side already tracks. A job listing will show
+            that employer&apos;s live accessibility score; a ranking page will link straight through to that
+            employer&apos;s open, matched roles.
           </p>
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {DISABILITY_CATEGORY_OPTIONS.map((c) => (
-              <li
-                key={c.value}
-                className="rounded-full border border-border bg-background px-3 py-1 text-sm text-foreground"
-              >
-                {c.label}
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
-      {/* Closing CTA */}
-      <section className="bg-primary">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-start gap-4 px-4 py-16 text-primary-foreground sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-2xl font-semibold text-balance">Ready to get matched?</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/signup"
-              className="flex h-touch-target items-center justify-center rounded-md bg-background px-6 text-sm font-medium text-foreground hover:opacity-90"
-            >
-              Create your profile
-            </Link>
+      {/* Mission */}
+      <section id="mission" className="bg-primary">
+        <div className="mx-auto w-full max-w-2xl px-4 py-16 text-center text-primary-foreground">
+          <p className="text-xs font-semibold tracking-wide uppercase opacity-80">The mission, in one line</p>
+          <h2 className="mt-2 text-2xl font-semibold text-balance">
+            Make accessibility enforceable, not just a form field.
+          </h2>
+          <p className="mt-3 opacity-90">
+            Every mechanism on Blackbox either verifies something real, gates on something real, or holds
+            someone accountable for something real — on the hiring side and the rankings side alike.
+          </p>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-md bg-background px-6 text-sm font-medium text-foreground hover:opacity-90">
+              Job portal →
+            </PortalSelectTrigger>
             <Link
               href="/login"
               className="flex h-touch-target items-center justify-center rounded-md border border-primary-foreground px-6 text-sm font-medium hover:bg-primary-foreground/10"

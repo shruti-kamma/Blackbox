@@ -44,3 +44,6 @@ packages/db/generated/
 coverage/
 playwright-report/
 test-results/
+
+# Uploaded files (candidate resumes, etc.) — local disk storage, dev only
+apps/job-portal/uploads/

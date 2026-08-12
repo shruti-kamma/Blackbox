@@ -216,7 +216,19 @@ model CandidateProfile {
   headline           String?
   phone              String?
   dateOfBirth        DateTime? @db.Date
+  // An uploaded resume file, not a candidate-typed link — see
+  // POST /api/candidate/resume-upload. resumeUrl holds the stored filename
+  // (e.g. "<candidateProfileId>.pdf") used to locate the file on disk;
+  // resumeFileName holds the original filename for display. Both are only
+  // ever written by the upload route, never by the general profile PATCH.
   resumeUrl          String?
+  resumeFileName     String?
+  // Gates the one-time "autofill from resume vs. enter manually" choice
+  // screen candidates see the first time they reach profile building — set
+  // true the moment either path is chosen (see
+  // POST /api/candidate/profile/onboarding-choice), not on full completion,
+  // so leaving the form partway through never re-shows the choice screen.
+  onboardingCompleted Boolean @default(false)
   accessibilityNeeds String[] // free-text supplementary notes, not read by scoring — see accommodationNeeds
 
   // Controlled disability self-identification, used as the first-pass filter

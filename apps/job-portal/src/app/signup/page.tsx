@@ -1,14 +1,31 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState, type FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 
+// useSearchParams requires a Suspense boundary in the App Router — the
+// actual form lives in a child component, this default export is just that
+// boundary.
 export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
+  );
+}
+
+function SignupForm() {
   const router = useRouter();
-  const [role, setRole] = useState<"CANDIDATE" | "EMPLOYER">("CANDIDATE");
+  const searchParams = useSearchParams();
+  // Seeds the role toggle (and, for employers, the org-type select below)
+  // from the portal-select modal's choice, e.g. /signup?role=EMPLOYER or
+  // /signup?role=EMPLOYER&orgType=UNIVERSITY.
+  const [role, setRole] = useState<"CANDIDATE" | "EMPLOYER">(
+    searchParams.get("role") === "EMPLOYER" ? "EMPLOYER" : "CANDIDATE",
+  );
   const [hrTrained, setHrTrained] = useState<"" | "YES" | "NO">("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -157,7 +174,7 @@ export default function SignupPage() {
               <select
                 id="organizationType"
                 name="organizationType"
-                defaultValue="COMPANY"
+                defaultValue={searchParams.get("orgType") === "UNIVERSITY" ? "UNIVERSITY" : "COMPANY"}
                 className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
               >
                 <option value="COMPANY">Company</option>

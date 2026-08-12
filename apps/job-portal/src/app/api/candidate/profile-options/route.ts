@@ -3,6 +3,7 @@ import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 import { SEED_INSTITUTIONS } from "@/lib/institution-seed";
+import { SEED_SKILLS } from "@/lib/skill-seed";
 
 const FIELDS = ["skills", "categories", "locations", "institutions", "fieldsOfStudy"] as const;
 type Field = (typeof FIELDS)[number];
@@ -10,22 +11,30 @@ type Field = (typeof FIELDS)[number];
 const MAX_RESULTS = 20;
 
 // Every option list here is derived from real, already-submitted data
-// (Skill rows, Job postings, other candidates' Education rows). Institutions
-// also gets a static starter seed (see institution-seed.ts) so search isn't
-// empty on day one; everything else grows purely from submissions. Typing a
-// genuinely new value and saving it is what grows the pool for the next
-// person to search: no separate "add to vocabulary" step needed for
-// anything except skills, which already had a structured upsert-by-name
-// table (see PUT /api/candidate/profile).
+// (Skill rows, Job postings, other candidates' Education rows). Skills and
+// institutions also get a static starter seed (see skill-seed.ts and
+// institution-seed.ts) so search isn't empty on day one; everything else
+// grows purely from submissions. Typing a genuinely new value and saving it
+// is what grows the pool for the next person to search — for skills, that
+// still goes through the existing upsert-by-name table (see PUT
+// /api/candidate/profile), the seed list here is only a search-time fallback.
 async function suggestionsFor(field: Field, query: string): Promise<string[]> {
   if (field === "skills") {
+    // Real submitted skills first, topped up with the static industry seed
+    // list so search isn't empty before real submissions build up the pool
+    // — same pattern as institutions below.
     const rows = await prisma.skill.findMany({
       where: { name: { contains: query, mode: "insensitive" } },
-      orderBy: { name: "asc" },
       take: MAX_RESULTS,
       select: { name: true },
     });
-    return rows.map((r) => r.name);
+    const combined = new Set<string>(rows.map((r) => r.name));
+    const lowerQuery = query.toLowerCase();
+    for (const seed of SEED_SKILLS) {
+      if (combined.size >= MAX_RESULTS) break;
+      if (seed.toLowerCase().includes(lowerQuery)) combined.add(seed);
+    }
+    return Array.from(combined).sort().slice(0, MAX_RESULTS);
   }
 
   if (field === "categories") {
