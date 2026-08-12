@@ -40,7 +40,22 @@ Thumbs.db
 # Prisma
 packages/db/generated/
 
+# Crawler/scoring-agent output (bulk-downloaded/generated, not source — keep data/keywords/ etc. tracked)
+services/*/data/reports/
+services/*/data/annual_reports/
+services/*/data/trimmed_pdfs/
+services/*/data/pwd_extractions/
+services/*/data/scores/
+services/*/data/*.json
+
 # Testing
 coverage/
 playwright-report/
 test-results/
+
+# Stakeholder handoff docs — generated per-request, not project source
+docs/handoff/
+
+# Reference/sample source documents (e.g. annual reports) — large binaries,
+# kept locally for pipeline testing, not committed
+docs/samples/
