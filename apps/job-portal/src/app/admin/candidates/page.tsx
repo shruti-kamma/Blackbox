@@ -57,7 +57,7 @@ export default function AdminCandidatesPage() {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-12">
-      <h1 className="mb-2 text-2xl font-semibold text-foreground">Candidates</h1>
+      <h1 className="mb-2 text-3xl font-semibold tracking-tight text-foreground">Candidates</h1>
       <p className="mb-6 text-sm text-muted-foreground">Every candidate on the platform.</p>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">

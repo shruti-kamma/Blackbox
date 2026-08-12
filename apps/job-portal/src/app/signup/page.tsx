@@ -66,7 +66,7 @@ function SignupForm() {
 
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-16">
-      <h1 className="text-2xl font-semibold text-foreground">Create an account</h1>
+      <h1 className="text-3xl font-semibold tracking-tight text-foreground">Create an account</h1>
 
       <fieldset className="flex flex-col gap-1.5">
         <legend className="text-sm font-medium text-foreground">I am a</legend>

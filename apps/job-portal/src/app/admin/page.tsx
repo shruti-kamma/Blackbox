@@ -124,7 +124,7 @@ export default function AdminOverviewPage() {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-12">
-      <h1 className="mb-2 text-2xl font-semibold text-foreground">Admin overview</h1>
+      <h1 className="mb-2 text-3xl font-semibold tracking-tight text-foreground">Admin overview</h1>
       <p className="mb-8 text-sm text-muted-foreground">Platform-wide activity across every employer and candidate.</p>
 
       {data === null ? (

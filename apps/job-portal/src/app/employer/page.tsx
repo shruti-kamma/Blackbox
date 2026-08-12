@@ -54,7 +54,7 @@ export default function EmployerHomePage() {
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">Matched candidates</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Matched candidates</h1>
           <p className="text-sm text-muted-foreground">
             Grouped by job posting — click a candidate&apos;s name to see their full profile and resume.
           </p>

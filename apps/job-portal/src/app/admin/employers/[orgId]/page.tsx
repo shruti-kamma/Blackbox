@@ -65,7 +65,7 @@ export default function AdminEmployerDetailPage() {
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
       <p className="mb-1 text-xs text-muted-foreground">{data.organization.type}</p>
-      <h1 className="mb-2 text-2xl font-semibold text-foreground">{data.organization.name}</h1>
+      <h1 className="mb-2 text-3xl font-semibold tracking-tight text-foreground">{data.organization.name}</h1>
       {data.organization.website && (
         <a href={data.organization.website} className="text-sm text-primary underline" target="_blank" rel="noreferrer">
           {data.organization.website}

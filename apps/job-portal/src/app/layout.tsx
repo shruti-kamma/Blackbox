@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lexend, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { Nav } from "@/components/nav";
@@ -8,8 +8,12 @@ import { PortalSelectProvider } from "@/components/a11y/portal-select-provider";
 import { A11Y_COOKIE_NAME } from "@/lib/a11y/cookie";
 import { RANKING_THEME_INIT_SCRIPT } from "@/lib/ranking-theme";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Sitewide editorial redesign (see docs/decisions.md — "Editorial
+// redesign"), extended here from its original /ranking-only scope —
+// loaded once for the whole app now, rather than duplicated in
+// app/ranking/layout.tsx's own scoped instance.
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
 });
 
@@ -37,7 +41,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${lexend.variable} ${geistMono.variable} h-full antialiased`}
       data-a11y={a11yMode || undefined}
     >
       <body className="min-h-full flex flex-col">

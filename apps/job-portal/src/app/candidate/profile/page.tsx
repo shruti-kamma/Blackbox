@@ -585,7 +585,7 @@ export default function CandidateProfilePage() {
   if (step === "choice") {
     return (
       <main className="mx-auto w-full max-w-2xl px-4 py-16">
-        <h1 className="text-2xl font-semibold text-foreground">Let&apos;s build your profile</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Let&apos;s build your profile</h1>
         <p className="mt-2 text-muted-foreground">How would you like to get started?</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <button
@@ -626,7 +626,7 @@ export default function CandidateProfilePage() {
         >
           ← Back
         </button>
-        <h1 className="mt-3 text-2xl font-semibold text-foreground">Autofill from your résumé</h1>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">Autofill from your résumé</h1>
         <p className="mt-2 text-muted-foreground">PDF or DOCX — we&apos;ll pull out what we can find.</p>
         <div
           onDragOver={(e) => {
@@ -688,7 +688,7 @@ export default function CandidateProfilePage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
-      <h1 className="mb-6 text-2xl font-semibold text-foreground">Your profile</h1>
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight text-foreground">Your profile</h1>
       <form className="flex flex-col gap-8" onSubmit={onSubmit} noValidate>
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">

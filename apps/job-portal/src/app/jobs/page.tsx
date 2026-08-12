@@ -23,11 +23,11 @@ export default async function JobsLanding() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="border-b border-border">
+      <section className="border-b border-foreground">
         <div className="mx-auto grid w-full max-w-5xl gap-10 px-4 py-20 md:grid-cols-2 md:items-center md:py-28">
           <div>
             <p className="mb-3 text-xs font-semibold tracking-wide text-primary uppercase">Blackbox Jobs</p>
-            <h1 className="text-4xl font-semibold text-balance text-foreground md:text-5xl">
+            <h1 className="text-5xl font-semibold tracking-tight text-balance text-foreground md:text-6xl">
               Hiring, matched on what actually fits.
             </h1>
             <p className="mt-4 max-w-lg text-lg text-muted-foreground">
@@ -90,21 +90,27 @@ export default async function JobsLanding() {
       <section className="border-b border-border bg-muted">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4">
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">{openJobsCount}</p>
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+              {openJobsCount}
+            </p>
             <p className="text-sm text-muted-foreground">Open roles</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">{organizationsCount}</p>
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+              {organizationsCount}
+            </p>
             <p className="text-sm text-muted-foreground">Organizations hiring</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
               {DISABILITY_CATEGORY_OPTIONS.length}
             </p>
             <p className="text-sm text-muted-foreground">Disability categories supported</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">{MATCH_THRESHOLD}%</p>
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+              {MATCH_THRESHOLD}%
+            </p>
             <p className="text-sm text-muted-foreground">Minimum fit to ever appear as a match</p>
           </div>
         </div>
@@ -113,7 +119,7 @@ export default async function JobsLanding() {
       {/* How it works */}
       <section className="border-b border-border">
         <div className="mx-auto w-full max-w-5xl px-4 py-16">
-          <h2 className="text-2xl font-semibold text-foreground">How it works</h2>
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground">How it works</h2>
           <div className="mt-8 grid gap-10 md:grid-cols-2">
             <div>
               <h3 className="text-sm font-semibold tracking-wide text-primary uppercase">For candidates</h3>
@@ -162,7 +168,7 @@ export default async function JobsLanding() {
       {/* Accessibility commitment */}
       <section className="border-b border-border bg-muted">
         <div className="mx-auto w-full max-w-5xl px-4 py-16">
-          <h2 className="text-2xl font-semibold text-foreground">Built around disability categories, not around resumes</h2>
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground">Built around disability categories, not around resumes</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
             Every profile and every posting is scored on real accommodation and category fit, not just
             keyword overlap. Candidates list the accommodations they need; employers list what they offer.
@@ -183,7 +189,7 @@ export default async function JobsLanding() {
       {/* Closing CTA */}
       <section className="bg-primary">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-start gap-4 px-4 py-16 text-primary-foreground sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-2xl font-semibold text-balance">Ready to get matched?</h2>
+          <h2 className="text-3xl font-semibold tracking-tight text-balance">Ready to get matched?</h2>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/signup"

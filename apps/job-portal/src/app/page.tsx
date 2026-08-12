@@ -25,12 +25,12 @@ export default async function Home() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="border-b border-border">
+      <section className="border-b border-foreground">
         <div className="mx-auto w-full max-w-3xl px-4 py-20 text-center md:py-28">
           <p className="text-xs font-semibold tracking-wide text-primary uppercase">
             Blackbox · An accessibility-first hiring ecosystem
           </p>
-          <h1 className="mt-3 text-4xl font-semibold text-balance text-foreground md:text-5xl">
+          <h1 className="mt-3 text-5xl font-semibold tracking-tight text-balance text-foreground md:text-6xl">
             Hiring, and accountability for it, in one place.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
@@ -58,7 +58,7 @@ export default async function Home() {
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-wide text-primary uppercase">
               Blackbox Jobs
             </span>
-            <h2 className="text-xl font-semibold text-foreground">The hiring platform</h2>
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">The hiring platform</h2>
             <p className="text-sm text-muted-foreground">
               Candidates build a verified profile, take one accessibility-adjusted assessment, and get matched
               to roles that already fit. Employers hire against enforced accommodation commitments.
@@ -73,7 +73,7 @@ export default async function Home() {
             <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold tracking-wide text-muted-foreground uppercase">
               Blackbox Rankings
             </span>
-            <h2 className="text-xl font-semibold text-foreground">The accountability layer</h2>
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">The accountability layer</h2>
             <p className="text-sm text-muted-foreground">
               A public, ongoing score of how well employers actually deliver on disability inclusion — built
               from real candidate reviews and accommodation history, not a self-submitted survey.
@@ -87,21 +87,27 @@ export default async function Home() {
       <section className="border-b border-border">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4">
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">{openJobsCount}</p>
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+              {openJobsCount}
+            </p>
             <p className="text-sm text-muted-foreground">Open roles</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">{organizationsCount}</p>
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+              {organizationsCount}
+            </p>
             <p className="text-sm text-muted-foreground">Organizations hiring</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
               {DISABILITY_CATEGORY_OPTIONS.length}
             </p>
             <p className="text-sm text-muted-foreground">Disability categories supported</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">{MATCH_THRESHOLD}%</p>
+            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+              {MATCH_THRESHOLD}%
+            </p>
             <p className="text-sm text-muted-foreground">Minimum fit to ever appear as a match</p>
           </div>
         </div>
@@ -111,7 +117,7 @@ export default async function Home() {
       <section className="border-b border-border bg-muted">
         <div className="mx-auto w-full max-w-3xl px-4 py-16 text-center">
           <p className="text-xs font-semibold tracking-wide text-primary uppercase">Why one website, not two</p>
-          <h2 className="mt-2 text-2xl font-semibold text-balance text-foreground">
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance text-foreground">
             Jobs and Rankings run on the same data — so the site is built to feel like it.
           </h2>
           <p className="mt-3 text-muted-foreground">
@@ -130,7 +136,7 @@ export default async function Home() {
       <section id="mission" className="bg-primary">
         <div className="mx-auto w-full max-w-2xl px-4 py-16 text-center text-primary-foreground">
           <p className="text-xs font-semibold tracking-wide uppercase opacity-80">The mission, in one line</p>
-          <h2 className="mt-2 text-2xl font-semibold text-balance">
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance">
             Make accessibility enforceable, not just a form field.
           </h2>
           <p className="mt-3 opacity-90">

@@ -112,7 +112,7 @@ export default function NewJobPage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
-      <h1 className="mb-6 text-2xl font-semibold text-foreground">Post a job</h1>
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight text-foreground">Post a job</h1>
       <form className="flex flex-col gap-6" onSubmit={onSubmit} noValidate>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="title" className="text-sm font-medium text-foreground">

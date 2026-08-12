@@ -127,7 +127,7 @@ export default function EmployerJobDetailPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
-      <h1 className="mb-6 text-2xl font-semibold text-foreground">Job dashboard</h1>
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight text-foreground">Job dashboard</h1>
 
       <div role="tablist" className="mb-6 flex gap-2 border-b border-border">
         <button

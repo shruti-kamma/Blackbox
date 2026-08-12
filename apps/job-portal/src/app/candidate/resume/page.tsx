@@ -27,7 +27,7 @@ export default function ResumePage() {
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
       <div className="no-print mb-6 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">Your resume</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Your resume</h1>
           <p className="text-sm text-muted-foreground">
             Built automatically from your profile. Print or save as PDF to share it outside Blackbox Jobs.
           </p>

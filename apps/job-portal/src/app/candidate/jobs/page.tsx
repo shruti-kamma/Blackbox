@@ -168,7 +168,7 @@ export default function CandidateJobsPage() {
 
         <div>
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-foreground">Jobs matched to you</h1>
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">Jobs matched to you</h1>
             <p className="text-sm text-muted-foreground">
               Personalized to your profile — every role below already cleared the match threshold.
             </p>

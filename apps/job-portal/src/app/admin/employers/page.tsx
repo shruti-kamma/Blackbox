@@ -45,7 +45,7 @@ export default function AdminEmployersPage() {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-12">
-      <h1 className="mb-2 text-2xl font-semibold text-foreground">Employers</h1>
+      <h1 className="mb-2 text-3xl font-semibold tracking-tight text-foreground">Employers</h1>
       <p className="mb-6 text-sm text-muted-foreground">Every organization on the platform.</p>
 
       <input

@@ -12,27 +12,42 @@
 @source "../../../../packages/module-claim/src/**/*.tsx";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-lexend);
   --font-mono: var(--font-geist-mono);
 }
 
-/* Registers "secondary" as a Tailwind utility-generating color (bg-secondary,
-   from-secondary, to-secondary, text-secondary, etc.) — @theme is a build-time
-   directive, so this can't live only in ranking-theme.css's #ranking-root
-   scoping (that only overrides an already-registered token's runtime value,
-   same trick already used for --color-primary via the shared base theme).
-   The default value here is inert everywhere outside /ranking since nothing
-   else references a secondary-colored utility; ranking-theme.css overrides
-   the actual value within #ranking-root for the navy/purple gradient duo
-   (see docs/decisions.md — "Editorial redesign"). */
+/* Sitewide editorial-corporate theme (see docs/decisions.md — "Editorial
+   redesign", now extended sitewide from its original /ranking-only scope):
+   navy as the interactive/brand color, purple as its paired accent, used
+   together as a gradient duo on hero numerals and primary CTAs — not a
+   primary/secondary hierarchy, not split by section. Overrides the shared
+   base theme's default blue (#1d4ed8). ranking-theme.css's #ranking-root
+   scoping still re-declares the same values within /ranking — now
+   redundant there but harmless (identical values), left alone rather than
+   risk destabilizing that section's own working theme-toggle mechanism. */
 @theme {
+  --color-primary: #06038d;
   --color-secondary: #7c3ca1;
+  --color-focus-ring: #06038d;
+}
+
+/* Placeholder-safe dark values only (not a dark-mode design pass — see
+   docs/decisions.md, this redesign is light-mode-first) — prevents navy
+   from going low-contrast against the shared base theme's existing dark
+   background for OS-dark-mode users. Same values already used for
+   /ranking's own dark-mode fallback. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #6a67ff;
+    --color-secondary: #b28ce0;
+    --color-focus-ring: #6a67ff;
+  }
 }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
 }
 
 /* Centered within the resume document itself (relative to the nearest

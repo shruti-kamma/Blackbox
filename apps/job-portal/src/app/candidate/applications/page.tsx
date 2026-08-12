@@ -158,7 +158,7 @@ export default function CandidateApplicationsPage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
-      <h1 className="mb-2 text-2xl font-semibold text-foreground">My applications</h1>
+      <h1 className="mb-2 text-3xl font-semibold tracking-tight text-foreground">My applications</h1>
       <p className="mb-6 text-sm text-muted-foreground">
         Every job you&apos;ve applied to, and where it stands with the employer.
       </p>

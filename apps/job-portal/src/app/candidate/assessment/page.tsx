@@ -273,7 +273,7 @@ export default function AssessmentPage() {
     return (
       <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-4 py-16">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-foreground">Your assessment</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Your assessment</h1>
           <p className="text-sm text-muted-foreground">
             A one-time, 40-question multiple-choice assessment — 15 language questions (adjusted to your
             disability profile), 15 aptitude questions, and 10 based on the skills you listed. Self-paced, no
@@ -296,13 +296,15 @@ export default function AssessmentPage() {
     return (
       <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-4 py-16">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-foreground">Assessment complete</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Assessment complete</h1>
           <p className="text-sm text-muted-foreground">
             You can now apply for jobs. Your score is visible to employers alongside your profile.
           </p>
         </div>
         <div className="rounded-md border border-border p-4">
-          <p className="text-3xl font-semibold tabular-nums text-foreground">{state.score}%</p>
+          <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-semibold tabular-nums text-transparent">
+            {state.score}%
+          </p>
           <p className="text-sm text-muted-foreground">Overall score</p>
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -349,7 +351,7 @@ export default function AssessmentPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
         <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-foreground">Your assessment</h1>
+            <h1 className="text-xl font-semibold tracking-tight text-foreground">Your assessment</h1>
             <div className="mt-2 flex flex-wrap gap-1.5 border-b border-border pb-3">
               {sectionOrder.map((section) => (
                 <button

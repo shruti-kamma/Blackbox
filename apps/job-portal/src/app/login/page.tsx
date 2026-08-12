@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-16">
-      <h1 className="text-2xl font-semibold text-foreground">Sign in</h1>
+      <h1 className="text-3xl font-semibold tracking-tight text-foreground">Sign in</h1>
       <form className="flex flex-col gap-4" onSubmit={onSubmit} noValidate>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-sm font-medium text-foreground">

@@ -194,7 +194,7 @@ export default function VerifyKycPage() {
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-16">
       <div className="flex flex-col gap-1.5">
-        <h1 className="text-2xl font-semibold text-foreground">Verify your details</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Verify your details</h1>
         <p className="text-sm text-muted-foreground">
           One quick step before you build your profile — confirm the email and phone number you signed up with.
         </p>
