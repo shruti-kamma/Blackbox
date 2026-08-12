@@ -11,8 +11,8 @@ export async function ClaimContent({ orgSlug }: ClaimContentProps) {
   const org = orgSlug ? await getOrg(orgSlug) : undefined;
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-2xl flex-1 px-6 py-10">
-      <h1 className="font-serif text-2xl font-semibold text-foreground">Claim a record</h1>
+    <main id="main-content" className="mx-auto w-full max-w-2xl flex-1 px-6 py-16">
+      <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Claim a record</h1>
       <div className="mt-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
         <p className="text-muted-foreground">
           {org ? (

@@ -85,7 +85,11 @@ export function VerificationLadder({ level, orgSlug }: VerificationLadderProps) 
             Claim this record and start the verification journey toward a certified score.
           </p>
         </div>
-        <Button asChild variant="primary" className="shrink-0 rounded-full">
+        <Button
+          asChild
+          variant="primary"
+          className="shrink-0 rounded-full bg-gradient-to-r from-primary to-secondary"
+        >
           <Link href={`/ranking/claim?org=${orgSlug}`}>Claim record</Link>
         </Button>
       </div>

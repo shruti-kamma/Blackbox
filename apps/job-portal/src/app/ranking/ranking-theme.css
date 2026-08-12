@@ -12,9 +12,14 @@
   --font-sans: var(--font-lexend);
   --font-serif: var(--font-lexend);
 
-  /* Minimal MVP theme: black/white/gray from the shared base theme, with a
-     single indigo accent for interactive/primary elements. */
+  /* Editorial-corporate theme: black/white/gray from the shared base theme,
+     with navy (--color-primary) as the interactive/brand color and purple
+     (--color-secondary) as its paired accent — the two are used together as
+     a gradient duo on hero numerals and primary CTAs (see docs/decisions.md
+     — "Editorial redesign"), not as a primary/secondary hierarchy and not
+     split by section. */
   --color-primary: #06038d;
+  --color-secondary: #7c3ca1;
   --color-focus-ring: #06038d;
   --color-card: #ffffff;
 
@@ -22,12 +27,16 @@
 }
 
 /* No-JS / no-stored-preference fallback — ThemeToggle overrides this via
-   [data-theme] on #ranking-root once a preference exists. Lighter indigo in
-   dark mode, since the light-mode value is too close to the near-black
-   background to read as an accent. */
+   [data-theme] on #ranking-root once a preference exists. Lighter
+   indigo/purple in dark mode, since the light-mode values are too close to
+   the near-black background to read as an accent.
+   --color-secondary's dark value is a placeholder, not a designed choice —
+   this redesign pass is light-mode only (see docs/decisions.md), it just
+   needs to not visually break dark mode. */
 @media (prefers-color-scheme: dark) {
   #ranking-root:not([data-theme="light"]) {
     --color-primary: #6a67ff;
+    --color-secondary: #b28ce0;
     --color-focus-ring: #6a67ff;
     --color-card: #0a0a0a;
   }
@@ -39,12 +48,14 @@
    attribute selector always out-specifies a plain selector. */
 #ranking-root[data-theme="light"] {
   --color-primary: #06038d;
+  --color-secondary: #7c3ca1;
   --color-focus-ring: #06038d;
   --color-card: #ffffff;
 }
 
 #ranking-root[data-theme="dark"] {
   --color-primary: #6a67ff;
+  --color-secondary: #b28ce0;
   --color-focus-ring: #6a67ff;
   --color-card: #0a0a0a;
 }

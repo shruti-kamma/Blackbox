@@ -29,8 +29,8 @@ const CATEGORIES = [
 // Page content only — the shell composes this with <Masthead active="methodology" />.
 export function MethodologyContent() {
   return (
-    <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
-      <h1 className="font-serif text-3xl font-bold text-foreground">Methodology</h1>
+    <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+      <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Methodology</h1>
       <p className="mt-4 max-w-2xl text-muted-foreground">
         <strong>This page describes a placeholder methodology.</strong> The real scoring
         rubric — what each category weighs, how subscores combine into an overall score, and

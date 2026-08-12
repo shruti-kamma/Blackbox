@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "@blackbox/ui";
+import { Button, cn } from "@blackbox/ui";
 import { OrgAvatar } from "@blackbox/module-leaderboards";
 import { RankSummary } from "./rank-summary";
 import { MaturityLadder } from "./maturity-ladder";
@@ -31,15 +31,30 @@ function StatCard({
   label,
   value,
   sub,
+  emphasis = false,
 }: {
   label: string;
   value: string | number;
   sub?: string;
+  // Reserved for the one number per page meant to read as the headline
+  // stat — see docs/decisions.md ("Editorial redesign"): the gradient duo
+  // is deliberately not applied to every numeral, only this one, so it
+  // still reads as "the number that matters" rather than decoration.
+  emphasis?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
       <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
-      <p className="mt-1 font-serif text-2xl font-bold text-foreground">{value}</p>
+      <p
+        className={cn(
+          "mt-1 font-serif font-bold tabular-nums",
+          emphasis
+            ? "bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl text-transparent"
+            : "text-2xl text-foreground",
+        )}
+      >
+        {value}
+      </p>
       {sub && <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>}
     </div>
   );
@@ -78,9 +93,9 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
   return (
     <>
       <Masthead active={org.type === "COMPANY" ? "companies" : "universities"} />
-      <main id="main-content" className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+      <main id="main-content" className="mx-auto w-full max-w-4xl flex-1 px-6 py-16">
         {/* Header */}
-        <div className="border-b border-border pb-8">
+        <div className="border-b border-foreground pb-8">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Blackbox Global Foundation &middot; B4I Intelligence
           </p>
@@ -88,7 +103,7 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
             <div className="flex gap-4">
               <OrgAvatar name={org.name} logoUrl={org.logoUrl} size="lg" />
               <div>
-                <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">
+                <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
                   {org.name}
                 </h1>
                 <p className="mt-1 text-sm text-muted-foreground">{metaParts.join(" · ")}</p>
@@ -101,7 +116,7 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
               <div className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm">
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">B4I Score</p>
                 <p className="mt-1 flex items-baseline gap-2">
-                  <span className="font-serif text-3xl font-bold tabular-nums text-foreground">
+                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text font-serif text-4xl font-bold tabular-nums text-transparent">
                     {org.overallScore}
                   </span>
                   {hasTrend && (
@@ -135,7 +150,12 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
         {org.verificationLevel === 0 && (
           <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">Is this your organization?</p>
-            <Button asChild variant="secondary" size="sm" className="rounded-full shrink-0">
+            <Button
+              asChild
+              variant="primary"
+              size="sm"
+              className="rounded-full shrink-0 bg-gradient-to-r from-primary to-secondary"
+            >
               <Link href={`/ranking/claim?org=${org.slug}`}>Claim record</Link>
             </Button>
           </div>
@@ -146,6 +166,7 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
             label="Overall B4I Score"
             value={org.overallScore}
             sub={hasTrend ? `${trendSign}${org.scoreTrend} / 12mo` : undefined}
+            emphasis
           />
           <StatCard label="Maturity Level" value={maturity} />
           {employeeFeedbackScore !== undefined && (

@@ -16,6 +16,19 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Registers "secondary" as a Tailwind utility-generating color (bg-secondary,
+   from-secondary, to-secondary, text-secondary, etc.) — @theme is a build-time
+   directive, so this can't live only in ranking-theme.css's #ranking-root
+   scoping (that only overrides an already-registered token's runtime value,
+   same trick already used for --color-primary via the shared base theme).
+   The default value here is inert everywhere outside /ranking since nothing
+   else references a secondary-colored utility; ranking-theme.css overrides
+   the actual value within #ranking-root for the navy/purple gradient duo
+   (see docs/decisions.md — "Editorial redesign"). */
+@theme {
+  --color-secondary: #7c3ca1;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);

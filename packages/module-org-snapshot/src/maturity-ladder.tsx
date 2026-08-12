@@ -23,7 +23,10 @@ export function MaturityLadder({ level, className }: MaturityLadderProps) {
             <li key={label} className="flex-1">
               <div
                 aria-hidden="true"
-                className={cn("h-1.5 w-full rounded-full", reached ? "bg-primary" : "bg-muted")}
+                className={cn(
+                  "h-1.5 w-full rounded-full",
+                  reached ? "bg-gradient-to-r from-primary to-secondary" : "bg-muted",
+                )}
               />
               <span
                 aria-current={isCurrent ? "step" : undefined}

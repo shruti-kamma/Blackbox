@@ -17,7 +17,7 @@ export function ScoreBreakdown({ breakdown }: ScoreBreakdownProps) {
             </dd>
           </div>
           <div>
-            <blockquote className="border-l-2 border-border pl-4 font-serif text-base leading-relaxed text-foreground italic">
+            <blockquote className="border-l-2 border-primary pl-4 font-serif text-lg leading-relaxed text-foreground italic">
               &ldquo;{item.rationale}&rdquo;
             </blockquote>
             {item.recommendation && (

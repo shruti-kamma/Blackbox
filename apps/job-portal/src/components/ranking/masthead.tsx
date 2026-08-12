@@ -9,19 +9,23 @@ export interface MastheadProps {
   active?: MastheadActive;
 }
 
-// Ported unchanged from apps/rankings' Masthead (shruti branch) — this is
-// the /ranking section's own internal nav, sitting below job-portal's main
-// site nav (see app/ranking/layout.tsx), exactly the "if the shruti
-// website has its own navigation, keep it working" requirement.
+// Ported from apps/rankings' Masthead (shruti branch), later given the
+// editorial redesign's bigger wordmark treatment — this is the /ranking
+// section's own internal nav, sitting below job-portal's main site nav
+// (see app/ranking/layout.tsx), exactly the "if the shruti website has
+// its own navigation, keep it working" requirement.
 export function Masthead({ active }: MastheadProps) {
   return (
-    <header className="border-b border-border">
+    <header className="border-b border-foreground">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Blackbox India&rsquo;s Inclusion Intelligence Index
           </p>
-          <Link href="/ranking" className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
+          <Link
+            href="/ranking"
+            className="font-serif text-5xl font-bold tracking-tight text-foreground sm:text-6xl"
+          >
             B4I
           </Link>
         </div>

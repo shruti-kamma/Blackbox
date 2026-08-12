@@ -25,7 +25,7 @@ export function DimensionScorecard({ breakdown }: DimensionScorecardProps) {
             </div>
             <div className="mt-1.5 h-1.5 w-full rounded-full bg-muted" aria-hidden="true">
               <div
-                className="h-1.5 rounded-full bg-primary"
+                className="h-1.5 rounded-full bg-gradient-to-r from-primary to-secondary"
                 style={{ width: `${item.subscore}%` }}
               />
             </div>
