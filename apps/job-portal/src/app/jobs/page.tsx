@@ -15,10 +15,16 @@ export default async function JobsLanding() {
   if (user?.role === "EMPLOYER") redirect("/employer");
   if (user?.role === "ADMIN") redirect("/admin");
 
-  const [openJobsCount, organizationsCount] = await Promise.all([
-    prisma.job.count({ where: { isOpen: true } }),
-    prisma.organization.count(),
-  ]);
+  let openJobsCount = 0;
+  let organizationsCount = 0;
+  try {
+    [openJobsCount, organizationsCount] = await Promise.all([
+      prisma.job.count({ where: { isOpen: true } }),
+      prisma.organization.count(),
+    ]);
+  } catch (error) {
+    console.warn("Database connection offline, using fallback metrics");
+  }
 
   return (
     <main className="flex flex-1 flex-col">

@@ -9,3 +9,5 @@ allowBuilds:
   prisma: true
   sharp: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - isomorphic-git@1.41.4

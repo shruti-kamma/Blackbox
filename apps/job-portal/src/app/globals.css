@@ -27,9 +27,9 @@
    addition (the shared base theme doesn't define one) for the
    border-only card treatment the ranking pages use throughout. */
 @theme {
-  --color-primary: #06038d;
+  --color-primary: #03068d;
   --color-secondary: #7c3ca1;
-  --color-focus-ring: #06038d;
+  --color-focus-ring: #03068d;
   --color-card: #ffffff;
 }
 
