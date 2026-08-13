@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MATCH_THRESHOLD } from "@blackbox/matching-engine";
+import { RankingsHighlights } from "@blackbox/module-leaderboards";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
@@ -50,6 +51,10 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Live proof this is real, not a mockup — the actual top scorers
+          from the rankings pipeline, right on the front door. */}
+      <RankingsHighlights />
 
       {/* Two products */}
       <section id="rankings" className="border-b border-border bg-muted">
@@ -121,9 +126,10 @@ export default async function Home() {
             Jobs and Rankings run on the same data — so the site is built to feel like it.
           </h2>
           <p className="mt-3 text-muted-foreground">
-            A ranking isn&apos;t a separate opinion about a company; it&apos;s built from the same accommodation
-            history and candidate reviews the hiring side already tracks. The scoring pipeline that populates it
-            is still catching up on real company data — see{" "}
+            A ranking isn&apos;t a separate opinion about a company — it&apos;s built from that employer&apos;s own
+            public disclosures, scored against a fixed methodology, not a self-submitted survey. 50 companies are
+            live today, with employer accommodation history and candidate reviews from the hiring side planned as
+            the next data source — see{" "}
             <Link href="/ranking/methodology" className="font-medium text-primary underline">
               the methodology
             </Link>{" "}

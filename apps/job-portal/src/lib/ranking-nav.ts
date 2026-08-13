@@ -1,18 +1,13 @@
-// Registers which rankings modules are mounted in the /ranking section's
-// own internal nav (Masthead just renders this list). Ported from
-// apps/rankings/src/lib/site-nav.ts (shruti branch) — hrefs updated to sit
-// under /ranking now that this section lives inside job-portal instead of
-// being its own standalone app.
-export type MastheadActive = "companies" | "universities" | "methodology";
-
+// Entries for the "Rankings" dropdown in the main site nav (see
+// components/nav.tsx) — replaces the old standalone /ranking section nav
+// bar (Masthead, removed) that used to list these itself.
 export interface NavLink {
   href: string;
   label: string;
-  value: MastheadActive;
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { href: "/ranking/companies", label: "Companies", value: "companies" }, // @blackbox/module-leaderboards
-  { href: "/ranking/universities", label: "Universities", value: "universities" }, // @blackbox/module-leaderboards
-  { href: "/ranking/methodology", label: "Methodology", value: "methodology" }, // @blackbox/module-methodology
+  { href: "/ranking/companies", label: "Companies" }, // @blackbox/module-leaderboards
+  { href: "/ranking/universities", label: "Universities" }, // @blackbox/module-leaderboards
+  { href: "/ranking/methodology", label: "Methodology" }, // @blackbox/module-methodology
 ];

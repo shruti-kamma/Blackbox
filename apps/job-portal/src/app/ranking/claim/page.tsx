@@ -1,4 +1,3 @@
-import { Masthead } from "@/components/ranking/masthead";
 import { ClaimContent } from "@blackbox/module-claim";
 
 interface ClaimPageProps {
@@ -7,11 +6,5 @@ interface ClaimPageProps {
 
 export default async function ClaimPage({ searchParams }: ClaimPageProps) {
   const { org } = await searchParams;
-
-  return (
-    <>
-      <Masthead />
-      <ClaimContent orgSlug={org} />
-    </>
-  );
+  return <ClaimContent orgSlug={org} />;
 }

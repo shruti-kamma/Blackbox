@@ -1,0 +1,22 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+// The main site wordmark. Appends the "B4I" sub-brand whenever the user
+// is anywhere under /ranking, so the logo itself signals which product
+// area they're in — replaces the old standalone /ranking section's own
+// separate masthead + "B4I" wordmark (see docs/decisions.md), now that
+// there's one shared nav instead of two stacked ones.
+export function NavLogo() {
+  const pathname = usePathname();
+  const isRanking = pathname?.startsWith("/ranking") ?? false;
+
+  return (
+    <Link href="/" className="font-serif text-xl font-bold text-foreground">
+      Blackbox
+      <span className="text-primary">.</span>
+      {isRanking && <span className="ml-1.5">B4I</span>}
+    </Link>
+  );
+}

@@ -3,12 +3,19 @@ import { IndexSummary } from "./index-summary";
 import { TierLegend } from "./tier-legend";
 import { SectorAveragesPanel } from "./sector-averages-panel";
 import { TopStatesPanel } from "./top-states-panel";
+import { ScoreDistributionPanel } from "./score-distribution-panel";
 import { MomentumLeadersPanel } from "./momentum-leaders-panel";
 import { TopPerformersPanel } from "./top-performers-panel";
 import { WatchlistPanel } from "./watchlist-panel";
+import { DisclosureGapsPanel } from "./disclosure-gaps-panel";
+import { PwdHeadcountPanel } from "./pwd-headcount-panel";
+import { MetricHeatmap } from "./metric-heatmap";
 import { getAllOrgs } from "@blackbox/rankings-data";
 
-// Page content only — the shell composes this with <Masthead active="companies" />.
+// Page content only — the route file (app/ranking/companies/page.tsx)
+// renders this directly. Navigation into this page comes from the main
+// site nav's "Rankings" dropdown (see components/nav.tsx), not a
+// section-local nav bar (that Masthead was removed).
 // Layout adapted from the AIDEZA reference (see docs/decisions.md —
 // "Replicate AIDEZA dashboard format"): national index summary, tier
 // legend, and left/right aggregate sidebars around the existing ranked
@@ -20,16 +27,12 @@ export async function CompaniesLeaderboardContent() {
     .sort((a, b) => b.overallScore - a.overallScore);
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-7xl flex-1 px-6 py-16">
-      <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Company Rankings</h1>
-      <p className="mt-2 max-w-2xl text-muted-foreground">
-        Companies ranked on how accessible and inclusive they are to persons with
-        disabilities, based on published disclosures.
-      </p>
+    <main id="main-content" className="w-full flex-1 px-6 py-16">
+      {/* Visually removed per request, but a page still needs exactly one
+          h1 for screen-reader navigation — kept, just not shown. */}
+      <h1 className="sr-only">Company Rankings</h1>
 
-      <div className="mt-8">
-        <IndexSummary orgs={orgs} label="Companies" />
-      </div>
+      <IndexSummary orgs={orgs} label="Companies" />
 
       {/* Ranked list comes first in document order (order-1) so mobile
           users see the actual ranking before the aggregate sidebars;
@@ -37,6 +40,8 @@ export async function CompaniesLeaderboardContent() {
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr_280px] lg:items-start lg:gap-8">
         <aside className="order-2 flex flex-col gap-4 lg:order-1">
           <SectorAveragesPanel orgs={orgs} />
+          <ScoreDistributionPanel orgs={orgs} />
+          <DisclosureGapsPanel orgs={orgs} />
           <TopStatesPanel orgs={orgs} />
         </aside>
 
@@ -51,8 +56,21 @@ export async function CompaniesLeaderboardContent() {
         <aside className="order-3 flex flex-col gap-4">
           <MomentumLeadersPanel orgs={orgs} />
           <TopPerformersPanel orgs={orgs} />
+          {/* PwdHeadcountPanel reads from generated/pwd-insights.ts, a
+              static snapshot of the BRSR extraction batch — BRSR only
+              covers public companies, never universities (see
+              load_scores.py's own comment), so it's wired into this page
+              only, not universities-content.tsx. */}
+          <PwdHeadcountPanel orgs={orgs} />
           <WatchlistPanel orgs={orgs} />
         </aside>
+      </div>
+
+      {/* Full-width, below the sidebar grid rather than inside either
+          sidebar — a 10-industry x 10-metric grid needs real width to
+          stay legible, which neither ~260-280px sidebar column has. */}
+      <div className="mt-8">
+        <MetricHeatmap orgs={orgs} />
       </div>
     </main>
   );

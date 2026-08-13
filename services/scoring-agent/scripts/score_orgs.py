@@ -9,10 +9,13 @@ Pipeline per company:
      and ask for a 0-100 subscore + one-line rationale (+ a recommendation
      when the subscore is below 75) — one structured-output call per
      company scores all 10 metrics at once, not 10 separate calls.
-  3. overall_score is the mean of the 10 subscores (equivalent to the
-     client's "10 metrics, 10 points each, sum to 100" model, just
-     expressed on the same 0-100-per-metric scale the rankings site
-     already displays, rather than 0-10).
+  3. overall_score is the mean of the 7 *observable* subscores — Retention,
+     Leadership, and Employee Feedback (CLAIM_GATED_METRICS below) are
+     still scored and shown but excluded from the composite until a
+     company claims its profile, since none of the 50-company MVP batch
+     has a claim/verification workflow yet and these three essentially
+     never appear in public BRSR filings regardless of company
+     performance (see docs/decisions.md — "Claim-gated metrics").
   4. After every requested company is scored, compute each metric's peer
      average across that same run and attach it to every company's
      breakdown (see PEER AVERAGE CAVEAT below).
@@ -70,6 +73,21 @@ METRIC_FIELDS: dict[str, list[str]] = {
     "Compliance": ["compliance_disclosed", "compliance_details"],
 }
 METRIC_NAMES = list(METRIC_FIELDS.keys())
+
+# These three have no BRSR-mandated disclosure field and essentially never
+# appear in public filings regardless of company performance (see
+# docs/decisions.md — "Claim-gated metrics"): Retention and Leadership
+# representation aren't disaggregated by disability status anywhere in
+# BRSR's structure, and PwD-specific employee feedback is not a filing
+# requirement at all. Scoring them at 0 for every unclaimed company doesn't
+# measure disability inclusion — every company gets the same 0, so it adds
+# no ranking signal, it just compresses every composite score downward by
+# the same amount. They're still extracted and scored (a company that
+# happens to volunteer this rarely-disclosed info still gets credit for
+# it), but excluded from overall_score until the company claims its
+# profile and can self-declare the data directly — see
+# included_in_score below and get_orgs.ts / ScoreBreakdownItem.
+CLAIM_GATED_METRICS = {"Retention", "Leadership", "Employee Feedback"}
 
 SCORING_SCHEMA = {
     "type": "object",
@@ -200,8 +218,12 @@ def load_latest_extractions() -> list[ExtractionRecord]:
 
 def score_one(client: Anthropic | None, record: ExtractionRecord, mock: bool) -> dict:
     result = mock_score_signals(record.extraction) if mock else score_signals(client, record.extraction)  # type: ignore[arg-type]
-    subscores = [s["subscore"] for s in result["scores"]]
-    overall_score = round(sum(subscores) / len(subscores), 1)
+    # overall_score is the mean of only the observable metrics (see
+    # CLAIM_GATED_METRICS above) — the claim-gated three are still scored
+    # and shown, just not folded into the composite until this org is
+    # claimed and can self-declare that data.
+    observable_subscores = [s["subscore"] for s in result["scores"] if s["metric"] not in CLAIM_GATED_METRICS]
+    overall_score = round(sum(observable_subscores) / len(observable_subscores), 1)
     return {
         "symbol": record.symbol,
         "company_name": record.company_name,
@@ -218,6 +240,7 @@ def score_one(client: Anthropic | None, record: ExtractionRecord, mock: bool) ->
                 "subscore": s["subscore"],
                 "rationale": s["rationale"],
                 "recommendation": s["recommendation"],
+                "included_in_score": s["metric"] not in CLAIM_GATED_METRICS,
             }
             for s in result["scores"]
         ],
