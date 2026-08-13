@@ -6,11 +6,17 @@ append-only (see docs/plans/rankings-site-v1.md — "score over time"
 story), so re-running this after a fresh scoring run adds history rather
 than overwriting the previous score.
 
-Real companies loaded this way get industry/location/logoUrl = NULL — the
-BRSR pipeline has no company-metadata classification step yet (see
-docs/decisions.md — "Scoring methodology"), so these are left unset
-rather than guessed. type is always COMPANY: the BRSR/NSE source this
-pipeline reads from only lists public companies, never universities.
+Real companies loaded this way get location/logoUrl = NULL — no data
+source for either exists yet, so these are left unset rather than
+guessed. industry IS set, for companies present in services/crawler/data/
+selected_companies_50.json (see docs/decisions.md — "Claim-gated
+metrics" and fetch_sector_classification.py): that file's NSE
+sectoral-index classification is mapped to a clean display label via
+INDEX_TO_INDUSTRY_LABEL below. Companies outside that 50-company batch
+(e.g. a future full-413 run) still get industry = NULL, honestly, since
+no classification exists for them yet. type is always COMPANY: the
+BRSR/NSE source this pipeline reads from only lists public companies,
+never universities.
 
 Usage:
     python scripts/load_scores.py                 # load every scored company
@@ -31,6 +37,35 @@ from pathlib import Path
 import psycopg
 
 SCORES_DIR = Path(__file__).resolve().parent.parent / "data" / "scores"
+SELECTED_COMPANIES_PATH = Path(__file__).resolve().parents[2] / "crawler" / "data" / "selected_companies_50.json"
+
+# NSE sectoral-index name (as written in selected_companies_50.json) ->
+# clean display label for the rankings site. Kept here rather than in the
+# crawler package since this is a display concern of the loader, not the
+# classification step itself.
+INDEX_TO_INDUSTRY_LABEL = {
+    "NIFTY IT": "Information Technology",
+    "NIFTY AUTO": "Automotive",
+    "NIFTY FINANCIAL SERVICES": "Financial Services",
+    "NIFTY PSU BANK": "Public Sector Banking",
+    "NIFTY CHEMICALS": "Chemicals",
+    "NIFTY PHARMA": "Pharmaceuticals",
+    "NIFTY FMCG": "FMCG",
+    "NIFTY METAL": "Metals & Mining",
+    "NIFTY REALTY": "Real Estate",
+    "NIFTY ENERGY": "Energy",
+}
+
+
+def load_industry_lookup() -> dict[str, str]:
+    """symbol -> clean industry label, for companies in the 50-company batch."""
+    if not SELECTED_COMPANIES_PATH.exists():
+        return {}
+    records = json.loads(SELECTED_COMPANIES_PATH.read_text(encoding="utf-8"))
+    return {
+        r["symbol"]: INDEX_TO_INDUSTRY_LABEL.get(r["industry"], r["industry"])
+        for r in records
+    }
 
 
 def _psycopg_safe_url(url: str) -> str:
@@ -52,19 +87,23 @@ def slugify(name: str) -> str:
     return slug.strip("-")
 
 
-def load_one(conn: psycopg.Connection, record: dict) -> None:
+def load_one(conn: psycopg.Connection, record: dict, industry_lookup: dict[str, str]) -> None:
     slug = slugify(record["company_name"])
     now = datetime.now(timezone.utc)
+    industry = industry_lookup.get(record["symbol"])
 
     with conn.cursor() as cur:
         cur.execute(
             """
-            INSERT INTO "Organization" (id, type, name, slug, "createdAt", "updatedAt")
-            VALUES (%s, 'COMPANY', %s, %s, %s, %s)
-            ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, "updatedAt" = EXCLUDED."updatedAt"
+            INSERT INTO "Organization" (id, type, name, slug, industry, "createdAt", "updatedAt")
+            VALUES (%s, 'COMPANY', %s, %s, %s, %s, %s)
+            ON CONFLICT (slug) DO UPDATE SET
+                name = EXCLUDED.name,
+                industry = COALESCE(EXCLUDED.industry, "Organization".industry),
+                "updatedAt" = EXCLUDED."updatedAt"
             RETURNING id
             """,
-            (str(uuid.uuid4()), record["company_name"], slug, now, now),
+            (str(uuid.uuid4()), record["company_name"], slug, industry, now, now),
         )
         row = cur.fetchone()
         assert row is not None
@@ -98,7 +137,22 @@ def main() -> None:
         print(f"No scores directory at {SCORES_DIR} — run score_orgs.py first.", file=sys.stderr)
         sys.exit(1)
 
-    paths = [SCORES_DIR / f"{args.company}.json"] if args.company else sorted(SCORES_DIR.glob("*.json"))
+    industry_lookup = load_industry_lookup()
+
+    if args.company:
+        paths = [SCORES_DIR / f"{args.company}.json"]
+    else:
+        # Scoped to the classified 50-company batch, not every file in
+        # data/scores/ — that directory can also hold stale runs from
+        # before this batch existed (e.g. an earlier --mock --pilot test),
+        # which must never get loaded onto the live site under a real
+        # company's name.
+        known_symbols = set(industry_lookup.keys())
+        all_paths = sorted(SCORES_DIR.glob("*.json"))
+        paths = [p for p in all_paths if p.stem in known_symbols]
+        skipped = [p.stem for p in all_paths if p.stem not in known_symbols]
+        if skipped:
+            print(f"Skipping {len(skipped)} file(s) outside the 50-company batch: {skipped}")
     if not paths or not all(p.exists() for p in paths):
         print(f"No matching score file(s) found in {SCORES_DIR}.", file=sys.stderr)
         sys.exit(1)
@@ -116,7 +170,7 @@ def main() -> None:
             record = json.loads(path.read_text(encoding="utf-8"))
             print(f"  [{i}/{len(paths)}] {record['symbol']}...", end=" ")
             try:
-                load_one(conn, record)
+                load_one(conn, record, industry_lookup)
                 print("ok")
             except Exception as exc:  # noqa: BLE001
                 conn.rollback()

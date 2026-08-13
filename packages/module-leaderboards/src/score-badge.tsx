@@ -1,5 +1,10 @@
 import { cn } from "@blackbox/ui";
-import { getMaturityLevel, VERIFICATION_LEVEL_LABELS, type VerificationLevel } from "@blackbox/rankings-data";
+import {
+  getMaturityLevel,
+  MATURITY_LEVEL_DOT_CLASS,
+  VERIFICATION_LEVEL_LABELS,
+  type VerificationLevel,
+} from "@blackbox/rankings-data";
 
 export interface ScoreBadgeProps {
   score: number;
@@ -7,10 +12,13 @@ export interface ScoreBadgeProps {
   className?: string;
 }
 
-// Score is always paired with a text label (never color alone, per WCAG
-// 1.4.1) — the tier label is the client's 5-tier maturity ladder. Severity
-// is not color-coded (minimal black/white/indigo palette — see
-// docs/decisions.md): the tier text carries the signal on its own.
+// The score is the loud element; the tier reads as a small color dot +
+// quiet caption rather than a bold uppercase label, since this repeats on
+// every leaderboard row and score-breakdown item — full-size tier text
+// everywhere it appears gets noisy fast. The dot's color is the at-a-
+// glance signal, but the text stays (small, not color-alone) per WCAG
+// 1.4.1 — color reinforces the tier here, it doesn't replace it, which
+// matters more on this product than most given what it's ranking.
 // `verificationLevel`, when passed, shows the actual level label (e.g. "AI
 // Est.", "Registered") — the same text used in company view, just without
 // the full progress-bar visualization (that's company-view only).
@@ -21,7 +29,10 @@ export function ScoreBadge({ score, verificationLevel, className }: ScoreBadgePr
   return (
     <span className={cn("inline-flex items-baseline gap-1.5 border-l-2 border-foreground pl-2", className)}>
       <span className="font-serif text-lg font-semibold tabular-nums text-foreground">{score}</span>
-      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{tier}</span>
+      <span className="inline-flex items-center gap-1">
+        <span aria-hidden="true" className={cn("h-1.5 w-1.5 shrink-0 rounded-full", MATURITY_LEVEL_DOT_CLASS[tier])} />
+        <span className="text-[0.7rem] text-muted-foreground">{tier}</span>
+      </span>
       {verificationLevel !== undefined && (
         <span className="rounded-full bg-muted px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground">
           {VERIFICATION_LEVEL_LABELS[verificationLevel]}

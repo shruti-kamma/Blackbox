@@ -25,9 +25,14 @@ function WarningIcon() {
 // highest-scoring categories are "strengths," the 3 lowest are "risks"
 // (using each item's own rationale, so this stays consistent as breakdown
 // data changes rather than drifting out of sync with separately-written
-// copy).
+// copy). Claim-gated metrics (includedInScore === false) are excluded
+// from this ranking — they score near-0 for every unclaimed org by
+// construction (nothing to disclose pre-claim), so leaving them in would
+// make "Quick risks" the same three claim-gated categories for every
+// single company instead of a real signal.
 export function StrengthsRisks({ breakdown }: StrengthsRisksProps) {
-  const sorted = [...breakdown].sort((a, b) => b.subscore - a.subscore);
+  const rankable = breakdown.filter((item) => item.includedInScore !== false);
+  const sorted = [...rankable].sort((a, b) => b.subscore - a.subscore);
   const strengths = sorted.slice(0, 3);
   const risks = sorted.slice(-3).reverse();
 

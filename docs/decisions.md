@@ -384,3 +384,54 @@ for the completed/pending checklist.
   package needs its own explicit `@source "../../../../packages/module-*/
   src/**/*.tsx";` line in `globals.css` — dev mode looks fine either way,
   so this only surfaces in a real `next build`, not typecheck.
+
+## Claim-gated metrics — 2026-08-13
+
+Selected the real 50-company MVP batch (5 per industry × 10 industries,
+via `services/crawler/data/selected_companies_50.json`, classified using
+NSE sectoral index constituents — see `fetch_sector_classification.py`)
+and found that BRSR filings structurally can't disclose three of the ten
+scoring metrics: **Retention**, **Leadership**, and **Employee Feedback**
+have no BRSR-mandated field asking for them, disaggregated by disability
+status, at all — unlike Employment (a mandated headcount table) or
+Accessibility/Compliance (a mandated RPwD Act workplace-accessibility
+question). Confirmed empirically, not just by reading the BRSR format:
+triaging Central Bank of India's BRSR filing matched zero disability/
+accessibility keywords across all 34 pages.
+
+- **Averaging all 10 metrics equally would have compressed every
+  unclaimed company's score toward the same low band, not measured real
+  variation.** A metric that's undisclosed everywhere adds no ranking
+  signal — every company scores ~0 on it regardless of actual
+  disability-inclusion performance, so folding it into the composite just
+  drags every score down by the same amount rather than differentiating
+  companies.
+- **Fix: `overall_score` (`score_orgs.py`) is now the mean of the 7
+  *observable* metrics only** — Accessibility, Policy, Employment,
+  Recruitment, Learning, Culture, Compliance. The claim-gated three are
+  still extracted and scored (a company that happens to volunteer this
+  rare disclosure still gets credit for it), and shown in the breakdown
+  UI, just excluded from the composite via a new
+  `included_in_score`/`includedInScore` field on each breakdown item
+  (`queries.ts`'s `normalizeBreakdown` defaults missing values to `true`,
+  so pre-existing rows read as fully-included). They fold back into the
+  composite once an org claims its profile and can self-declare that data
+  directly — the point of the Verification Ladder already in the data
+  model, not a new mechanism.
+- **UI treatment**: `ScoreBreakdown`/`DimensionScorecard` show "Not yet
+  disclosed" instead of a maturity-tier badge or a "vs. industry average"
+  delta for claim-gated items (a tier label or a negative delta would
+  misrepresent a structural disclosure gap as a real performance
+  shortfall). `StrengthsRisks` excludes them entirely from the
+  strengths/risks ranking, so "Quick risks" doesn't just become the same
+  three claim-gated categories for every company.
+- **A future company-website crawler (careers pages, D&I policy pages,
+  accessibility statements — see the existing `CrawlRun`/`CrawlFinding`
+  Prisma models, built for exactly this) is a good fit for Accessibility,
+  Policy, Culture, Compliance, and partially Recruitment/Learning — these
+  are things companies actually choose to publish.** It is not a fix for
+  Retention, Leadership, or Employee Feedback: no company publishes
+  disability-disaggregated attrition, leadership representation, or
+  internal PwD satisfaction-survey data on a public website regardless of
+  source, so those three stay claim-gated no matter how good the crawler
+  gets.

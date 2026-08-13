@@ -3,12 +3,18 @@ import { IndexSummary } from "./index-summary";
 import { TierLegend } from "./tier-legend";
 import { SectorAveragesPanel } from "./sector-averages-panel";
 import { TopStatesPanel } from "./top-states-panel";
+import { ScoreDistributionPanel } from "./score-distribution-panel";
 import { MomentumLeadersPanel } from "./momentum-leaders-panel";
 import { TopPerformersPanel } from "./top-performers-panel";
 import { WatchlistPanel } from "./watchlist-panel";
+import { DisclosureGapsPanel } from "./disclosure-gaps-panel";
+import { MetricHeatmap } from "./metric-heatmap";
 import { getAllOrgs } from "@blackbox/rankings-data";
 
-// Page content only — the shell composes this with <Masthead active="universities" />.
+// Page content only — the route file (app/ranking/universities/page.tsx)
+// renders this directly. Navigation into this page comes from the main
+// site nav's "Rankings" dropdown (see components/nav.tsx), not a
+// section-local nav bar (that Masthead was removed).
 // Mirrors companies-content.tsx's layout — see that file's comment for
 // the AIDEZA-format rationale.
 export async function UniversitiesLeaderboardContent() {
@@ -17,20 +23,17 @@ export async function UniversitiesLeaderboardContent() {
     .sort((a, b) => b.overallScore - a.overallScore);
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-7xl flex-1 px-6 py-16">
-      <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">University Rankings</h1>
-      <p className="mt-2 max-w-2xl text-muted-foreground">
-        Universities ranked on how accessible and inclusive they are to persons with
-        disabilities, based on published disclosures.
-      </p>
+    <main id="main-content" className="w-full flex-1 px-6 py-16">
+      {/* Visually removed per request, but a page still needs exactly one
+          h1 for screen-reader navigation — kept, just not shown. */}
+      <h1 className="sr-only">University Rankings</h1>
 
-      <div className="mt-8">
-        <IndexSummary orgs={orgs} label="Universities" />
-      </div>
+      <IndexSummary orgs={orgs} label="Universities" />
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr_280px] lg:items-start lg:gap-8">
         <aside className="order-2 flex flex-col gap-4 lg:order-1">
           <SectorAveragesPanel orgs={orgs} />
+          <ScoreDistributionPanel orgs={orgs} />
           <TopStatesPanel orgs={orgs} />
         </aside>
 
@@ -45,8 +48,13 @@ export async function UniversitiesLeaderboardContent() {
         <aside className="order-3 flex flex-col gap-4">
           <MomentumLeadersPanel orgs={orgs} />
           <TopPerformersPanel orgs={orgs} />
+          <DisclosureGapsPanel orgs={orgs} />
           <WatchlistPanel orgs={orgs} />
         </aside>
+      </div>
+
+      <div className="mt-8">
+        <MetricHeatmap orgs={orgs} />
       </div>
     </main>
   );

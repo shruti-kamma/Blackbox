@@ -17,21 +17,32 @@
 }
 
 /* Sitewide editorial-corporate theme (see docs/decisions.md — "Editorial
-   redesign", now extended sitewide from its original /ranking-only scope):
+   redesign", extended sitewide from its original /ranking-only scope, and
+   later unified fully — no more per-section theme scoping anywhere in the
+   app; one theme, applied the same way everywhere, nav included):
    navy as the interactive/brand color, purple as its paired accent, used
    together as a gradient duo on hero numerals and primary CTAs — not a
    primary/secondary hierarchy, not split by section. Overrides the shared
-   base theme's default blue (#1d4ed8). ranking-theme.css's #ranking-root
-   scoping still re-declares the same values within /ranking — now
-   redundant there but harmless (identical values), left alone rather than
-   risk destabilizing that section's own working theme-toggle mechanism.
-   Light mode is the deliberate default sitewide, regardless of OS
-   preference — see packages/config/tailwind/theme.css's own comment on
-   why there's no @media (prefers-color-scheme: dark) fallback anywhere. */
+   base theme's default blue (#1d4ed8). --color-card is a job-portal-only
+   addition (the shared base theme doesn't define one) for the
+   border-only card treatment the ranking pages use throughout. */
 @theme {
   --color-primary: #06038d;
   --color-secondary: #7c3ca1;
   --color-focus-ring: #06038d;
+  --color-card: #ffffff;
+}
+
+/* Mode follows the device/OS preference only (see
+   packages/config/tailwind/theme.css's own comment) — no manual toggle,
+   no hardcoded default, applied identically across the whole site. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #6a67ff;
+    --color-secondary: #b28ce0;
+    --color-focus-ring: #6a67ff;
+    --color-card: #0a0a0a;
+  }
 }
 
 body {

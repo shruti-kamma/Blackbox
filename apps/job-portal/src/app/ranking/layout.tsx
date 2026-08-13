@@ -1,19 +1,14 @@
-import { Lexend } from "next/font/google";
 import { SkipLink } from "@blackbox/ui";
-import { RANKING_ROOT_ID } from "@/lib/ranking-theme";
-import "./ranking-theme.css";
 
-// Single font for the /ranking section (headings and body both map to
-// this) — ported from apps/rankings, applied here to the section wrapper
-// rather than <html> so the rest of job-portal keeps its own Geist font.
-const lexend = Lexend({
-  subsets: ["latin"],
-  variable: "--font-lexend",
-});
-
+// Plain wrapper now — no section-scoped theme or font (see
+// docs/decisions.md — the whole site, including /ranking, shares one
+// unified theme, not a per-section override; that's what was causing the
+// nav-vs-content mismatch this replaced). flex-1 flex-col just keeps this
+// section filling the available vertical space within job-portal's own
+// body flex layout.
 export default function RankingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div id={RANKING_ROOT_ID} className={`${lexend.variable} flex flex-1 flex-col`}>
+    <div className="flex flex-1 flex-col">
       <SkipLink href="#main-content" />
       {children}
     </div>

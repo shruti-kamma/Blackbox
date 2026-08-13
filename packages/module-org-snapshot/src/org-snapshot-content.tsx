@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button, cn } from "@blackbox/ui";
@@ -7,18 +7,18 @@ import { RankSummary } from "./rank-summary";
 import { MaturityLadder } from "./maturity-ladder";
 import { SnapshotTabs } from "./snapshot-tabs";
 import { DimensionScorecard } from "./dimension-scorecard";
+import { DimensionRadar } from "./dimension-radar";
 import { StrengthsRisks } from "./strengths-risks";
 import { ScoreBreakdown } from "./score-breakdown";
 import {
   getMaturityLevel,
   getEmployeeFeedbackScore,
+  MATURITY_LEVEL_DOT_CLASS,
   VERIFICATION_LEVEL_LABELS,
   MOCK_ORGS,
   getOrg,
   getAllOrgs,
 } from "@blackbox/rankings-data";
-
-export type MastheadActive = "companies" | "universities" | "methodology";
 
 // Re-exported so a route file can do `export { generateStaticParams } from
 // "@blackbox/module-org-snapshot"` — Next.js requires this export to live
@@ -34,7 +34,7 @@ function StatCard({
   emphasis = false,
 }: {
   label: string;
-  value: string | number;
+  value: ReactNode;
   sub?: string;
   // Reserved for the one number per page meant to read as the headline
   // stat — see docs/decisions.md ("Editorial redesign"): the gradient duo
@@ -60,15 +60,24 @@ function StatCard({
   );
 }
 
-export interface OrgSnapshotContentProps {
-  slug: string;
-  // Injected rather than imported — Masthead is shell chrome (see
-  // docs/decisions.md — "Rankings feature modules") and this module can't
-  // pick its own `active` tab since that depends on the fetched org's type.
-  Masthead: ComponentType<{ active?: MastheadActive }>;
+// A small tier-colored dot next to the maturity text — same "color
+// reinforces the label, text still carries the meaning" pattern as
+// ScoreBadge, reused here for the two spots on this page that show the
+// maturity level as a standalone value rather than paired with a score.
+function MaturityValue({ level }: { level: ReturnType<typeof getMaturityLevel> }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span aria-hidden="true" className={cn("h-2 w-2 shrink-0 rounded-full", MATURITY_LEVEL_DOT_CLASS[level])} />
+      {level}
+    </span>
+  );
 }
 
-export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentProps) {
+export interface OrgSnapshotContentProps {
+  slug: string;
+}
+
+export async function OrgSnapshotContent({ slug }: OrgSnapshotContentProps) {
   const [org, allOrgs] = await Promise.all([getOrg(slug), getAllOrgs()]);
   if (!org) notFound();
 
@@ -91,9 +100,7 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
   ].filter(Boolean);
 
   return (
-    <>
-      <Masthead active={org.type === "COMPANY" ? "companies" : "universities"} />
-      <main id="main-content" className="mx-auto w-full max-w-4xl flex-1 px-6 py-16">
+    <main id="main-content" className="mx-auto w-full max-w-4xl flex-1 px-6 py-16">
         {/* Header */}
         <div className="border-b border-foreground pb-8">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -131,7 +138,9 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">
                   Maturity level
                 </p>
-                <p className="mt-1 font-serif text-xl font-bold text-foreground">{maturity}</p>
+                <p className="mt-1 font-serif text-xl font-bold text-foreground">
+                  <MaturityValue level={maturity} />
+                </p>
               </div>
             </div>
           </div>
@@ -168,7 +177,7 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
             sub={hasTrend ? `${trendSign}${org.scoreTrend} / 12mo` : undefined}
             emphasis
           />
-          <StatCard label="Maturity Level" value={maturity} />
+          <StatCard label="Maturity Level" value={<MaturityValue level={maturity} />} />
           {employeeFeedbackScore !== undefined && (
             <StatCard label="Employee Experience" value={`${employeeFeedbackScore}/100`} />
           )}
@@ -187,7 +196,8 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
         <p className="mt-1 text-sm text-muted-foreground">
           Each dimension vs. the national industry average.
         </p>
-        <div className="mt-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mt-4 grid grid-cols-1 gap-6 rounded-2xl border border-border bg-card p-6 shadow-sm lg:grid-cols-[280px_1fr] lg:items-center">
+          <DimensionRadar breakdown={org.breakdown} />
           <DimensionScorecard breakdown={org.breakdown} />
         </div>
 
@@ -212,7 +222,6 @@ export async function OrgSnapshotContent({ slug, Masthead }: OrgSnapshotContentP
         <div className="mt-4 rounded-2xl border border-border bg-card px-6 shadow-sm">
           <ScoreBreakdown breakdown={org.breakdown} />
         </div>
-      </main>
-    </>
+    </main>
   );
 }

@@ -10,6 +10,7 @@ interface RawBreakdownItem {
   industry_average?: number;
   rationale: string;
   recommendation: string | null;
+  included_in_score?: boolean;
 }
 
 export interface BreakdownItem {
@@ -18,6 +19,12 @@ export interface BreakdownItem {
   industryAverage: number;
   rationale: string;
   recommendation: string | null;
+  // False for the claim-gated metrics (Retention, Leadership, Employee
+  // Feedback — see score_orgs.py's CLAIM_GATED_METRICS): still scored and
+  // shown, but not folded into overallScore until this org is claimed.
+  // Missing on older rows (before this field existed) defaults to true —
+  // those were computed as fully-included at the time.
+  includedInScore: boolean;
 }
 
 export interface RankingsOrg {
@@ -63,6 +70,7 @@ function normalizeBreakdown(raw: unknown): BreakdownItem[] {
     industryAverage: item.industry_average ?? item.subscore,
     rationale: item.rationale,
     recommendation: item.recommendation ?? null,
+    includedInScore: item.included_in_score ?? true,
   }));
 }
 

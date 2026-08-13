@@ -4,6 +4,10 @@
 // the extraction pipeline actually looks for per metric (see
 // METRIC_FIELDS in services/crawler/scripts/extract_pwd_signals.py),
 // not looser marketing-style language.
+// Three of the ten — see claimGated below — have no BRSR-mandated
+// disclosure field and are essentially never public pre-claim (see
+// docs/decisions.md — "Claim-gated metrics"). They're still scored, just
+// excluded from the composite until an organization claims its record.
 const CATEGORIES = [
   {
     name: "Accessibility",
@@ -29,11 +33,13 @@ const CATEGORIES = [
     name: "Retention",
     description:
       "Whether employees with disabilities stay — retention-specific disclosures, kept separate from overall headcount since a company can hire well and still retain poorly, or vice versa.",
+    claimGated: true,
   },
   {
     name: "Leadership",
     description:
       "Representation of persons with disabilities specifically in senior and leadership roles, distinct from overall workforce representation.",
+    claimGated: true,
   },
   {
     name: "Learning",
@@ -49,6 +55,7 @@ const CATEGORIES = [
     name: "Employee Feedback",
     description:
       "Sentiment and self-reported experience from employees with disabilities. Expected to have low disclosure from public filings alone, honestly — most companies won't have data here until they claim their record and submit direct feedback.",
+    claimGated: true,
   },
   {
     name: "Compliance",
@@ -57,7 +64,10 @@ const CATEGORIES = [
   },
 ];
 
-// Page content only — the shell composes this with <Masthead active="methodology" />.
+// Page content only — the route file (app/ranking/methodology/page.tsx)
+// renders this directly. Navigation into this page comes from the main
+// site nav's "Rankings" dropdown (see components/nav.tsx), not a
+// section-local nav bar (that Masthead was removed).
 export function MethodologyContent() {
   return (
     <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
@@ -69,6 +79,14 @@ export function MethodologyContent() {
         disclosures (BRSR filings and annual reports), extracted and scored without company
         involvement unless a record has been claimed and verified.
       </p>
+      <p className="mt-3 max-w-2xl text-muted-foreground">
+        Three metrics — Retention, Leadership, and Employee Feedback — have no equivalent mandated
+        disclosure field in a BRSR filing, so they&rsquo;re essentially never public before a company
+        claims its record. They&rsquo;re still scored whenever something is disclosed, but excluded from
+        the composite score until an organization claims its profile and can self-declare that data
+        directly, so an unclaimed organization is never marked down for information it had no public
+        way to provide.
+      </p>
 
       <div className="mt-10 space-y-4">
         {CATEGORIES.map((cat, i) => (
@@ -78,6 +96,11 @@ export function MethodologyContent() {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h2 className="font-serif text-xl font-semibold text-foreground">{cat.name}</h2>
+              {cat.claimGated && (
+                <span className="rounded-full bg-muted px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground">
+                  Counted after claim
+                </span>
+              )}
             </div>
             <p className="mt-2 text-muted-foreground">{cat.description}</p>
           </div>

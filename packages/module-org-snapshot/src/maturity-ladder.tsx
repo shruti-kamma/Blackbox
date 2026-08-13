@@ -1,5 +1,5 @@
 import { cn } from "@blackbox/ui";
-import { MATURITY_LEVEL_LABELS, type MaturityLevel } from "@blackbox/rankings-data";
+import { MATURITY_LEVEL_DOT_CLASS, MATURITY_LEVEL_LABELS, type MaturityLevel } from "@blackbox/rankings-data";
 
 export interface MaturityLadderProps {
   level: MaturityLevel;
@@ -9,7 +9,10 @@ export interface MaturityLadderProps {
 // Reached/current state is never color-only: every stage keeps its visible
 // text label, and the current stage gets a font-weight change (not just a
 // color change) plus aria-current, per the WCAG 1.4.1 rule applied
-// elsewhere (see ScoreBadge).
+// elsewhere (see ScoreBadge). Each reached rung fills with its own tier
+// color (MATURITY_LEVEL_DOT_CLASS) rather than one uniform gradient
+// across all of them, so the bar itself reads as a graduated intensity
+// scale left-to-right, not just a single "how far along" fill.
 export function MaturityLadder({ level, className }: MaturityLadderProps) {
   const levelIndex = MATURITY_LEVEL_LABELS.indexOf(level);
 
@@ -23,16 +26,13 @@ export function MaturityLadder({ level, className }: MaturityLadderProps) {
             <li key={label} className="flex-1">
               <div
                 aria-hidden="true"
-                className={cn(
-                  "h-1.5 w-full rounded-full",
-                  reached ? "bg-gradient-to-r from-primary to-secondary" : "bg-muted",
-                )}
+                className={cn("h-1.5 w-full rounded-full", reached ? MATURITY_LEVEL_DOT_CLASS[label] : "bg-muted")}
               />
               <span
                 aria-current={isCurrent ? "step" : undefined}
                 className={cn(
-                  "mt-1.5 block text-[0.65rem] uppercase tracking-wide",
-                  isCurrent ? "font-semibold text-foreground" : "font-medium text-muted-foreground",
+                  "mt-1.5 block text-[0.65rem] tracking-wide",
+                  isCurrent ? "font-semibold text-foreground" : "font-normal text-muted-foreground/70",
                 )}
               >
                 {label}

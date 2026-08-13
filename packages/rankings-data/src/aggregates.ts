@@ -125,3 +125,100 @@ export function getTopPerformers(orgs: MockOrg[], limit = 5): MockOrg[] {
 export function getWatchlist(orgs: MockOrg[], limit = 5): MockOrg[] {
   return [...orgs].sort((a, b) => a.overallScore - b.overallScore).slice(0, limit);
 }
+
+export interface ScoreDistributionBucket {
+  rangeLabel: string; // e.g. "40-49"
+  min: number;
+  count: number;
+  percentage: number; // 0-100 relative to the largest bucket, for bar width
+}
+
+// Fixed 0-9/10-19/.../90-100 buckets (not data-driven bin count) so the
+// histogram's shape is comparable across page loads/filters rather than
+// re-bucketing every time the org set changes size.
+export function getScoreDistribution(orgs: MockOrg[]): ScoreDistributionBucket[] {
+  const buckets = Array.from({ length: 10 }, (_, i) => ({
+    rangeLabel: i === 9 ? "90-100" : `${i * 10}-${i * 10 + 9}`,
+    min: i * 10,
+    count: 0,
+  }));
+  for (const org of orgs) {
+    const idx = Math.min(9, Math.floor(org.overallScore / 10));
+    buckets[idx]!.count += 1;
+  }
+  const max = Math.max(1, ...buckets.map((b) => b.count));
+  return buckets.map((b) => ({ ...b, percentage: Math.round((b.count / max) * 100) }));
+}
+
+export interface MetricAverage {
+  category: string;
+  averageSubscore: number;
+  includedInScore: boolean; // false for claim-gated metrics — see ScoreBreakdownItem
+}
+
+// Per-metric average across the full breakdown, sorted ascending (weakest
+// disclosure first) — the "what's genuinely missing" view, as distinct
+// from getSectorAverages' per-org-group view. Reads includedInScore off
+// the first org that has the category (all orgs share the same 10
+// categories in the same order, per score_orgs.py), defaulting to true
+// for older data with no such field.
+export function getMetricAverages(orgs: MockOrg[]): MetricAverage[] {
+  const sums = new Map<string, number>();
+  const counts = new Map<string, number>();
+  const includedFlags = new Map<string, boolean>();
+  for (const org of orgs) {
+    for (const item of org.breakdown) {
+      sums.set(item.category, (sums.get(item.category) ?? 0) + item.subscore);
+      counts.set(item.category, (counts.get(item.category) ?? 0) + 1);
+      if (!includedFlags.has(item.category)) {
+        includedFlags.set(item.category, item.includedInScore ?? true);
+      }
+    }
+  }
+  return Array.from(sums.keys())
+    .map((category) => ({
+      category,
+      averageSubscore: Math.round((sums.get(category)! / counts.get(category)!) * 10) / 10,
+      includedInScore: includedFlags.get(category) ?? true,
+    }))
+    .sort((a, b) => a.averageSubscore - b.averageSubscore);
+}
+
+export interface IndustryMetricCell {
+  industry: string;
+  category: string;
+  averageSubscore: number;
+  count: number; // orgs contributing to this cell — low counts render lighter/hatched in the UI
+}
+
+// Industry x metric average grid — a compact 10x10-ish matrix (bounded by
+// distinct industries/metrics, not distinct orgs), unlike a per-org
+// heatmap which would need one row per org and become illegible at any
+// real org count. "Unclassified" groups orgs with a null industry, same
+// convention as getSectorAverages.
+export function getIndustryMetricMatrix(orgs: MockOrg[]): IndustryMetricCell[] {
+  // Keyed by a compound object rather than reconstructing industry/category
+  // by splitting a joined string key — both names can contain spaces (e.g.
+  // "Financial Services", "Employee Feedback"), so a naive split(" ") would
+  // corrupt them.
+  const cells = new Map<string, { industry: string; category: string; sum: number; count: number }>();
+  for (const org of orgs) {
+    const industry = org.industry ?? "Unclassified";
+    for (const item of org.breakdown) {
+      const key = `${industry} ${item.category}`;
+      const existing = cells.get(key);
+      if (existing) {
+        existing.sum += item.subscore;
+        existing.count += 1;
+      } else {
+        cells.set(key, { industry, category: item.category, sum: item.subscore, count: 1 });
+      }
+    }
+  }
+  return Array.from(cells.values()).map(({ industry, category, sum, count }) => ({
+    industry,
+    category,
+    averageSubscore: Math.round((sum / count) * 10) / 10,
+    count,
+  }));
+}
