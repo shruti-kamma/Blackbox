@@ -17,7 +17,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ cand
         skills: { include: { skill: true } },
         assistiveTechnologies: { include: { assistiveTechnology: true } },
         disabilityDetails: true,
-        candidateAssessment: { select: { status: true, score: true } },
+        candidateAssessment: {
+          select: {
+            status: true,
+            score: true,
+            highestLevelReached: true,
+            easyScore: true,
+            mediumScore: true,
+            hardScore: true,
+            retakeUsed: true,
+            previousScore: true,
+            previousCompletedAt: true,
+          },
+        },
       },
     });
     if (!candidate) return NextResponse.json({ error: "Candidate not found" }, { status: 404 });

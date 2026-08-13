@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
-import { ASSESSMENT_COUNTS, pickAptitudeQuestions, pickLanguageQuestions, type BankQuestion } from "@/lib/assessment/question-bank";
-import { generateSkillQuestions } from "@/lib/assessment/skill-question-generator";
+import { assembleRoundQuestions } from "@/lib/assessment/assemble-round";
 import { reconcileLanguageSections } from "@/lib/assessment/reconcile";
 
 export async function POST() {
@@ -14,24 +13,25 @@ export async function POST() {
     // Resumable, not regenerated — a candidate who refreshes mid-exam (or
     // already finished) gets their existing attempt back, not a fresh
     // reroll of questions.
-    const existing = await prisma.candidateAssessment.findUnique({
-      where: { candidateProfileId },
-      include: { answers: { orderBy: { order: "asc" } } },
-    });
+    const existing = await prisma.candidateAssessment.findUnique({ where: { candidateProfileId } });
     if (existing) {
       if (existing.status === "IN_PROGRESS") {
         const profile = await prisma.candidateProfile.findUniqueOrThrow({
           where: { id: candidateProfileId },
           select: { disabilityCategories: true },
         });
-        await reconcileLanguageSections(existing.id, profile.disabilityCategories);
+        await reconcileLanguageSections(existing.id, existing.currentRound, existing.currentLevel, profile.disabilityCategories);
       }
+      // Scoped to the current round only — earlier rounds' rows stay in
+      // the table for history, but aren't part of what's being answered
+      // right now.
       const answers = await prisma.candidateAssessmentAnswer.findMany({
-        where: { candidateAssessmentId: existing.id },
+        where: { candidateAssessmentId: existing.id, round: existing.currentRound },
         orderBy: { order: "asc" },
       });
       return NextResponse.json({
         status: existing.status,
+        currentLevel: existing.currentLevel,
         questions: answers.map((a) => ({
           id: a.id,
           order: a.order,
@@ -44,81 +44,18 @@ export async function POST() {
       });
     }
 
-    const candidate = await prisma.candidateProfile.findUniqueOrThrow({
-      where: { id: candidateProfileId },
-      select: { disabilityCategories: true, skills: { select: { skill: { select: { name: true } } } } },
-    });
-    const skillNames = candidate.skills.map((s) => s.skill.name);
-
-    const bankRows = await prisma.assessmentQuestion.findMany();
-    const bank: BankQuestion[] = bankRows.map((r) => ({
-      id: r.id,
-      section: r.section,
-      prompt: r.prompt,
-      passage: r.passage,
-      options: r.options,
-      correctIndex: r.correctIndex,
-    }));
-
-    const languageQuestions = pickLanguageQuestions(bank, candidate.disabilityCategories);
-
-    let aptitudeQuestions: BankQuestion[];
-    let skillQuestions: { skillName: string; prompt: string; options: string[]; correctIndex: number }[] = [];
-
-    if (skillNames.length === 0) {
-      // Nothing to personalize against — draw more aptitude questions
-      // instead of calling the AI with no input.
-      aptitudeQuestions = pickAptitudeQuestions(bank, ASSESSMENT_COUNTS.APTITUDE_FALLBACK);
-    } else {
-      aptitudeQuestions = pickAptitudeQuestions(bank, ASSESSMENT_COUNTS.APTITUDE);
-      try {
-        skillQuestions = await generateSkillQuestions(skillNames, ASSESSMENT_COUNTS.SKILL);
-      } catch {
-        // AI generation failed (outage, malformed response, ...) — fall
-        // back to more aptitude questions rather than blocking the
-        // candidate from starting their exam at all.
-        const usedIds = new Set(aptitudeQuestions.map((q) => q.id));
-        const remainingPool = bank.filter((q) => q.section === "APTITUDE" && !usedIds.has(q.id));
-        aptitudeQuestions = [
-          ...aptitudeQuestions,
-          ...pickAptitudeQuestions(remainingPool, ASSESSMENT_COUNTS.SKILL),
-        ];
-      }
-    }
-
-    const allQuestions = [
-      ...languageQuestions.map((q) => ({
-        section: q.section,
-        prompt: q.prompt,
-        passage: q.passage,
-        options: q.options,
-        correctIndex: q.correctIndex,
-        skillName: null as string | null,
-      })),
-      ...aptitudeQuestions.map((q) => ({
-        section: q.section,
-        prompt: q.prompt,
-        passage: q.passage,
-        options: q.options,
-        correctIndex: q.correctIndex,
-        skillName: null as string | null,
-      })),
-      ...skillQuestions.map((q) => ({
-        section: "SKILL_BASED" as const,
-        prompt: q.prompt,
-        passage: null as string | null,
-        options: q.options,
-        correctIndex: q.correctIndex,
-        skillName: q.skillName as string | null,
-      })),
-    ];
+    const questions = await assembleRoundQuestions(candidateProfileId, "EASY");
 
     const assessment = await prisma.candidateAssessment.create({
       data: {
         candidateProfileId,
+        currentLevel: "EASY",
+        currentRound: 1,
         answers: {
-          create: allQuestions.map((q, i) => ({
+          create: questions.map((q, i) => ({
             order: i,
+            round: 1,
+            difficulty: "EASY",
             section: q.section,
             prompt: q.prompt,
             passage: q.passage,
@@ -133,6 +70,7 @@ export async function POST() {
 
     return NextResponse.json({
       status: assessment.status,
+      currentLevel: assessment.currentLevel,
       questions: assessment.answers.map((a) => ({
         id: a.id,
         order: a.order,

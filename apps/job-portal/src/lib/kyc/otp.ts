@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
-import type { User, VerificationChannel } from "@blackbox/db";
+import { Prisma, type User, type VerificationChannel } from "@blackbox/db";
 import { prisma } from "@/lib/db";
 import { sendEmailOtp, sendPhoneOtp, devCodeVisible } from "./senders";
+import { normalizeEmailForDedup, normalizePhone } from "./normalize";
 
 const SALT_ROUNDS = 8;
 const CODE_TTL_MINUTES = 10;
@@ -65,7 +66,21 @@ export async function createAndSendCode(user: User, channel: VerificationChannel
   return devCodeVisible() ? { devCode: code } : {};
 }
 
-export type VerifyOutcome = "VERIFIED" | "INVALID_CODE" | "EXPIRED" | "TOO_MANY_ATTEMPTS" | "NO_ACTIVE_CODE";
+export type VerifyOutcome =
+  | "VERIFIED"
+  | "INVALID_CODE"
+  | "EXPIRED"
+  | "TOO_MANY_ATTEMPTS"
+  | "NO_ACTIVE_CODE"
+  | "CLAIMED_BY_ANOTHER_ACCOUNT";
+
+// P2002 (unique violation) here means the normalized phone/email is already
+// claimed by a different account's completed verification — the DB's unique
+// constraint is the source of truth, not a separate check-then-write (which
+// would race if two verify requests for the same destination land at once).
+function isUniqueViolation(error: unknown): boolean {
+  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
+}
 
 export async function verifyCode(userId: string, channel: VerificationChannel, code: string): Promise<VerifyOutcome> {
   const record = await prisma.verificationCode.findFirst({
@@ -86,16 +101,36 @@ export async function verifyCode(userId: string, channel: VerificationChannel, c
     return "INVALID_CODE";
   }
 
-  await prisma.$transaction([
-    prisma.verificationCode.update({
-      where: { id: record.id },
-      data: { consumedAt: new Date() },
-    }),
-    prisma.user.update({
-      where: { id: userId },
-      data: channel === "EMAIL" ? { emailVerified: true } : { phoneVerified: true },
-    }),
-  ]);
+  try {
+    if (channel === "EMAIL") {
+      const user = await prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { email: true } });
+      const normalized = normalizeEmailForDedup(user.email);
+      await prisma.$transaction([
+        prisma.verificationCode.update({ where: { id: record.id }, data: { consumedAt: new Date() } }),
+        prisma.user.update({
+          where: { id: userId },
+          data: { emailVerified: true, emailVerifiedNormalized: normalized },
+        }),
+      ]);
+    } else {
+      const candidate = await prisma.candidateProfile.findUniqueOrThrow({
+        where: { userId },
+        select: { id: true, phone: true },
+      });
+      const normalized = normalizePhone(candidate.phone ?? "");
+      await prisma.$transaction([
+        prisma.verificationCode.update({ where: { id: record.id }, data: { consumedAt: new Date() } }),
+        prisma.user.update({ where: { id: userId }, data: { phoneVerified: true } }),
+        prisma.candidateProfile.update({
+          where: { id: candidate.id },
+          data: { phoneNormalized: normalized, phoneVerifiedNormalized: normalized },
+        }),
+      ]);
+    }
+  } catch (error) {
+    if (isUniqueViolation(error)) return "CLAIMED_BY_ANOTHER_ACCOUNT";
+    throw error;
+  }
 
   return "VERIFIED";
 }

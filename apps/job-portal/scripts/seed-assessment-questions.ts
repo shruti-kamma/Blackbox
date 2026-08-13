@@ -16,8 +16,9 @@ async function main() {
     // ("Choose the correctly written sentence.") with the real distinguishing
     // content in `options` — match on both, not just section+prompt, or
     // distinct questions get wrongly treated as duplicates of each other.
+    const difficulty = q.difficulty ?? "EASY";
     const existing = await prisma.assessmentQuestion.findFirst({
-      where: { section: q.section, prompt: q.prompt, options: { equals: q.options } },
+      where: { section: q.section, difficulty, prompt: q.prompt, options: { equals: q.options } },
       select: { id: true },
     });
     if (existing) {
@@ -27,6 +28,7 @@ async function main() {
     await prisma.assessmentQuestion.create({
       data: {
         section: q.section,
+        difficulty,
         prompt: q.prompt,
         passage: q.passage ?? null,
         options: q.options,

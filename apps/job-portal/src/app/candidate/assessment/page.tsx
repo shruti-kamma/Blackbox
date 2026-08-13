@@ -6,6 +6,7 @@ import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
 
 type Section = "LISTENING" | "SPEAKING" | "READING" | "WRITING" | "APTITUDE" | "SKILL_BASED";
+type Level = "EASY" | "MEDIUM" | "HARD";
 
 interface Question {
   id: string;
@@ -17,16 +18,53 @@ interface Question {
   selectedIndex: number | null;
 }
 
+const LEVEL_LABELS: Record<Level, string> = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
+
 type PageState =
   | { kind: "loading" }
   | { kind: "not_started" }
-  | { kind: "in_progress"; questions: Question[] }
+  // easyScore/mediumScore are the tiers already locked in *below*
+  // currentLevel (both null while on Easy) — carried through so a
+  // candidate who left mid-ladder and comes back still sees what they've
+  // already cleared, not just the level badge.
+  | { kind: "in_progress"; questions: Question[]; currentLevel: Level; easyScore: number | null; mediumScore: number | null }
+  // Shown instead of dropping straight into the exam whenever a candidate
+  // returns to a level beyond Easy that they haven't started answering
+  // yet (currentLevel !== EASY and no answers saved on this round) — asks
+  // whether they want to take it now or come back later, rather than
+  // silently opening a live 40-question exam under them.
+  | {
+      kind: "resume_prompt";
+      questions: Question[];
+      currentLevel: Level;
+      easyScore: number | null;
+      mediumScore: number | null;
+    }
+  // Brief transition screen shown right after clearing a level — the
+  // candidate reviews their result for the level just finished before
+  // continuing into the next one, rather than being dropped straight into
+  // 40 fresh questions with no acknowledgment of what they just did.
+  | {
+      kind: "advanced";
+      completedLevel: Level;
+      completedLevelScore: number;
+      nextLevel: Level;
+      questions: Question[];
+      easyScore: number | null;
+      mediumScore: number | null;
+    }
   | {
       kind: "completed";
       score: number;
       languageScore: number | null;
       aptitudeScore: number | null;
       skillScore: number | null;
+      highestLevelReached: Level | null;
+      easyScore: number | null;
+      mediumScore: number | null;
+      hardScore: number | null;
+      retakeEligible: boolean;
+      retakeUsed: boolean;
     }
   | { kind: "error"; message: string };
 
@@ -71,6 +109,8 @@ export default function AssessmentPage() {
   const [starting, setStarting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [retaking, setRetaking] = useState(false);
+  const [retakeError, setRetakeError] = useState<string | null>(null);
   // Listening passages are audio-only by default — showing the text would
   // let a candidate just read it, defeating the point of the section. The
   // transcript is available on demand as an accessibility fallback, not
@@ -94,25 +134,45 @@ export default function AssessmentPage() {
   useEffect(() => {
     apiRequest<
       | { status: "NOT_STARTED" }
-      | { status: "IN_PROGRESS"; questions: Question[] }
+      | { status: "IN_PROGRESS"; currentLevel: Level; questions: Question[]; easyScore: number | null; mediumScore: number | null }
       | {
           status: "COMPLETED";
           score: number;
           languageScore: number | null;
           aptitudeScore: number | null;
           skillScore: number | null;
+          highestLevelReached: Level | null;
+          easyScore: number | null;
+          mediumScore: number | null;
+          hardScore: number | null;
+          retakeEligible: boolean;
+          retakeUsed: boolean;
         }
     >("/api/candidate/assessment")
       .then((data) => {
         if (data.status === "NOT_STARTED") setState({ kind: "not_started" });
-        else if (data.status === "IN_PROGRESS") setState({ kind: "in_progress", questions: data.questions });
-        else
+        else if (data.status === "IN_PROGRESS") {
+          const hasStarted = data.questions.some((q) => q.selectedIndex !== null);
+          setState({
+            kind: data.currentLevel !== "EASY" && !hasStarted ? "resume_prompt" : "in_progress",
+            questions: data.questions,
+            currentLevel: data.currentLevel,
+            easyScore: data.easyScore,
+            mediumScore: data.mediumScore,
+          });
+        } else
           setState({
             kind: "completed",
             score: data.score,
             languageScore: data.languageScore,
             aptitudeScore: data.aptitudeScore,
             skillScore: data.skillScore,
+            highestLevelReached: data.highestLevelReached,
+            easyScore: data.easyScore,
+            mediumScore: data.mediumScore,
+            hardScore: data.hardScore,
+            retakeEligible: data.retakeEligible,
+            retakeUsed: data.retakeUsed,
           });
       })
       .catch((err) => {
@@ -136,10 +196,13 @@ export default function AssessmentPage() {
   async function startAssessment() {
     setStarting(true);
     try {
-      const data = await apiRequest<{ status: string; questions: Question[] }>("/api/candidate/assessment/start", {
-        method: "POST",
-      });
-      setState({ kind: "in_progress", questions: data.questions });
+      const data = await apiRequest<{ status: string; currentLevel: Level; questions: Question[] }>(
+        "/api/candidate/assessment/start",
+        { method: "POST" },
+      );
+      // A brand-new assessment always starts at Easy round 1, so there's
+      // no lower tier score to carry yet.
+      setState({ kind: "in_progress", questions: data.questions, currentLevel: data.currentLevel, easyScore: null, mediumScore: null });
     } catch (err) {
       setState({ kind: "error", message: err instanceof ApiClientError ? err.message : "Failed to start" });
     } finally {
@@ -147,10 +210,38 @@ export default function AssessmentPage() {
     }
   }
 
+  async function retakeAssessment() {
+    setRetaking(true);
+    setRetakeError(null);
+    try {
+      const data = await apiRequest<{
+        status: string;
+        currentLevel: Level;
+        questions: Question[];
+        easyScore: number | null;
+        mediumScore: number | null;
+      }>("/api/candidate/assessment/retake", { method: "POST" });
+      setIndex(0);
+      setVisited(new Set());
+      setMarked(new Set());
+      setState({
+        kind: "in_progress",
+        questions: data.questions,
+        currentLevel: data.currentLevel,
+        easyScore: data.easyScore,
+        mediumScore: data.mediumScore,
+      });
+    } catch (err) {
+      setRetakeError(err instanceof ApiClientError ? err.message : "Failed to start retake");
+    } finally {
+      setRetaking(false);
+    }
+  }
+
   function saveAnswerLocally(questionId: string, selectedIndex: number | null) {
     if (state.kind !== "in_progress") return;
     setState({
-      kind: "in_progress",
+      ...state,
       questions: state.questions.map((q) => (q.id === questionId ? { ...q, selectedIndex } : q)),
     });
   }
@@ -200,18 +291,66 @@ export default function AssessmentPage() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const result = await apiRequest<{
-        score: number;
-        languageScore: number | null;
-        aptitudeScore: number | null;
-        skillScore: number | null;
-      }>("/api/candidate/assessment/submit", {
+      const result = await apiRequest<
+        | {
+            status: "IN_PROGRESS";
+            advanced: true;
+            completedLevel: Level;
+            completedLevelScore: number;
+            currentLevel: Level;
+            questions: Question[];
+          }
+        | {
+            status: "COMPLETED";
+            score: number;
+            languageScore: number | null;
+            aptitudeScore: number | null;
+            skillScore: number | null;
+            highestLevelReached: Level;
+            easyScore: number | null;
+            mediumScore: number | null;
+            hardScore: number | null;
+            retakeEligible: boolean;
+            retakeUsed: boolean;
+          }
+      >("/api/candidate/assessment/submit", {
         method: "POST",
         body: JSON.stringify({
           answers: state.questions.map((q) => ({ answerId: q.id, selectedIndex: q.selectedIndex ?? -1 })),
         }),
       });
-      setState({ kind: "completed", ...result });
+
+      if (result.status === "IN_PROGRESS") {
+        // `state` here is still the pre-submission in_progress state, so
+        // state.easyScore/mediumScore are whatever was already locked in
+        // below the level just finished — carry that forward alongside
+        // the score that just came back, rather than losing it.
+        const easyScore = result.completedLevel === "EASY" ? result.completedLevelScore : state.easyScore;
+        const mediumScore = result.completedLevel === "MEDIUM" ? result.completedLevelScore : state.mediumScore;
+        setState({
+          kind: "advanced",
+          completedLevel: result.completedLevel,
+          completedLevelScore: result.completedLevelScore,
+          nextLevel: result.currentLevel,
+          questions: result.questions,
+          easyScore,
+          mediumScore,
+        });
+      } else {
+        setState({
+          kind: "completed",
+          score: result.score,
+          languageScore: result.languageScore,
+          aptitudeScore: result.aptitudeScore,
+          skillScore: result.skillScore,
+          highestLevelReached: result.highestLevelReached,
+          easyScore: result.easyScore,
+          mediumScore: result.mediumScore,
+          hardScore: result.hardScore,
+          retakeEligible: result.retakeEligible,
+          retakeUsed: result.retakeUsed,
+        });
+      }
     } catch (err) {
       setSubmitError(err instanceof ApiClientError ? err.message : "Failed to submit");
     } finally {
@@ -277,12 +416,17 @@ export default function AssessmentPage() {
           <p className="text-sm text-muted-foreground">
             A one-time, 40-question multiple-choice assessment — 15 language questions (adjusted to your
             disability profile), 15 aptitude questions, and 10 based on the skills you listed. Self-paced, no
-            timer. You can only take this once, and your answers autosave as you go, so it&apos;s safe to close
-            the tab and come back.
+            timer. Your answers autosave as you go, so it&apos;s safe to close the tab and come back.
           </p>
           <p className="text-sm text-muted-foreground">
-            Your score is shared with employers alongside your profile and factors into how strongly you match
-            open roles. You&apos;ll be able to apply for jobs once it&apos;s complete.
+            It has three difficulty levels — Easy, Medium, and Hard. Score 70% or higher on a level and
+            you&apos;ll move up to the next one; otherwise the level you reach becomes final. You can only take
+            this once overall, but reaching any level completes it — there&apos;s no minimum score required to
+            move on to job applications.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your score and level reached are shared with employers alongside your profile and factor into how
+            strongly you match open roles. You&apos;ll be able to apply for jobs once it&apos;s complete.
           </p>
         </div>
         <Button onClick={startAssessment} disabled={starting}>
@@ -292,20 +436,112 @@ export default function AssessmentPage() {
     );
   }
 
+  if (state.kind === "resume_prompt") {
+    return (
+      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-4 py-16">
+        <div className="flex flex-col gap-2 text-center">
+          <p className="text-sm font-medium text-success">Level cleared 🎉</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+            You scored {state.easyScore}% on Easy
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            That&apos;s a strong enough result to move up. Your next 40 questions are ready at the{" "}
+            <strong className="text-foreground">{LEVEL_LABELS[state.currentLevel]}</strong> level, whenever
+            you&apos;re ready — same format, just a step tougher. Your Easy score is already locked in either way.
+          </p>
+        </div>
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button
+            onClick={() => {
+              setIndex(0);
+              setVisited(new Set());
+              setMarked(new Set());
+              setState({ ...state, kind: "in_progress" });
+            }}
+          >
+            I&apos;ll take it now →
+          </Button>
+          <Button variant="secondary" onClick={() => router.push("/candidate/jobs")}>
+            I&apos;ll take it later
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (state.kind === "advanced") {
+    return (
+      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-4 py-16">
+        <div className="flex flex-col gap-2 text-center">
+          <p className="text-sm font-medium text-success">Level cleared 🎉</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+            You scored {state.completedLevelScore}% on {LEVEL_LABELS[state.completedLevel]}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            That&apos;s a strong enough result to move up. You&apos;re now advancing to the{" "}
+            <strong className="text-foreground">{LEVEL_LABELS[state.nextLevel]}</strong> level — same format, 40
+            questions, just a step tougher.
+          </p>
+        </div>
+        <Button
+          onClick={() => {
+            setIndex(0);
+            setVisited(new Set());
+            setMarked(new Set());
+            setState({
+              kind: "in_progress",
+              questions: state.questions,
+              currentLevel: state.nextLevel,
+              easyScore: state.easyScore,
+              mediumScore: state.mediumScore,
+            });
+          }}
+        >
+          Continue to {LEVEL_LABELS[state.nextLevel]} →
+        </Button>
+      </main>
+    );
+  }
+
   if (state.kind === "completed") {
+    const tierScores: { level: Level; score: number | null }[] = [
+      { level: "EASY", score: state.easyScore },
+      { level: "MEDIUM", score: state.mediumScore },
+      { level: "HARD", score: state.hardScore },
+    ];
     return (
       <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-4 py-16">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">Assessment complete</h1>
           <p className="text-sm text-muted-foreground">
-            You can now apply for jobs. Your score is visible to employers alongside your profile.
+            You can now apply for jobs. Your score and level reached are visible to employers alongside your
+            profile.
           </p>
         </div>
+        {state.highestLevelReached && (
+          <div className="rounded-md border border-border bg-muted p-4 text-center">
+            <p className="text-sm text-muted-foreground">Level reached</p>
+            <p className="text-2xl font-semibold text-foreground">{LEVEL_LABELS[state.highestLevelReached]}</p>
+            {tierScores.some((t) => t.score !== null) && (
+              <div className="mt-2 flex flex-wrap justify-center gap-3 text-xs text-muted-foreground">
+                {tierScores
+                  .filter((t) => t.score !== null)
+                  .map((t) => (
+                    <span key={t.level}>
+                      {LEVEL_LABELS[t.level]}: <span className="font-medium text-foreground">{t.score}%</span>
+                    </span>
+                  ))}
+              </div>
+            )}
+          </div>
+        )}
         <div className="rounded-md border border-border p-4">
           <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-semibold tabular-nums text-transparent">
             {state.score}%
           </p>
-          <p className="text-sm text-muted-foreground">Overall score</p>
+          <p className="text-sm text-muted-foreground">
+            Overall score{state.highestLevelReached ? ` (${LEVEL_LABELS[state.highestLevelReached]} level)` : ""}
+          </p>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="rounded-md border border-border p-3">
@@ -327,6 +563,26 @@ export default function AssessmentPage() {
             <p className="text-xs text-muted-foreground">Skills</p>
           </div>
         </div>
+
+        {state.retakeEligible && (
+          <div className="rounded-md border border-primary/30 bg-primary/5 p-4">
+            <p className="text-sm font-medium text-foreground">Your accessibility needs have changed</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Since you completed this assessment, you&apos;ve updated your disability category in a way that
+              changes which language questions apply to you. You get one free retake of just the language
+              section — your Aptitude and Skills answers stay exactly as they are.
+            </p>
+            {retakeError && (
+              <p role="alert" className="mt-2 text-sm text-danger">
+                {retakeError}
+              </p>
+            )}
+            <Button className="mt-3" variant="secondary" onClick={retakeAssessment} disabled={retaking}>
+              {retaking ? "Starting retake…" : "Retake language section"}
+            </Button>
+          </div>
+        )}
+
         <Button onClick={() => router.push("/candidate/jobs")}>Browse matched jobs →</Button>
       </main>
     );
@@ -351,7 +607,21 @@ export default function AssessmentPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
         <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">Your assessment</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-semibold tracking-tight text-foreground">Your assessment</h1>
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                {LEVEL_LABELS[state.currentLevel]} level
+              </span>
+            </div>
+            {state.currentLevel !== "EASY" && (
+              <p className="mt-1 text-sm text-success">
+                🎉 You scored {state.easyScore}% on Easy
+                {state.currentLevel === "HARD" && state.mediumScore !== null
+                  ? ` and ${state.mediumScore}% on Medium`
+                  : ""}{" "}
+                — finish {LEVEL_LABELS[state.currentLevel]} to lock in your highest possible level.
+              </p>
+            )}
             <div className="mt-2 flex flex-wrap gap-1.5 border-b border-border pb-3">
               {sectionOrder.map((section) => (
                 <button

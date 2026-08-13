@@ -3,21 +3,35 @@
 import { useEffect, useRef, useState } from "react";
 import { apiRequest } from "@/lib/api-client";
 
-export type SuggestField = "skills" | "categories" | "locations" | "institutions" | "fieldsOfStudy";
+export type SuggestField =
+  | "skills"
+  | "categories"
+  | "locations"
+  | "institutions"
+  | "fieldsOfStudy"
+  | "assistiveTechnologies";
 
 const INPUT_CLASS =
   "h-touch-target w-full rounded-md border border-border bg-background px-3 text-foreground";
 
-function useSuggestions(field: SuggestField, query: string, active: boolean) {
+function useSuggestions(
+  field: SuggestField,
+  query: string,
+  active: boolean,
+  extraParams?: Record<string, string>,
+) {
   const [options, setOptions] = useState<string[]>([]);
+  // Stable key so the effect only re-fires when the actual filter values
+  // change, not on every render (a fresh object literal every render would
+  // otherwise retrigger this on each keystroke elsewhere in the form).
+  const extraParamsKey = extraParams ? JSON.stringify(extraParams) : "";
 
   useEffect(() => {
     if (!active) return;
     let cancelled = false;
     const timer = setTimeout(() => {
-      apiRequest<{ options: string[] }>(
-        `/api/candidate/profile-options?field=${field}&q=${encodeURIComponent(query)}`,
-      )
+      const params = new URLSearchParams({ field, q: query, ...(extraParamsKey ? JSON.parse(extraParamsKey) : {}) });
+      apiRequest<{ options: string[] }>(`/api/candidate/profile-options?${params.toString()}`)
         .then(({ options }) => {
           if (!cancelled) setOptions(options);
         })
@@ -29,7 +43,7 @@ function useSuggestions(field: SuggestField, query: string, active: boolean) {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [field, query, active]);
+  }, [field, query, active, extraParamsKey]);
 
   return options;
 }
@@ -46,6 +60,7 @@ export function TagSearchSelect({
   onChange,
   helperText,
   placeholder,
+  extraParams,
 }: {
   id: string;
   label: string;
@@ -54,11 +69,12 @@ export function TagSearchSelect({
   onChange: (value: string[]) => void;
   helperText?: string;
   placeholder?: string;
+  extraParams?: Record<string, string>;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const options = useSuggestions(field, query, open);
+  const options = useSuggestions(field, query, open, extraParams);
   const filteredOptions = options.filter((o) => !value.includes(o));
 
   useEffect(() => {

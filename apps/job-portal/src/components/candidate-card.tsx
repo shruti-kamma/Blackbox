@@ -20,7 +20,7 @@ export interface CandidateSummary {
   disabilityDetails: { category: string; severityPercentage: number | null; affectedBodyPart: string | null }[];
   education: { level: string; fieldOfStudy: string | null; institution: string }[];
   skills: { skill: { name: string } }[];
-  candidateAssessment: { status: string; score: number | null } | null;
+  candidateAssessment: { status: string; score: number | null; highestLevelReached: string | null } | null;
 }
 
 const ACCOMMODATION_LABELS = Object.fromEntries(
@@ -38,6 +38,8 @@ const DISABILITY_LABELS = Object.fromEntries(
 const BODY_PART_LABELS = Object.fromEntries(
   BODY_PART_OPTIONS.map((opt) => [opt.value, opt.label]),
 ) as Record<string, string>;
+
+const LEVEL_LABELS: Record<string, string> = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
 
 function formatDisabilityDetail(d: CandidateSummary["disabilityDetails"][number]) {
   const parts = [
@@ -130,6 +132,11 @@ export function CandidateCard({
             {candidate.candidateAssessment?.status === "COMPLETED"
               ? `${candidate.candidateAssessment.score}%`
               : "Not yet completed"}
+            {candidate.candidateAssessment?.highestLevelReached && (
+              <span className="ml-1.5 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                Reached: {LEVEL_LABELS[candidate.candidateAssessment.highestLevelReached] ?? candidate.candidateAssessment.highestLevelReached}
+              </span>
+            )}
           </p>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">

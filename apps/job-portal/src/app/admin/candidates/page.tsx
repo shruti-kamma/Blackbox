@@ -9,10 +9,13 @@ const DISABILITY_LABELS = Object.fromEntries(
   DISABILITY_CATEGORY_OPTIONS.map((opt) => [opt.value, opt.label]),
 ) as Record<string, string>;
 
+const LEVEL_LABELS: Record<string, string> = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
+
 interface CandidateRow {
   id: string;
   fullName: string;
   disabilityCategories: string[];
+  disabilityVerified: boolean;
   profileCompletionPercent: number;
   matchesCount: number;
   applicationsCount: number;
@@ -20,6 +23,7 @@ interface CandidateRow {
   signedUpAt: string;
   kycVerified: boolean;
   assessmentScore: number | null;
+  assessmentLevelReached: string | null;
 }
 
 type SortKey = "fullName" | "profileCompletionPercent" | "matchesCount" | "applicationsCount" | "signedUpAt";
@@ -146,6 +150,11 @@ export default function AdminCandidatesPage() {
                   </td>
                   <td className="py-2 pr-4 text-xs text-muted-foreground">
                     {c.disabilityCategories.map((d) => DISABILITY_LABELS[d] ?? d).join(", ") || "—"}
+                    {c.disabilityVerified && (
+                      <span className="ml-1 text-success" title="Certificate verified">
+                        ✓
+                      </span>
+                    )}
                   </td>
                   <td className="py-2 pr-4">
                     <span
@@ -158,6 +167,11 @@ export default function AdminCandidatesPage() {
                   </td>
                   <td className="py-2 pr-4 tabular-nums">
                     {c.assessmentScore !== null ? `${c.assessmentScore}%` : "—"}
+                    {c.assessmentLevelReached && (
+                      <span className="ml-1 text-xs text-muted-foreground">
+                        ({LEVEL_LABELS[c.assessmentLevelReached] ?? c.assessmentLevelReached})
+                      </span>
+                    )}
                   </td>
                   <td className="py-2 pr-4 tabular-nums">{c.profileCompletionPercent}%</td>
                   <td className="py-2 pr-4 tabular-nums">{c.matchesCount}</td>

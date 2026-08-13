@@ -9,6 +9,8 @@ const OUTCOME_MESSAGES: Record<string, string> = {
   EXPIRED: "That code expired — request a new one",
   TOO_MANY_ATTEMPTS: "Too many incorrect attempts — request a new code",
   NO_ACTIVE_CODE: "No code was sent for this — request one first",
+  CLAIMED_BY_ANOTHER_ACCOUNT:
+    "This phone number or email is already verified on a different account. If you believe this is a mistake — for example, a shared household phone — contact support to resolve it.",
 };
 
 export async function POST(request: Request) {

@@ -1,4 +1,4 @@
-import type { AssessmentSection } from "@blackbox/db";
+import type { AssessmentDifficulty, AssessmentSection } from "@blackbox/db";
 import { prisma } from "@/lib/db";
 import {
   ASSESSMENT_COUNTS,
@@ -21,13 +21,17 @@ const LANGUAGE_SECTIONS: AssessmentSection[] = ["LISTENING", "SPEAKING", "READIN
 // still-*unanswered* questions from sections that are no longer applicable
 // and tops the language section back up to its full count from whichever
 // sections currently apply — same distribution logic used at first start.
-// Already-answered rows are never touched.
+// Already-answered rows are never touched. Scoped to one round/difficulty
+// tier at a time — earlier rounds' rows (from a level the candidate already
+// passed) are never touched by this, only the currently-active round.
 export async function reconcileLanguageSections(
   assessmentId: string,
+  round: number,
+  difficulty: AssessmentDifficulty,
   disabilityCategories: string[],
 ): Promise<void> {
   const currentAnswers = await prisma.candidateAssessmentAnswer.findMany({
-    where: { candidateAssessmentId: assessmentId },
+    where: { candidateAssessmentId: assessmentId, round },
   });
 
   const applicable = applicableLanguageSections(disabilityCategories);
@@ -45,7 +49,7 @@ export async function reconcileLanguageSections(
 
   if (toDrop.length === 0 && shortfalls.length === 0) return;
 
-  const bankRows = await prisma.assessmentQuestion.findMany({ where: { section: { in: applicable } } });
+  const bankRows = await prisma.assessmentQuestion.findMany({ where: { section: { in: applicable }, difficulty } });
   const bank: BankQuestion[] = bankRows.map((r) => ({
     id: r.id,
     section: r.section,
@@ -88,7 +92,7 @@ export async function reconcileLanguageSections(
     ...(newRows.length > 0
       ? [
           prisma.candidateAssessmentAnswer.createMany({
-            data: newRows.map((r) => ({ ...r, candidateAssessmentId: assessmentId })),
+            data: newRows.map((r) => ({ ...r, candidateAssessmentId: assessmentId, round, difficulty })),
           }),
         ]
       : []),

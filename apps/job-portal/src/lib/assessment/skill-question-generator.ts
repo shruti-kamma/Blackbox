@@ -19,8 +19,16 @@ export interface GeneratedSkillQuestion {
 
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
-function buildPrompt(skillNames: string[], totalCount: number): string {
+const DIFFICULTY_GUIDANCE: Record<"EASY" | "MEDIUM" | "HARD", string> = {
+  EASY: "Questions should test foundational, everyday working knowledge — the kind of thing anyone with basic hands-on experience would know.",
+  MEDIUM: "Questions should be noticeably more challenging than entry-level — testing practical judgment in less obvious situations, not just textbook definitions.",
+  HARD: "Questions should be genuinely difficult — testing deep, nuanced practical knowledge that only someone with substantial real experience in the skill would reliably get right.",
+};
+
+function buildPrompt(skillNames: string[], totalCount: number, difficulty: "EASY" | "MEDIUM" | "HARD"): string {
   return `You are writing a multiple-choice skills assessment for a job platform. Generate exactly ${totalCount} multiple-choice questions total, testing practical working knowledge of these skills: ${skillNames.join(", ")}. Distribute the questions across the skills as evenly as possible — if there are more skills than questions, cover the most important ones.
+
+Difficulty level: ${difficulty}. ${DIFFICULTY_GUIDANCE[difficulty]}
 
 Each question must have exactly 4 options with exactly one clearly correct answer. Questions should be clear, unambiguous, and answerable by someone with real hands-on experience in the skill — not trick questions or questions with more than one defensible answer.
 
@@ -85,8 +93,12 @@ function validate(raw: unknown, expectedCount: number): GeneratedSkillQuestion[]
   return validated.slice(0, expectedCount);
 }
 
-export async function generateSkillQuestions(skillNames: string[], count: number): Promise<GeneratedSkillQuestion[]> {
-  const raw = await callGroq(buildPrompt(skillNames, count));
+export async function generateSkillQuestions(
+  skillNames: string[],
+  count: number,
+  difficulty: "EASY" | "MEDIUM" | "HARD" = "EASY",
+): Promise<GeneratedSkillQuestion[]> {
+  const raw = await callGroq(buildPrompt(skillNames, count, difficulty));
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw);

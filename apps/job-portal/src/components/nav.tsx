@@ -66,11 +66,17 @@ export async function Nav() {
             <Link href="/candidate/resume" className={LINK_CLASS}>
               Resume
             </Link>
+            <Link href="/candidate/assessment" className={LINK_CLASS}>
+              Assessment
+            </Link>
             <Link href="/candidate/jobs" className={LINK_CLASS}>
               Matched jobs
             </Link>
             <Link href="/candidate/applications" className={LINK_CLASS}>
               My applications
+            </Link>
+            <Link href="/candidate/leaderboard" className={LINK_CLASS}>
+              Leaderboard
             </Link>
           </>
         )}
@@ -100,6 +106,9 @@ export async function Nav() {
             </Link>
             <Link href="/admin/candidates" className={LINK_CLASS}>
               Candidates
+            </Link>
+            <Link href="/admin/duplicates" className={LINK_CLASS}>
+              Duplicates
             </Link>
           </>
         )}
