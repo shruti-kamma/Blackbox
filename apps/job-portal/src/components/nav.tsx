@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/auth/current-user";
 import { LogoutButton } from "./logout-button";
 import { NotificationBell } from "./notification-bell";
 import { PortalSelectTrigger } from "./a11y/portal-select-trigger";
+import { RankingsNavDropdown } from "./rankings-nav-dropdown";
+import { NavLogo } from "./nav-logo";
 
 // Follows the shared --color-* theme tokens (light/dark, and the a11y
 // presentation modes that also override them) like every other page,
@@ -14,18 +16,13 @@ export async function Nav() {
 
   return (
     <header className="no-print flex h-16 items-center justify-between gap-6 border-b border-border bg-background px-6">
-      <Link href="/" className="font-serif text-xl font-bold text-foreground">
-        Blackbox
-        <span className="text-primary">.</span>
-      </Link>
+      <NavLogo />
 
       <nav className="flex flex-1 items-center justify-center gap-8">
         {!user && (
           <>
+            <RankingsNavDropdown className={LINK_CLASS} />
             <PortalSelectTrigger className={LINK_CLASS}>Job portal</PortalSelectTrigger>
-            <Link href="/ranking" className={LINK_CLASS}>
-              Rankings
-            </Link>
             <Link href="/#mission" className={LINK_CLASS}>
               About
             </Link>

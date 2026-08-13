@@ -22,9 +22,9 @@
      a gradient duo on hero numerals and primary CTAs (see docs/decisions.md
      — "Editorial redesign"), not as a primary/secondary hierarchy and not
      split by section. */
-  --color-primary: #06038d;
+  --color-primary: #03068d;
   --color-secondary: #7c3ca1;
-  --color-focus-ring: #06038d;
+  --color-focus-ring: #03068d;
   --color-card: #ffffff;
 
   font-family: var(--font-sans), sans-serif;

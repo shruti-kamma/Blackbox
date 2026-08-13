@@ -11,7 +11,7 @@
   --color-background: #ffffff;
   --color-foreground: #171717;
 
-  --color-primary: #1d4ed8;
+  --color-primary: #03068d;
   --color-primary-foreground: #ffffff;
 
   --color-danger: #b91c1c;
@@ -24,7 +24,7 @@
   --color-muted-foreground: #52525b;
 
   --color-border: #d4d4d8;
-  --color-focus-ring: #2563eb;
+  --color-focus-ring: #03068d;
 
   /* Minimum 44x44px touch target, per WCAG 2.5.5 */
   --spacing-touch-target: 2.75rem;

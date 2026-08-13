@@ -29,9 +29,9 @@
    preference — see packages/config/tailwind/theme.css's own comment on
    why there's no @media (prefers-color-scheme: dark) fallback anywhere. */
 @theme {
-  --color-primary: #06038d;
+  --color-primary: #03068d;
   --color-secondary: #7c3ca1;
-  --color-focus-ring: #06038d;
+  --color-focus-ring: #03068d;
 }
 
 body {
