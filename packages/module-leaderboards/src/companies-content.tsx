@@ -27,7 +27,7 @@ export async function CompaniesLeaderboardContent() {
     .sort((a, b) => b.overallScore - a.overallScore);
 
   return (
-    <main id="main-content" className="w-full flex-1 px-6 py-16">
+    <main id="main-content" className="w-full flex-1 px-6 pt-8 pb-16">
       {/* Visually removed per request, but a page still needs exactly one
           h1 for screen-reader navigation — kept, just not shown. */}
       <h1 className="sr-only">Company Rankings</h1>
