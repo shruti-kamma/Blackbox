@@ -13,10 +13,15 @@ export function NavLogo() {
   const isRanking = pathname?.startsWith("/ranking") ?? false;
 
   return (
-    <Link href="/" className="font-serif text-xl font-bold text-foreground">
-      Blackbox
-      <span className="text-primary">.</span>
-      {isRanking && <span className="ml-1.5">B4I</span>}
+    <Link href="/" className="flex items-center gap-2.5">
+      <span className="font-serif text-xl font-bold tracking-tight text-foreground">
+        Blackbox<span className="text-primary">.</span>
+      </span>
+      {isRanking && (
+        <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-bold tracking-wide text-foreground border border-border font-sans">
+          B4I
+        </span>
+      )}
     </Link>
   );
 }

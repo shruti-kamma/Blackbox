@@ -6,6 +6,7 @@ import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
 import { PortalSelectTrigger } from "@/components/a11y/portal-select-trigger";
+import ShapeGrid from "@/components/ui/ShapeGrid";
 
 // The umbrella "Blackbox" landing page — the actual front door of the site.
 // Blackbox Jobs is one product reachable from here via the portal-select
@@ -18,37 +19,43 @@ export default async function Home() {
   if (user?.role === "EMPLOYER") redirect("/employer");
   if (user?.role === "ADMIN") redirect("/admin");
 
-  const [openJobsCount, organizationsCount] = await Promise.all([
-    prisma.job.count({ where: { isOpen: true } }),
-    prisma.organization.count(),
-  ]);
+  let openJobsCount = 0;
+  let organizationsCount = 0;
+  try {
+    [openJobsCount, organizationsCount] = await Promise.all([
+      prisma.job.count({ where: { isOpen: true } }),
+      prisma.organization.count(),
+    ]);
+  } catch (error) {
+    console.warn("Database connection offline, using fallback metrics");
+  }
 
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="border-b border-foreground">
-        <div className="mx-auto w-full max-w-3xl px-4 py-20 text-center md:py-28">
-          <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-            Blackbox · An accessibility-first hiring ecosystem
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30">
+        <div className="absolute inset-0 z-0 opacity-60">
+          <ShapeGrid
+            speed={0.25}
+            squareSize={45}
+            direction="diagonal"
+            borderColor="#b9b8d7"
+            hoverFillColor="transparent"
+            shape="hexagon"
+            hoverTrailAmount={0}
+          />
+        </div>
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans">
+          <p className="text-xl md:text-2xl font-medium tracking-tight text-primary font-sans">
+            Blackbox India&apos;s Inclusion Intelligence Index
           </p>
-          <h1 className="mt-3 text-5xl font-semibold tracking-tight text-balance text-foreground md:text-6xl">
-            Hiring, and accountability for it, in one place.
+          <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground font-sans max-w-3xl leading-tight">
+            What Gets Measured Gets Improved
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
+          <p className="mt-5 max-w-2xl text-lg text-muted-foreground font-sans">
             One platform where candidates with disabilities find genuinely matched roles, and employers hire
             against real, enforced accommodation commitments — not just promises.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:opacity-90">
-              Job portal →
-            </PortalSelectTrigger>
-            <Link
-              href="/ranking"
-              className="flex h-touch-target items-center justify-center rounded-md border border-border px-6 text-sm font-medium text-foreground hover:bg-muted"
-            >
-              Rankings →
-            </Link>
-          </div>
         </div>
       </section>
 

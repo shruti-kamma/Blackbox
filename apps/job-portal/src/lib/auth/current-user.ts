@@ -11,10 +11,15 @@ export async function getSession() {
 export async function getCurrentUser() {
   const session = await getSession();
   if (!session) return null;
-  return prisma.user.findUnique({
-    where: { id: session.userId },
-    include: { candidateProfile: true },
-  });
+  try {
+    return await prisma.user.findUnique({
+      where: { id: session.userId },
+      include: { candidateProfile: true },
+    });
+  } catch (error) {
+    console.warn("Database offline during getCurrentUser check");
+    return null;
+  }
 }
 
 export class UnauthorizedError extends Error {

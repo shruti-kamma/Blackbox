@@ -41,7 +41,7 @@ export async function Nav() {
           <>
             <DropdownMenu>
               <DropdownMenuTrigger className={`${LINK_CLASS} flex items-center gap-1 outline-none`}>
-                B4I Rankings
+                Rankings
                 <ChevronDownIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center">
@@ -52,7 +52,7 @@ export async function Nav() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <PortalSelectTrigger className={LINK_CLASS}>NEXO for Jobs</PortalSelectTrigger>
+            <PortalSelectTrigger className={LINK_CLASS}>Job portal</PortalSelectTrigger>
             <Link href="/#mission" className={LINK_CLASS}>
               About
             </Link>
