@@ -50,6 +50,84 @@ export const PREFERRED_COMMUNICATION_MODE_OPTIONS = [
   { value: "OTHER", label: "Other" },
 ] as const;
 
+// First-pass mapping from a disability category to the accommodation/
+// communication options that actually apply to it — a reasonable
+// engineering pass, not informed by disability-inclusion domain expertise,
+// worth a sanity-check by someone with that expertise before relying on it
+// too heavily. `OTHER` always appears in every category's list (see
+// ALWAYS_INCLUDED_ACCOMMODATIONS/_COMMUNICATION_MODES below) so a candidate
+// can never be fully blocked from expressing a need this mapping missed.
+// Categories with no clear category-specific relevance for a given section
+// (e.g. MOBILITY and communication style) intentionally list every option
+// rather than guessing a contrived subset — see
+// relevantAccommodationsForCategories/relevantCommunicationModesForCategories.
+const ACCOMMODATIONS_BY_CATEGORY: Record<string, string[]> = {
+  VISUAL: ["SCREEN_READER_SUPPORT", "ASSISTIVE_TECHNOLOGY_STIPEND", "ACCESSIBLE_TRANSPORTATION", "REMOTE_FRIENDLY"],
+  HEARING: ["SIGN_LANGUAGE_INTERPRETER", "CAPTIONING", "ASSISTIVE_TECHNOLOGY_STIPEND"],
+  MOBILITY: [
+    "WHEELCHAIR_ACCESSIBLE_WORKSPACE",
+    "ERGONOMIC_WORKSTATION",
+    "ACCESSIBLE_TRANSPORTATION",
+    "REMOTE_FRIENDLY",
+    "FLEXIBLE_HOURS",
+  ],
+  COGNITIVE: ["EXTENDED_BREAKS", "FLEXIBLE_HOURS", "JOB_COACH_SUPPORT", "REMOTE_FRIENDLY"],
+  SPEECH: ["CAPTIONING", "SIGN_LANGUAGE_INTERPRETER", "ASSISTIVE_TECHNOLOGY_STIPEND"],
+  CHRONIC_ILLNESS: ["FLEXIBLE_HOURS", "EXTENDED_BREAKS", "REMOTE_FRIENDLY", "ACCESSIBLE_TRANSPORTATION", "ERGONOMIC_WORKSTATION"],
+  MENTAL_HEALTH: ["FLEXIBLE_HOURS", "EXTENDED_BREAKS", "REMOTE_FRIENDLY", "JOB_COACH_SUPPORT"],
+};
+
+const COMMUNICATION_MODES_BY_CATEGORY: Record<string, string[]> = {
+  VISUAL: ["SCREEN_READER_COMPATIBLE", "EXTRA_RESPONSE_TIME"],
+  HEARING: ["SIGN_LANGUAGE_INTERPRETER", "CAPTIONS_OR_TRANSCRIPT", "WRITTEN_ONLY"],
+  SPEECH: ["WRITTEN_ONLY", "CAPTIONS_OR_TRANSCRIPT"],
+  COGNITIVE: ["EXTRA_RESPONSE_TIME", "WRITTEN_ONLY"],
+  MENTAL_HEALTH: ["EXTRA_RESPONSE_TIME", "WRITTEN_ONLY"],
+  CHRONIC_ILLNESS: ["EXTRA_RESPONSE_TIME", "WRITTEN_ONLY"],
+  // MOBILITY intentionally has no entry — no category-specific relevance to
+  // communication style, so it falls through to the "show everything" path.
+};
+
+const ALWAYS_INCLUDED_ACCOMMODATIONS = ["OTHER"];
+const ALWAYS_INCLUDED_COMMUNICATION_MODES = ["OTHER"];
+
+// Union of relevant options across every selected category, plus the
+// always-included catch-all. Falls back to the full option list when no
+// category is selected yet, `OTHER` is the only category selected, or none
+// of the selected categories have a specific mapping for this section —
+// there's nothing meaningful to filter against in that case.
+export function relevantAccommodationsForCategories(disabilityCategories: string[]): string[] {
+  const specific = disabilityCategories.flatMap((c) => ACCOMMODATIONS_BY_CATEGORY[c] ?? []);
+  if (specific.length === 0) return ACCOMMODATION_TYPE_OPTIONS.map((o) => o.value);
+  return [...new Set([...specific, ...ALWAYS_INCLUDED_ACCOMMODATIONS])];
+}
+
+export function relevantCommunicationModesForCategories(disabilityCategories: string[]): string[] {
+  const specific = disabilityCategories.flatMap((c) => COMMUNICATION_MODES_BY_CATEGORY[c] ?? []);
+  if (specific.length === 0) return PREFERRED_COMMUNICATION_MODE_OPTIONS.map((o) => o.value);
+  return [...new Set([...specific, ...ALWAYS_INCLUDED_COMMUNICATION_MODES])];
+}
+
+// Same category-relevance reasoning, but for the AssistiveTechnology
+// search's `type` filter — reuses the schema's own AssistiveTechnologyType
+// enum rather than a separate hand-authored list. Categories without an
+// obvious dedicated device type (CHRONIC_ILLNESS, MENTAL_HEALTH) fall back
+// to no type filter (searches every type) rather than guessing.
+const ASSISTIVE_TECH_TYPES_BY_CATEGORY: Record<string, string[]> = {
+  VISUAL: ["VISION_AID", "SCREEN_READER_SOFTWARE"],
+  HEARING: ["HEARING_AID"],
+  MOBILITY: ["MOBILITY_AID"],
+  SPEECH: ["COMMUNICATION_AID"],
+  COGNITIVE: ["OTHER_SOFTWARE", "COMMUNICATION_AID"],
+};
+
+// Returns null (meaning "no filter, search every type") when no selected
+// category has a specific device-type mapping.
+export function relevantAssistiveTechTypesForCategories(disabilityCategories: string[]): string[] | null {
+  const specific = [...new Set(disabilityCategories.flatMap((c) => ASSISTIVE_TECH_TYPES_BY_CATEGORY[c] ?? []))];
+  return specific.length === 0 ? null : specific;
+}
+
 export const BODY_PART_OPTIONS = [
   { value: "LEFT_ARM", label: "Left arm" },
   { value: "RIGHT_ARM", label: "Right arm" },

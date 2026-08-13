@@ -11,10 +11,15 @@ export async function getSession() {
 export async function getCurrentUser() {
   const session = await getSession();
   if (!session) return null;
-  return prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: session.userId },
     include: { candidateProfile: true },
   });
+  // A deleted account's session cookie may still be unexpired (there's no
+  // server-side session store to revoke) — this fresh DB check on every
+  // request is what actually stops it from authenticating.
+  if (user?.deletedAt) return null;
+  return user;
 }
 
 export class UnauthorizedError extends Error {

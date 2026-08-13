@@ -16,6 +16,7 @@ export async function GET() {
         fullName: true,
         headline: true,
         disabilityCategories: true,
+        disabilityVerified: true,
         experienceLevel: true,
         preferredLocations: true,
         openToRemote: true,
@@ -25,7 +26,7 @@ export async function GET() {
         _count: { select: { education: true, workExperience: true, skills: true, matches: true, applications: true } },
         applications: { select: { status: true } },
         user: { select: { emailVerified: true, phoneVerified: true } },
-        candidateAssessment: { select: { status: true, score: true } },
+        candidateAssessment: { select: { status: true, score: true, highestLevelReached: true } },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -48,6 +49,7 @@ export async function GET() {
         id: c.id,
         fullName: c.fullName,
         disabilityCategories: c.disabilityCategories,
+        disabilityVerified: c.disabilityVerified,
         profileCompletionPercent: percent,
         matchesCount: c._count.matches,
         applicationsCount: c._count.applications,
@@ -55,6 +57,7 @@ export async function GET() {
         signedUpAt: c.createdAt,
         kycVerified: c.user.emailVerified && c.user.phoneVerified,
         assessmentScore: c.candidateAssessment?.status === "COMPLETED" ? c.candidateAssessment.score : null,
+        assessmentLevelReached: c.candidateAssessment?.highestLevelReached ?? null,
       };
     });
 

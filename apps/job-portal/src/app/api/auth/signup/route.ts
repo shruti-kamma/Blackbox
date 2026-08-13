@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { signupSchema } from "@/lib/validation/auth";
 import { handleApiError } from "@/lib/api-error";
 import { uniqueOrgSlug } from "@/lib/slugify";
+import { normalizePhone } from "@/lib/kyc/normalize";
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +32,9 @@ export async function POST(request: Request) {
               email: body.email,
               passwordHash,
               role: "CANDIDATE",
-              candidateProfile: { create: { fullName: body.fullName, phone: body.phone } },
+              candidateProfile: {
+                create: { fullName: body.fullName, phone: body.phone, phoneNormalized: normalizePhone(body.phone) },
+              },
             },
           })
         : await prisma.user.create({

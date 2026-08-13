@@ -179,6 +179,16 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  // Set by a candidate's own account-deletion request (see
+  // lib/account/delete-account.ts). Not a hard row delete — every FK
+  // touching a candidate's data cascades, which would destroy an
+  // employer's own application/hiring records and the candidate's
+  // already-anonymized reviews. Instead the profile is scrubbed in place
+  // and this flag is checked in getCurrentUser() so an already-issued
+  // session cookie stops authenticating immediately, even though there's
+  // no server-side session store to revoke.
+  deletedAt DateTime?
+
   candidateProfile       CandidateProfile?
   notifications          Notification[]
   accommodationApprovals Application[]      @relation("ApplicationAccommodationApprover")
@@ -190,6 +200,15 @@ model User {
   // candidates only.
   emailVerified Boolean @default(false)
   phoneVerified Boolean @default(false)
+
+  // Set only inside the KYC OTP-verify transaction on successful EMAIL
+  // verification, normalized (lowercased, +tag stripped) so an alias
+  // trick (e.g. "user+1@gmail.com" vs "user@gmail.com") can't bypass the
+  // duplicate-account check the way `email`'s exact-string @unique alone
+  // would miss. Defense in depth on top of that existing constraint, not a
+  // replacement for it. Deliberately survives account deletion (a future
+  // item) to prevent delete-and-rejoin abuse.
+  emailVerifiedNormalized String? @unique
 
   // Set when role = EMPLOYER; the company this user posts jobs on behalf of.
   employerOrgId String?
@@ -215,6 +234,19 @@ model CandidateProfile {
   fullName           String
   headline           String?
   phone              String?
+  // Canonical digit-only form of `phone`, recomputed on every write —
+  // comparison-only, never unique on its own (so multiple unverified
+  // candidates can share a not-yet-verified number, e.g. mid-signup).
+  phoneNormalized    String?
+  // Set only inside the KYC OTP-verify transaction on successful PHONE
+  // verification, and cleared whenever `phone` is edited afterward (see
+  // PUT /api/candidate/profile) — so a true value reliably means "the
+  // current phone was the one that passed OTP," not just "verified once."
+  // @unique + nullable: Postgres treats multiple NULLs as distinct, so
+  // unverified candidates never collide with each other — only a genuine
+  // second verified claim on the same number does. Deliberately survives
+  // account deletion (a future item) to prevent delete-and-rejoin abuse.
+  phoneVerifiedNormalized String? @unique
   dateOfBirth        DateTime? @db.Date
   // An uploaded resume file, not a candidate-typed link — see
   // POST /api/candidate/resume-upload. resumeUrl holds the stored filename
@@ -236,6 +268,20 @@ model CandidateProfile {
   disabilityCategories DisabilityCategory[]
   disabilityOther      String?
 
+  // Optional certificate verification (never mandatory — see
+  // lib/disability-verification/). A candidate can upload a disability
+  // certificate photo, which is checked against their selected category
+  // and then discarded — the photo is never persisted, and only a salted
+  // hash of the certificate number is kept, never the raw number. Set only
+  // on a genuine match; a mismatch never auto-corrects the category.
+  disabilityVerified   Boolean   @default(false)
+  disabilityVerifiedAt DateTime?
+  // Nullable-but-unique: Postgres treats multiple NULLs as distinct, so
+  // unverified candidates never collide with each other — only a second
+  // account presenting the same real certificate number does, which is a
+  // strong duplicate-account signal (see DuplicateFlag below).
+  disabilityCertHash   String?   @unique
+
   // Controlled accommodation needs, scored against Job.accommodationTypes
   // by the matching engine's accommodationFit criterion.
   accommodationNeeds AccommodationType[]
@@ -251,6 +297,14 @@ model CandidateProfile {
   // accommodations" from the empty-needs prompt — distinguishes that from
   // simply never having filled the section in. Set once, not re-asked.
   confirmedNoAccommodationNeeds Boolean @default(false)
+
+  // Leaderboard participation is opt-in (see /api/candidate/leaderboard) —
+  // a candidate's real name and assessment level reached are only ever
+  // shown to other candidates once they've explicitly chosen to join.
+  // Requires a completed assessment to opt in, since ranking is by level
+  // reached, not raw score (candidates take different question sets).
+  leaderboardOptIn   Boolean   @default(false)
+  leaderboardOptInAt DateTime?
 
   experienceLevel     ExperienceLevel?
   preferredCategories String[] // job categories, free text controlled by frontend select
@@ -268,6 +322,8 @@ model CandidateProfile {
   matches               Match[]
   candidateAssessment   CandidateAssessment?
   employerReviews       EmployerReview[]
+  duplicateFlagsRaised  DuplicateFlag[]                @relation("DuplicateFlagCandidate")
+  duplicateFlagsAgainst DuplicateFlag[]                @relation("DuplicateFlagSuspect")
 
   // Populated by the matching agent from résumé/profile text. Query via raw SQL
   // (Prisma has no native vector query API) — see services/matching-agent.
@@ -651,14 +707,26 @@ enum AssessmentStatus {
   COMPLETED
 }
 
+// A candidate starts at EASY; scoring 70%+ on a level assembles a fresh
+// round at the next tier and keeps the assessment open, otherwise (or on
+// HARD) that level becomes final and the assessment completes. Existing
+// content (66 questions, all pre-dating this feature) is the EASY tier by
+// default — the @default below means no backfill is needed for it.
+enum AssessmentDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
 // The static, curated question bank — language (LISTENING/SPEAKING/READING/
 // WRITING) and APTITUDE sections only. The 10 SKILL_BASED questions per
 // candidate are AI-generated at assessment-start time from their listed
 // skills and never live here — see CandidateAssessmentAnswer, which
 // snapshots question content directly rather than referencing this table.
 model AssessmentQuestion {
-  id           String            @id @default(cuid())
+  id           String               @id @default(cuid())
   section      AssessmentSection
+  difficulty   AssessmentDifficulty @default(EASY)
   prompt       String
   passage      String? // reading passage / listening script (read aloud client-side)
   options      String[] // exactly 4
@@ -666,7 +734,7 @@ model AssessmentQuestion {
 
   createdAt DateTime @default(now())
 
-  @@index([section])
+  @@index([section, difficulty])
 }
 
 // One per candidate, ever — candidateProfileId is unique, enforcing the
@@ -680,17 +748,43 @@ model CandidateAssessment {
 
   status AssessmentStatus @default(IN_PROGRESS)
 
-  // 0-100 overall + per-section-group breakdown, shown to HR. Null until
-  // status flips to COMPLETED.
+  // 0-100 overall + per-section-group breakdown for the round the
+  // candidate is currently on (or finished on, once COMPLETED) — shown to
+  // HR. Null until that round is scored.
   score         Int?
   languageScore Int?
   aptitudeScore Int?
   skillScore    Int?
 
+  // Which difficulty tier is currently being taken (or was last taken, once
+  // COMPLETED) — see AssessmentDifficulty. currentRound tags which
+  // generation of 40 answer rows is the active one; earlier rounds' rows
+  // stay in the table for history rather than being deleted.
+  currentLevel        AssessmentDifficulty  @default(EASY)
+  currentRound        Int                   @default(1)
+  highestLevelReached AssessmentDifficulty?
+
+  // Per-level overall score, recorded once that level is scored (advanced
+  // past or completed on) — the HR-facing "Easy 92%, Medium 85%" picture,
+  // independent of whichever round is currently in progress.
+  easyScore   Int?
+  mediumScore Int?
+  hardScore   Int?
+
   answers CandidateAssessmentAnswer[]
 
   startedAt   DateTime  @default(now())
   completedAt DateTime?
+
+  // One-time-only allowance: lets a candidate retake just the language
+  // section if a disability-category correction changes which LSRW
+  // sections actually apply to them (see retake-eligibility.ts). Tracked
+  // so it can never be used more than once, preserving the exam's
+  // no-reroll design. previousScore/previousCompletedAt snapshot the prior
+  // attempt for admin visibility before they're overwritten.
+  retakeUsed          Boolean   @default(false)
+  previousScore       Int?
+  previousCompletedAt DateTime?
 }
 
 // Snapshotted question content, not a reference to AssessmentQuestion.id —
@@ -704,6 +798,8 @@ model CandidateAssessmentAnswer {
 
   order         Int
   section       AssessmentSection
+  difficulty    AssessmentDifficulty @default(EASY)
+  round         Int                  @default(1)
   prompt        String
   passage       String?
   options       String[]
@@ -715,6 +811,7 @@ model CandidateAssessmentAnswer {
   skillName String?
 
   @@index([candidateAssessmentId])
+  @@index([candidateAssessmentId, round])
 }
 
 // A stored, event-driven match produced by the matching engine — created when
@@ -800,4 +897,37 @@ model AccessibilityScore {
   generatedAt        DateTime @default(now())
 
   @@index([organizationId, generatedAt])
+}
+
+enum DuplicateFlagStatus {
+  OPEN
+  DISMISSED
+  CONFIRMED_DUPLICATE
+}
+
+// A soft, human-reviewed signal that two candidate accounts might belong to
+// the same real person — never auto-blocking. Today the only source is a
+// matching disabilityCertHash (see disability-verification), a much
+// stronger signal than name/DOB matching since a real certificate number
+// isn't something two different people share. Reviewed via the admin
+// duplicates queue, resolved to DISMISSED (false positive, e.g. genuinely
+// two different people) or CONFIRMED_DUPLICATE (informational — no
+// automated action follows from confirming it).
+model DuplicateFlag {
+  id String @id @default(cuid())
+
+  candidateProfileId String
+  candidateProfile   CandidateProfile @relation("DuplicateFlagCandidate", fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  suspectedDuplicateOfId String
+  suspectedDuplicateOf   CandidateProfile @relation("DuplicateFlagSuspect", fields: [suspectedDuplicateOfId], references: [id], onDelete: Cascade)
+
+  reason String // e.g. "matching disability certificate number"
+  status DuplicateFlagStatus @default(OPEN)
+
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+
+  @@unique([candidateProfileId, suspectedDuplicateOfId])
+  @@index([status])
 }

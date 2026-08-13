@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@blackbox/ui";
 import { apiRequest, ApiClientError } from "@/lib/api-client";
@@ -14,6 +15,9 @@ import {
   EDUCATION_LEVEL_OPTIONS,
   EXPERIENCE_LEVEL_OPTIONS,
   PREFERRED_COMMUNICATION_MODE_OPTIONS,
+  relevantAccommodationsForCategories,
+  relevantAssistiveTechTypesForCategories,
+  relevantCommunicationModesForCategories,
 } from "@/lib/matching-options";
 
 interface DisabilityDetailRow {
@@ -65,7 +69,7 @@ interface ProfileFormState {
   accommodationNeeds: string[];
   confirmedNoAccommodationNeeds: boolean;
   preferredCommunicationModes: string[];
-  assistiveTechnologies: string;
+  assistiveTechnologies: string[];
   experienceLevel: string;
   preferredCategories: string[];
   preferredLocations: string[];
@@ -89,7 +93,7 @@ const emptyForm: ProfileFormState = {
   accommodationNeeds: [],
   confirmedNoAccommodationNeeds: false,
   preferredCommunicationModes: [],
-  assistiveTechnologies: "",
+  assistiveTechnologies: [],
   experienceLevel: "",
   preferredCategories: [],
   preferredLocations: [],
@@ -144,6 +148,8 @@ interface ProfileApiResponse {
     dateOfBirth: string | null;
     resumeUrl: string | null;
     resumeFileName: string | null;
+    disabilityVerified: boolean;
+    leaderboardOptIn: boolean;
     onboardingCompleted: boolean;
     accessibilityNeeds: string[];
     disabilityCategories: string[];
@@ -184,6 +190,28 @@ export default function CandidateProfilePage() {
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [resumeDragOver, setResumeDragOver] = useState(false);
 
+  // Optional disability-certificate consistency check — same "lives outside
+  // the form, its own immediate endpoint" reasoning as the resume upload.
+  const [disabilityVerified, setDisabilityVerified] = useState(false);
+  const [certConsent, setCertConsent] = useState(false);
+  const [certUploading, setCertUploading] = useState(false);
+  const [certOutcome, setCertOutcome] = useState<"MISMATCH" | "UNREADABLE" | null>(null);
+  const [certMismatchCategory, setCertMismatchCategory] = useState<string | null>(null);
+  const [certError, setCertError] = useState<string | null>(null);
+
+  // Leaderboard opt-in — its own dedicated endpoint (see
+  // /api/candidate/leaderboard/opt-in), same "lives outside the form"
+  // reasoning as the certificate and resume sections above.
+  const [leaderboardOptIn, setLeaderboardOptIn] = useState(false);
+  const [assessmentCompleted, setAssessmentCompleted] = useState(false);
+  const [leaderboardBusy, setLeaderboardBusy] = useState(false);
+  const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
   // First-time "autofill from resume vs. enter manually" choice — "form" is
   // the safe default (shown once onboardingCompleted comes back true, or
   // while still loading, so there's no flash of the choice screen for
@@ -198,6 +226,8 @@ export default function CandidateProfilePage() {
       .then(({ profile }) => {
         if (!profile) return;
         setResumeFileName(profile.resumeFileName);
+        setDisabilityVerified(profile.disabilityVerified);
+        setLeaderboardOptIn(profile.leaderboardOptIn);
         setStep(profile.onboardingCompleted ? "form" : "choice");
         setForm({
           fullName: profile.fullName,
@@ -227,7 +257,7 @@ export default function CandidateProfilePage() {
           accommodationNeeds: profile.accommodationNeeds,
           confirmedNoAccommodationNeeds: profile.confirmedNoAccommodationNeeds,
           preferredCommunicationModes: profile.preferredCommunicationModes,
-          assistiveTechnologies: profile.assistiveTechnologies.map((a) => a.assistiveTechnology.name).join(", "),
+          assistiveTechnologies: profile.assistiveTechnologies.map((a) => a.assistiveTechnology.name),
           experienceLevel: profile.experienceLevel ?? "",
           preferredCategories: profile.preferredCategories,
           preferredLocations: profile.preferredLocations,
@@ -271,7 +301,37 @@ export default function CandidateProfilePage() {
         setError(err instanceof ApiClientError ? err.message : "Failed to load profile");
       })
       .finally(() => setLoading(false));
+
+    apiRequest<{ status: string }>("/api/candidate/assessment")
+      .then((assessment) => setAssessmentCompleted(assessment.status === "COMPLETED"))
+      .catch(() => {});
   }, []);
+
+  async function joinLeaderboard() {
+    setLeaderboardBusy(true);
+    setLeaderboardError(null);
+    try {
+      await apiRequest("/api/candidate/leaderboard/opt-in", { method: "POST" });
+      setLeaderboardOptIn(true);
+    } catch (err) {
+      setLeaderboardError(err instanceof ApiClientError ? err.message : "Failed to join the leaderboard");
+    } finally {
+      setLeaderboardBusy(false);
+    }
+  }
+
+  async function leaveLeaderboard() {
+    setLeaderboardBusy(true);
+    setLeaderboardError(null);
+    try {
+      await apiRequest("/api/candidate/leaderboard/opt-in", { method: "DELETE" });
+      setLeaderboardOptIn(false);
+    } catch (err) {
+      setLeaderboardError(err instanceof ApiClientError ? err.message : "Failed to leave the leaderboard");
+    } finally {
+      setLeaderboardBusy(false);
+    }
+  }
 
   function toggleDisability(value: string) {
     setForm((f) => ({
@@ -307,6 +367,52 @@ export default function CandidateProfilePage() {
       setResumeFileName(null);
     } catch (err) {
       setResumeError(err instanceof ApiClientError ? err.message : "Failed to remove resume");
+    }
+  }
+
+  async function uploadDisabilityCertificate(file: File) {
+    if (!certConsent) {
+      setCertError("Please confirm consent before uploading");
+      return;
+    }
+    setCertError(null);
+    setCertOutcome(null);
+    setCertMismatchCategory(null);
+    setCertUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("consent", "true");
+      const result = await apiRequest<{ outcome: "VERIFIED" | "MISMATCH" | "UNREADABLE"; extractedCategory?: string }>(
+        "/api/candidate/disability-verification",
+        { method: "POST", body: formData },
+      );
+      if (result.outcome === "VERIFIED") {
+        setDisabilityVerified(true);
+      } else {
+        setCertOutcome(result.outcome);
+        if (result.outcome === "MISMATCH" && result.extractedCategory) setCertMismatchCategory(result.extractedCategory);
+      }
+    } catch (err) {
+      setCertError(err instanceof ApiClientError ? err.message : "Failed to verify certificate");
+    } finally {
+      setCertUploading(false);
+    }
+  }
+
+  async function deleteAccount() {
+    setDeleteError(null);
+    setDeleting(true);
+    try {
+      await apiRequest("/api/candidate/account", {
+        method: "DELETE",
+        body: JSON.stringify({ password: deletePassword }),
+      });
+      router.push("/login");
+    } catch (err) {
+      setDeleteError(err instanceof ApiClientError ? err.message : "Failed to delete account");
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -515,7 +621,7 @@ export default function CandidateProfilePage() {
         accommodationNeeds: form.accommodationNeeds,
         confirmedNoAccommodationNeeds: form.confirmedNoAccommodationNeeds || confirmedNoNeedsOverride,
         preferredCommunicationModes: form.preferredCommunicationModes,
-        assistiveTechnologies: splitList(form.assistiveTechnologies),
+        assistiveTechnologies: form.assistiveTechnologies,
         experienceLevel: form.experienceLevel || undefined,
         preferredCategories: form.preferredCategories,
         preferredLocations: form.preferredLocations,
@@ -567,6 +673,19 @@ export default function CandidateProfilePage() {
           ? "Profile saved. We're re-checking your matches against currently open jobs."
           : "Profile saved.",
       );
+      // Eligibility is computed fresh server-side from the current profile
+      // every time, so no need to diff what changed here — just re-check
+      // after any successful save.
+      apiRequest<{ status: string; retakeEligible?: boolean }>("/api/candidate/assessment")
+        .then((assessment) => {
+          if (assessment.status === "COMPLETED" && assessment.retakeEligible) {
+            setStatus(
+              (prev) =>
+                `${prev ?? ""} Your accessibility needs have changed since your assessment — you're eligible for a free retake of the language section.`.trim(),
+            );
+          }
+        })
+        .catch(() => {});
     } catch (err) {
       setError(err instanceof ApiClientError ? err.message : "Failed to save profile");
     } finally {
@@ -685,6 +804,26 @@ export default function CandidateProfilePage() {
       </main>
     );
   }
+
+  // Which accommodation/communication/assistive-tech options are relevant
+  // given the disability category(ies) already selected above — union
+  // across multiple categories, falling back to the full list when nothing
+  // specific applies. See lib/matching-options.ts for the mapping itself.
+  // Anything already checked stays visible even if it falls outside the
+  // relevant set after a later category edit — filtering never silently
+  // hides an existing selection, only narrows which *new* choices are
+  // offered, so a candidate can always see and consciously remove what
+  // they already picked rather than it disappearing into invisible state.
+  const relevantAccommodations = [
+    ...new Set([...relevantAccommodationsForCategories(form.disabilityCategories), ...form.accommodationNeeds]),
+  ];
+  const relevantCommunicationModes = [
+    ...new Set([
+      ...relevantCommunicationModesForCategories(form.disabilityCategories),
+      ...form.preferredCommunicationModes,
+    ]),
+  ];
+  const assistiveTechTypes = relevantAssistiveTechTypesForCategories(form.disabilityCategories);
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
@@ -893,10 +1032,87 @@ export default function CandidateProfilePage() {
             })}
         </fieldset>
 
+        <div className="flex flex-col gap-2 rounded-md border border-border p-4">
+          <p className="text-sm font-medium text-foreground">Verify your disability certificate (optional)</p>
+          {disabilityVerified ? (
+            <p className="text-sm text-success">✓ Verified — your certificate matched the category above.</p>
+          ) : (
+            <>
+              <p className="text-xs text-muted-foreground">
+                Upload a photo of your disability certificate or UDID card to get a &ldquo;Verified&rdquo; badge on
+                your profile. The photo is only used to check it against what you selected above and is never
+                saved — not the image, not even the certificate number itself, only a one-way scrambled version of
+                it. This is entirely optional and never affects your ability to use the platform.
+              </p>
+              <label className="flex items-start gap-2 text-xs text-foreground">
+                <input
+                  type="checkbox"
+                  checked={certConsent}
+                  onChange={(e) => setCertConsent(e.target.checked)}
+                  className="mt-0.5 size-4"
+                />
+                I consent to my certificate photo being processed for this one-time check and understand it will
+                not be stored.
+              </label>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                disabled={!certConsent || certUploading}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadDisabilityCertificate(file);
+                  e.target.value = "";
+                }}
+                className="text-sm text-foreground disabled:opacity-50"
+              />
+              {certUploading && <p className="text-xs text-muted-foreground">Checking your certificate…</p>}
+              {certOutcome === "UNREADABLE" && (
+                <p className="text-xs text-danger">
+                  We couldn&apos;t read that photo clearly — try a clearer, well-lit photo of the certificate.
+                </p>
+              )}
+              {certOutcome === "MISMATCH" && (
+                <div className="flex flex-col gap-2 rounded-md bg-muted p-3">
+                  <p className="text-xs text-foreground">
+                    Your certificate shows{" "}
+                    <strong>
+                      {DISABILITY_CATEGORY_OPTIONS.find((o) => o.value === certMismatchCategory)?.label ??
+                        certMismatchCategory}
+                    </strong>
+                    , which isn&apos;t currently selected above. If that&apos;s correct, you can add it — otherwise
+                    no changes were made.
+                  </p>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      if (certMismatchCategory && !form.disabilityCategories.includes(certMismatchCategory)) {
+                        toggleDisability(certMismatchCategory);
+                      }
+                      setCertOutcome(null);
+                    }}
+                  >
+                    Add {DISABILITY_CATEGORY_OPTIONS.find((o) => o.value === certMismatchCategory)?.label ?? "it"} to
+                    my profile
+                  </Button>
+                </div>
+              )}
+              {certError && (
+                <p role="alert" className="text-xs text-danger">
+                  {certError}
+                </p>
+              )}
+            </>
+          )}
+        </div>
+
         <fieldset id="accommodations-fieldset" className="flex flex-col gap-2">
           <legend className="text-sm font-medium text-foreground">Accommodations you need</legend>
           <div className="flex flex-wrap gap-3">
-            {ACCOMMODATION_TYPE_OPTIONS.map((opt) => (
+            {ACCOMMODATION_TYPE_OPTIONS.filter((opt) =>
+              relevantAccommodations.includes(opt.value),
+            ).map((opt) => (
               <label key={opt.value} className="flex items-center gap-2 text-sm text-foreground">
                 <input
                   type="checkbox"
@@ -909,7 +1125,9 @@ export default function CandidateProfilePage() {
             ))}
           </div>
           <p className="text-xs text-muted-foreground">
-            This is scored directly against what each employer offers — check everything that applies.
+            This is scored directly against what each employer offers — check everything that applies. Shown
+            based on the disability category(ies) you selected above; pick &ldquo;Other&rdquo; if something
+            you need isn&apos;t listed.
           </p>
         </fieldset>
 
@@ -918,7 +1136,9 @@ export default function CandidateProfilePage() {
             How you&apos;d prefer to be communicated with during hiring
           </legend>
           <div className="flex flex-wrap gap-3">
-            {PREFERRED_COMMUNICATION_MODE_OPTIONS.map((opt) => (
+            {PREFERRED_COMMUNICATION_MODE_OPTIONS.filter((opt) =>
+              relevantCommunicationModes.includes(opt.value),
+            ).map((opt) => (
               <label key={opt.value} className="flex items-center gap-2 text-sm text-foreground">
                 <input
                   type="checkbox"
@@ -936,21 +1156,16 @@ export default function CandidateProfilePage() {
           </p>
         </fieldset>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="assistiveTechnologies" className="text-sm font-medium text-foreground">
-            Assistive technology you use (comma-separated)
-          </label>
-          <input
-            id="assistiveTechnologies"
-            value={form.assistiveTechnologies}
-            onChange={(e) => setForm((f) => ({ ...f, assistiveTechnologies: e.target.value }))}
-            placeholder="JAWS, white cane, crutches"
-            className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
-          />
-          <p className="text-xs text-muted-foreground">
-            Specific devices and software — scored against what employers say they already support.
-          </p>
-        </div>
+        <TagSearchSelect
+          id="assistiveTechnologies"
+          label="Assistive technology you use"
+          field="assistiveTechnologies"
+          extraParams={assistiveTechTypes ? { types: assistiveTechTypes.join(",") } : undefined}
+          value={form.assistiveTechnologies}
+          onChange={(v) => setForm((f) => ({ ...f, assistiveTechnologies: v }))}
+          placeholder="Search devices and software, e.g. JAWS…"
+          helperText="Specific devices and software — scored against what employers say they already support."
+        />
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="accessibilityNeeds" className="text-sm font-medium text-foreground">
@@ -1285,6 +1500,103 @@ export default function CandidateProfilePage() {
           </Button>
         )}
       </form>
+
+      <div className="mt-10 flex flex-col gap-2 rounded-md border border-border p-4">
+        <p className="text-sm font-medium text-foreground">Candidate leaderboard</p>
+        {!assessmentCompleted ? (
+          <p className="text-xs text-muted-foreground">
+            Complete your assessment to become eligible to join the leaderboard.
+          </p>
+        ) : leaderboardOptIn ? (
+          <>
+            <p className="text-xs text-muted-foreground">
+              You&apos;re on the leaderboard — your name and level reached are visible to other candidates.
+            </p>
+            <div className="flex items-center gap-3">
+              <Link href="/candidate/leaderboard" className="text-xs font-medium text-primary underline">
+                View leaderboard
+              </Link>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={leaveLeaderboard}
+                disabled={leaderboardBusy}
+              >
+                {leaderboardBusy ? "Leaving…" : "Leave leaderboard"}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-muted-foreground">
+              Join to see how you rank against other candidates by assessment level reached. Joining makes your
+              real name and level visible to other candidates — entirely optional, and you can leave at any time.
+            </p>
+            <Button type="button" size="sm" className="self-start" onClick={joinLeaderboard} disabled={leaderboardBusy}>
+              {leaderboardBusy ? "Joining…" : "Join the leaderboard"}
+            </Button>
+          </>
+        )}
+        {leaderboardError && (
+          <p role="alert" className="text-xs text-danger">
+            {leaderboardError}
+          </p>
+        )}
+      </div>
+
+      <div className="mt-6 flex flex-col gap-2 rounded-md border border-danger/30 p-4">
+        <p className="text-sm font-medium text-danger">Delete my account</p>
+        {!showDeleteConfirm ? (
+          <>
+            <p className="text-xs text-muted-foreground">
+              Permanently removes your personal details from Blackbox — name, contact info, résumé, and all
+              profile detail. Your application history and any completed assessment score stay with the
+              employers you applied to, but with your identity removed, since that&apos;s their own hiring
+              record to keep.
+            </p>
+            <Button
+              type="button"
+              variant="secondary"
+              className="self-start text-danger"
+              onClick={() => setShowDeleteConfirm(true)}
+            >
+              Delete my account
+            </Button>
+          </>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <p className="text-xs text-foreground">
+              This can&apos;t be undone. Enter your password to confirm.
+            </p>
+            <input
+              type="password"
+              value={deletePassword}
+              onChange={(e) => setDeletePassword(e.target.value)}
+              placeholder="Password"
+              className="h-touch-target rounded-md border border-border bg-background px-3 text-foreground"
+            />
+            {deleteError && (
+              <p role="alert" className="text-xs text-danger">
+                {deleteError}
+              </p>
+            )}
+            <div className="flex gap-3">
+              <Button type="button" variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                className="bg-danger text-danger-foreground hover:opacity-90"
+                onClick={deleteAccount}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting…" : "Permanently delete my account"}
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
     </main>
   );
 }

@@ -7,8 +7,24 @@ import { CandidateCard, type CandidateSummary } from "@/components/candidate-car
 import { ApplicationStatusBadge } from "@/components/application-status";
 import type { ApplicationStatus } from "@/lib/application-status";
 
+const LEVEL_LABELS: Record<string, string> = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
+
 interface CandidateDetail {
-  candidate: CandidateSummary & { dateOfBirth: string | null };
+  candidate: Omit<CandidateSummary, "candidateAssessment"> & {
+    dateOfBirth: string | null;
+    disabilityVerified: boolean;
+    candidateAssessment: {
+      status: string;
+      score: number | null;
+      highestLevelReached: string | null;
+      easyScore: number | null;
+      mediumScore: number | null;
+      hardScore: number | null;
+      retakeUsed: boolean;
+      previousScore: number | null;
+      previousCompletedAt: string | null;
+    } | null;
+  };
   profileCompletionPercent: number;
   nextBestAction: string | null;
   matches: { id: string; score: number; jobId: string; jobTitle: string; organizationName: string }[];
@@ -60,6 +76,47 @@ export default function AdminCandidateDetailPage() {
             </>
           )}
         </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Disability certificate:{" "}
+          {data.candidate.disabilityVerified ? (
+            <span className="font-medium text-success">Verified ✓</span>
+          ) : (
+            "Not verified"
+          )}
+        </p>
+        {data.candidate.candidateAssessment?.highestLevelReached && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Assessment level reached:{" "}
+            <span className="font-medium text-foreground">
+              {LEVEL_LABELS[data.candidate.candidateAssessment.highestLevelReached] ??
+                data.candidate.candidateAssessment.highestLevelReached}
+            </span>
+            {[
+              ["Easy", data.candidate.candidateAssessment.easyScore],
+              ["Medium", data.candidate.candidateAssessment.mediumScore],
+              ["Hard", data.candidate.candidateAssessment.hardScore],
+            ]
+              .filter(([, score]) => score !== null)
+              .map(([label, score]) => (
+                <span key={label as string} className="ml-2">
+                  {label}: {score}%
+                </span>
+              ))}
+          </p>
+        )}
+        {data.candidate.candidateAssessment?.retakeUsed && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Assessment retaken —{" "}
+            {data.candidate.candidateAssessment.previousScore !== null
+              ? `previously ${data.candidate.candidateAssessment.previousScore}%`
+              : "no prior score on record"}
+            {data.candidate.candidateAssessment.score !== null &&
+              `, now ${data.candidate.candidateAssessment.score}%`}
+            {data.candidate.candidateAssessment.previousCompletedAt && (
+              <> (first completed {new Date(data.candidate.candidateAssessment.previousCompletedAt).toLocaleDateString()})</>
+            )}
+          </p>
+        )}
       </div>
 
       <div className="mb-10">

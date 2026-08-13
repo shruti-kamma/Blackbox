@@ -15,6 +15,8 @@ const ACCOMMODATION_LABELS = Object.fromEntries(
   ACCOMMODATION_TYPE_OPTIONS.map((opt) => [opt.value, opt.label]),
 ) as Record<string, string>;
 
+const LEVEL_LABELS: Record<string, string> = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
+
 interface AtsScoreResult {
   overallScore: number;
   matchedSkills: string[];
@@ -73,6 +75,12 @@ export default function CandidateJobsPage() {
   const [applyingId, setApplyingId] = useState<string | null>(null);
   const [atsScores, setAtsScores] = useState<Record<string, AtsScoreResult | "loading">>({});
   const [assessmentCompleted, setAssessmentCompleted] = useState<boolean | null>(null);
+  // Only populated when there's a level already cleared to encourage
+  // finishing the next one — null otherwise (not started, or still on
+  // Easy with nothing locked in yet).
+  const [assessmentProgress, setAssessmentProgress] = useState<{ currentLevel: string; easyScore: number } | null>(
+    null,
+  );
 
   function load() {
     apiRequest<{ matches: MatchRow[] }>("/api/candidate/matches")
@@ -92,9 +100,16 @@ export default function CandidateJobsPage() {
     apiRequest<{ applications: { status: ApplicationStatus }[] }>("/api/candidate/applications").then(
       ({ applications }) => setApplications(applications),
     );
-    apiRequest<{ status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED" }>("/api/candidate/assessment").then(
-      ({ status }) => setAssessmentCompleted(status === "COMPLETED"),
-    );
+    apiRequest<
+      | { status: "NOT_STARTED" }
+      | { status: "IN_PROGRESS"; currentLevel: string; easyScore: number | null }
+      | { status: "COMPLETED" }
+    >("/api/candidate/assessment").then((data) => {
+      setAssessmentCompleted(data.status === "COMPLETED");
+      if (data.status === "IN_PROGRESS" && data.currentLevel !== "EASY" && data.easyScore !== null) {
+        setAssessmentProgress({ currentLevel: data.currentLevel, easyScore: data.easyScore });
+      }
+    });
   }, []);
 
   // The landing feed only ever shows roles still open for a first move —
@@ -183,13 +198,23 @@ export default function CandidateJobsPage() {
           {assessmentCompleted === false && (
             <div className="mb-6 flex items-center justify-between gap-4 rounded-md border border-primary/30 bg-primary/5 p-4">
               <p className="text-sm text-foreground">
-                Complete your assessment to apply for jobs — a one-time, 40-question exam, self-paced with no timer.
+                {assessmentProgress ? (
+                  <>
+                    🎉 You scored {assessmentProgress.easyScore}% on Easy — finish{" "}
+                    {LEVEL_LABELS[assessmentProgress.currentLevel] ?? assessmentProgress.currentLevel} to unlock job
+                    applications and lock in your highest possible level.
+                  </>
+                ) : (
+                  "Complete your assessment to apply for jobs — a one-time, 40-question exam, self-paced with no timer."
+                )}
               </p>
               <Link
                 href="/candidate/assessment"
                 className="whitespace-nowrap rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground"
               >
-                Take assessment →
+                {assessmentProgress
+                  ? `Finish ${LEVEL_LABELS[assessmentProgress.currentLevel] ?? assessmentProgress.currentLevel} →`
+                  : "Take assessment →"}
               </Link>
             </div>
           )}

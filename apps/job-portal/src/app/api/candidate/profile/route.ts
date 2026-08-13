@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
+import type { AssistiveTechnologyType } from "@blackbox/db";
 import { requireVerifiedCandidate } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { handleApiError } from "@/lib/api-error";
 import { candidateProfileInputSchema } from "@/lib/validation/candidate-profile";
 import { isMatchingSubstantialChange } from "@/lib/matching/change-detection";
 import { enqueueMatchingJob } from "@/lib/queue/matching-queue";
+import { SEED_ASSISTIVE_TECHNOLOGIES } from "@/lib/assistive-technology-seed";
+import { normalizePhone } from "@/lib/kyc/normalize";
+
+const SEED_ASSISTIVE_TECH_TYPE_BY_NAME = new Map(
+  SEED_ASSISTIVE_TECHNOLOGIES.map((t) => [t.name.toLowerCase(), t.type]),
+);
 
 const profileInclude = {
   education: true,
@@ -42,13 +49,32 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Candidate profile not found" }, { status: 404 });
     }
 
+    // requireVerifiedCandidate() already guarantees phoneVerified is true
+    // for anyone reaching this route — so a genuine change to a different
+    // number always needs the reset, never a conditional check. Reusing
+    // the exact normalize logic KYC verification writes, so the two stay
+    // comparable.
+    //
+    // A blank submission is deliberately NOT treated as "clear the phone"
+    // — the phone field has no `required` attribute in the form, and
+    // there's no explicit "remove my phone" affordance the way résumé
+    // removal has its own button. Treating blank as a real change would
+    // reset phoneVerified, and since every route past this one (including
+    // this one) requires phoneVerified, a candidate who blanked the field
+    // by accident would have no way back in to re-add a number. Blank is
+    // "no intended change," full stop.
+    const phoneSubmitted = Boolean(input.phone);
+    const newPhoneNormalized = phoneSubmitted ? normalizePhone(input.phone!) : before.phoneNormalized;
+    const phoneChanged = phoneSubmitted && newPhoneNormalized !== before.phoneNormalized;
+
     await prisma.$transaction(async (tx) => {
       await tx.candidateProfile.update({
         where: { id: before.id },
         data: {
           fullName: input.fullName,
           headline: input.headline || null,
-          phone: input.phone || null,
+          ...(phoneSubmitted ? { phone: input.phone, phoneNormalized: newPhoneNormalized } : {}),
+          ...(phoneChanged ? { phoneVerifiedNormalized: null } : {}),
           dateOfBirth: input.dateOfBirth ? new Date(input.dateOfBirth) : null,
           // resumeUrl / resumeFileName are intentionally not written here —
           // they're only ever set by POST /api/candidate/resume-upload.
@@ -64,6 +90,10 @@ export async function PUT(request: Request) {
           openToRemote: input.openToRemote,
         },
       });
+
+      if (phoneChanged) {
+        await tx.user.update({ where: { id: user.id }, data: { phoneVerified: false } });
+      }
 
       await tx.education.deleteMany({ where: { candidateProfileId: before.id } });
       if (input.education.length > 0) {
@@ -120,10 +150,15 @@ export async function PUT(request: Request) {
 
       await tx.candidateAssistiveTechnology.deleteMany({ where: { candidateProfileId: before.id } });
       for (const name of input.assistiveTechnologies) {
+        // A name matching the seed list (picked from search suggestions)
+        // gets its real device type on creation; a genuinely new,
+        // candidate-typed name — the "Other" fallback — still defaults to
+        // OTHER until re-categorized.
+        const seedType = SEED_ASSISTIVE_TECH_TYPE_BY_NAME.get(name.toLowerCase());
         const tech = await tx.assistiveTechnology.upsert({
           where: { name },
           update: {},
-          create: { name, type: "OTHER" },
+          create: { name, type: (seedType ?? "OTHER") as AssistiveTechnologyType },
         });
         await tx.candidateAssistiveTechnology.create({
           data: { candidateProfileId: before.id, assistiveTechnologyId: tech.id },
