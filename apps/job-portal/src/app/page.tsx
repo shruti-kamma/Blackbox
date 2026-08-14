@@ -29,42 +29,46 @@ export default async function Home() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30 min-h-[calc(100vh-4.25rem)] flex flex-col justify-between py-12 md:py-16">
         <div className="absolute inset-0 z-0 opacity-80">
           <HeroShapeGrid />
         </div>
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans">
-          <p className="text-xl md:text-2xl font-medium tracking-tight text-primary font-sans">
-            Blackbox India&apos;s Inclusion Intelligence Index
-          </p>
-          <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground font-sans max-w-3xl leading-tight">
-            What Gets Measured <span className="text-primary">Gets Improved</span>
+
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8 flex-1 flex flex-col justify-center text-left font-sans">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-2">
+            <span>Blackbox INDEX</span>
+            <sup className="text-xl sm:text-3xl font-extrabold text-primary select-none">™</sup>
           </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted-foreground font-sans">
-            One platform where candidates with disabilities find genuinely matched roles, and employers hire
-            against real, enforced accommodation commitments — not just promises.
+
+          <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold tracking-wide text-primary font-sans">
+            (Indian National Disability Ecosystem Exchange)
           </p>
 
-          <div className="mt-12 flex justify-center">
-            <a
-              href="#rankings"
-              aria-label="Scroll to next section"
-              className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+          <p className="mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground font-sans leading-relaxed">
+            India&apos;s first unified accessibility and inclusion intelligence platform — matching candidates with disabilities to verified roles while tracking real, enforced employer accommodation commitments.
+          </p>
+        </div>
+
+        {/* First Scroll Reveal Indicator */}
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-4 flex items-center justify-center">
+          <a
+            href="#rankings"
+            aria-label="Scroll to next section"
+            className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-7 w-7 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
-              >
-                <path d="M12 5v14M19 12l-7 7-7-7" />
-              </svg>
-            </a>
-          </div>
+              <path d="M12 5v14M19 12l-7 7-7-7" />
+            </svg>
+          </a>
         </div>
       </section>
 
@@ -73,8 +77,14 @@ export default async function Home() {
       <RankingsHighlights />
 
       {/* Two products */}
-      <section id="rankings" className="scroll-mt-16 border-b border-border bg-muted">
-        <div className="mx-auto grid w-full max-w-5xl gap-5 px-4 py-14 md:grid-cols-2">
+      <section id="rankings" className="scroll-mt-16 border-b border-border bg-muted py-14 md:py-20">
+        <div className="mx-auto w-full max-w-5xl px-4 text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
+            What Gets Measured, <span className="text-primary">Gets Improved</span>
+          </h2>
+        </div>
+
+        <div className="mx-auto grid w-full max-w-5xl gap-5 px-4 md:grid-cols-2">
           <PortalSelectTrigger className="flex flex-col items-start gap-3 rounded-lg border-2 border-primary bg-background p-7 text-left hover:shadow-md">
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-wide text-primary uppercase">
               Blackbox Jobs
@@ -154,27 +164,60 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Mission */}
-      <section id="mission" className="bg-primary">
-        <div className="mx-auto w-full max-w-2xl px-4 py-16 text-center text-primary-foreground">
-          <p className="text-xs font-semibold tracking-wide uppercase opacity-80">The mission, in one line</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance">
-            Make accessibility enforceable, not just a form field.
-          </h2>
-          <p className="mt-3 opacity-90">
-            Every mechanism on Blackbox either verifies something real, gates on something real, or holds
-            someone accountable for something real — on the hiring side and the rankings side alike.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-md bg-background px-6 text-sm font-medium text-foreground hover:opacity-90">
-              Job portal →
-            </PortalSelectTrigger>
-            <Link
-              href="/login"
-              className="flex h-touch-target items-center justify-center rounded-md border border-primary-foreground px-6 text-sm font-medium hover:bg-primary-foreground/10"
-            >
-              Sign in
-            </Link>
+      {/* About / Motive Section */}
+      <section id="about" className="scroll-mt-16 border-t border-border bg-background py-16 md:py-24">
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-wide text-primary uppercase">
+              Our Purpose & Motive
+            </span>
+            <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
+              Why Blackbox Exists
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground font-sans leading-relaxed">
+              We are a purpose-built technology platform solving the systemic exclusion of persons with disabilities in the workforce through enforceable data and real accessibility.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-3">
+            {/* Pillar 1 */}
+            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-sans">What We Are Solving</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                Traditional hiring platforms treat disability inclusion as a superficial checkbox. Candidates face unadapted assessments and empty diversity statements without knowing if real workplace accommodations actually exist.
+              </p>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-sans">Driven By Purpose & Data</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                Blackbox is an infrastructure of systemic accountability. We measure real accommodation track records and employee reviews to hold employers accountable against enforced commitments.
+              </p>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-sans">An Accessible Job Space</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                We provide candidates with disabilities a dedicated, screen-reader optimized platform to build verified profiles, take adapted skill evaluations, and secure roles that are pre-fitted for their specific needs.
+              </p>
+            </div>
           </div>
         </div>
       </section>

@@ -49,7 +49,7 @@ export function HeroShapeGrid() {
 
   return (
     <ShapeGrid
-      speed={0.25}
+      speed={0}
       squareSize={45}
       direction="diagonal"
       borderColor={borderColor}
