@@ -23,7 +23,7 @@ export async function Nav() {
           <>
             <RankingsNavDropdown className={LINK_CLASS} />
             <PortalSelectTrigger className={LINK_CLASS}>Job portal</PortalSelectTrigger>
-            <Link href="/#mission" className={LINK_CLASS}>
+            <Link href="/#about" className={LINK_CLASS}>
               About
             </Link>
           </>

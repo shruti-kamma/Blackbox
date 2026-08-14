@@ -139,45 +139,71 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Why one website, not two */}
-      <section className="border-b border-border bg-muted">
-        <div className="mx-auto w-full max-w-3xl px-4 py-16 text-center">
-          <p className="text-xs font-semibold tracking-wide text-primary uppercase">Why one website, not two</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance text-foreground">
-            Jobs and Rankings run on the same data — so the site is built to feel like it.
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            A ranking isn&apos;t a separate opinion about a company; it&apos;s built from the same accommodation
-            history and candidate reviews the hiring side already tracks. The scoring pipeline that populates it
-            is still catching up on real company data — see{" "}
-            <Link href="/ranking/methodology" className="font-medium text-primary underline">
-              the methodology
-            </Link>{" "}
-            for how it works.
-          </p>
-        </div>
-      </section>
+      {/* About / Motive Section */}
+      <section id="about" className="scroll-mt-16 border-t border-border bg-background py-16 md:py-24">
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-wide text-primary uppercase">
+              Our Cause & Motive
+            </span>
+            <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
+              Why Blackbox INDEX<sup className="text-xl sm:text-2xl font-bold text-primary select-none">™</sup> Exists
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground font-sans leading-relaxed">
+              We are not an NGO or a charity. We are a purpose-built technology platform solving the systemic exclusion of persons with disabilities in the workforce through enforceable data and real accessibility.
+            </p>
+          </div>
 
-      {/* Mission */}
-      <section id="mission" className="bg-primary">
-        <div className="mx-auto w-full max-w-2xl px-4 py-16 text-center text-primary-foreground">
-          <p className="text-xs font-semibold tracking-wide uppercase opacity-80">The mission, in one line</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance">
-            Make accessibility enforceable, not just a form field.
-          </h2>
-          <p className="mt-3 opacity-90">
-            Every mechanism on Blackbox either verifies something real, gates on something real, or holds
-            someone accountable for something real — on the hiring side and the rankings side alike.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-md bg-background px-6 text-sm font-medium text-foreground hover:opacity-90">
-              Job portal →
+          <div className="mt-14 grid gap-8 md:grid-cols-3">
+            {/* Pillar 1 */}
+            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-sans">What We Are Solving</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                Traditional hiring platforms treat disability inclusion as a superficial checkbox. Candidates face unadapted assessments and empty diversity statements without knowing if real workplace accommodations actually exist.
+              </p>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-sans">Driven By Cause, Not Charity</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                Blackbox is an infrastructure of accountability, not a sympathy campaign. We measure real accommodation track records and employee reviews to hold employers accountable against enforced commitments.
+              </p>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-sans">An Accessible Job Space</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                We provide candidates with disabilities a dedicated, screen-reader optimized platform to build verified profiles, take adapted skill evaluations, and secure roles that are pre-fitted for their specific needs.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
+            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-full bg-primary px-8 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
+              Enter Job Portal →
             </PortalSelectTrigger>
             <Link
-              href="/login"
-              className="flex h-touch-target items-center justify-center rounded-md border border-primary-foreground px-6 text-sm font-medium hover:bg-primary-foreground/10"
+              href="/ranking"
+              className="flex h-touch-target items-center justify-center rounded-full border border-border bg-muted px-8 text-sm font-semibold text-foreground hover:bg-background transition-colors"
             >
-              Sign in
+              See Inclusion Rankings →
             </Link>
           </div>
         </div>
