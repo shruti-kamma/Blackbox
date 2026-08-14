@@ -6,13 +6,9 @@ import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
 import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
 import { PortalSelectTrigger } from "@/components/a11y/portal-select-trigger";
-import ShapeGrid from "@/components/ui/ShapeGrid";
+import { HeroShapeGrid } from "@/components/hero-shape-grid";
 
 // The umbrella "Blackbox" landing page — the actual front door of the site.
-// Blackbox Jobs is one product reachable from here via the portal-select
-// modal; Blackbox Rankings (ported from the shruti branch) is the second,
-// living at /ranking — see app/ranking/layout.tsx for how its own font/
-// theme/nav are scoped so they don't leak into the rest of this site.
 export default async function Home() {
   const user = await getCurrentUser();
   if (user?.role === "CANDIDATE") redirect("/candidate/jobs");
@@ -34,28 +30,41 @@ export default async function Home() {
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30">
-        <div className="absolute inset-0 z-0 opacity-60">
-          <ShapeGrid
-            speed={0.25}
-            squareSize={45}
-            direction="diagonal"
-            borderColor="#b9b8d7"
-            hoverFillColor="transparent"
-            shape="hexagon"
-            hoverTrailAmount={0}
-          />
+        <div className="absolute inset-0 z-0 opacity-80">
+          <HeroShapeGrid />
         </div>
         <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans">
           <p className="text-xl md:text-2xl font-medium tracking-tight text-primary font-sans">
             Blackbox India&apos;s Inclusion Intelligence Index
           </p>
           <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground font-sans max-w-3xl leading-tight">
-            What Gets Measured Gets Improved
+            What Gets Measured <span className="text-primary">Gets Improved</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground font-sans">
             One platform where candidates with disabilities find genuinely matched roles, and employers hire
             against real, enforced accommodation commitments — not just promises.
           </p>
+
+          <div className="mt-12 flex justify-center">
+            <a
+              href="#rankings"
+              aria-label="Scroll to next section"
+              className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-6 w-6 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
+              >
+                <path d="M12 5v14M19 12l-7 7-7-7" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -64,7 +73,7 @@ export default async function Home() {
       <RankingsHighlights />
 
       {/* Two products */}
-      <section id="rankings" className="border-b border-border bg-muted">
+      <section id="rankings" className="scroll-mt-16 border-b border-border bg-muted">
         <div className="mx-auto grid w-full max-w-5xl gap-5 px-4 py-14 md:grid-cols-2">
           <PortalSelectTrigger className="flex flex-col items-start gap-3 rounded-lg border-2 border-primary bg-background p-7 text-left hover:shadow-md">
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-wide text-primary uppercase">
@@ -99,25 +108,25 @@ export default async function Home() {
       <section className="border-b border-border">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4">
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+            <p className="text-primary text-3xl font-semibold tabular-nums">
               {openJobsCount}
             </p>
             <p className="text-sm text-muted-foreground">Open roles</p>
           </div>
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+            <p className="text-primary text-3xl font-semibold tabular-nums">
               {organizationsCount}
             </p>
             <p className="text-sm text-muted-foreground">Organizations hiring</p>
           </div>
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+            <p className="text-primary text-3xl font-semibold tabular-nums">
               {DISABILITY_CATEGORY_OPTIONS.length}
             </p>
             <p className="text-sm text-muted-foreground">Disability categories supported</p>
           </div>
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-semibold tabular-nums text-transparent">
+            <p className="text-primary text-3xl font-semibold tabular-nums">
               {MATCH_THRESHOLD}%
             </p>
             <p className="text-sm text-muted-foreground">Minimum fit to ever appear as a match</p>

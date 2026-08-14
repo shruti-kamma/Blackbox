@@ -1,11 +1,8 @@
 /*
  * Shared design tokens for all Blackbox apps (Tailwind v4 CSS-first config).
- * Import from an app's globals.css with:
- *   @import "tailwindcss";
- *   @import "@blackbox/config/tailwind/theme.css";
- *
- * Colors are chosen to meet WCAG 2.1 AA contrast (4.5:1 for text) against
- * their paired background — verify with a contrast checker before changing.
+ * Theme Switching Rules follow AGENTS.md strictly:
+ * Light: bg #ffffff, primary #03068d, fg #171717, muted/card #f4f4f5, border #d4d4d8
+ * Dark: bg #000000, primary #a78bfa (lavender), fg #ffffff, muted/card #18181b, border #27272a
  */
 @theme {
   --color-background: #ffffff;
@@ -23,6 +20,9 @@
   --color-muted: #f4f4f5;
   --color-muted-foreground: #52525b;
 
+  --color-card: #f4f4f5;
+  --color-card-foreground: #171717;
+
   --color-border: #d4d4d8;
   --color-focus-ring: #03068d;
 
@@ -31,19 +31,36 @@
 }
 
 /*
- * No manual light/dark toggle anywhere in the app — mode follows the
- * device/OS preference only, via prefers-color-scheme. One unified theme
- * across the whole site (no per-section overrides) so this single media
- * query is the only place light vs. dark gets decided.
+ * Explicit light/dark toggle (ThemeToggleFloating), not just OS
+ * preference — [data-theme] is set on <html> and persisted to
+ * localStorage. One unified theme across the whole site (no per-section
+ * overrides), so these two blocks are the only place light vs. dark gets
+ * decided.
  */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #0a0a0a;
-    --color-foreground: #ededed;
-    --color-muted: #1c1c1f;
-    --color-muted-foreground: #a1a1aa;
-    --color-border: #3f3f46;
-  }
+:root, [data-theme="light"] {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-primary: #03068d;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #52525b;
+  --color-card: #f4f4f5;
+  --color-card-foreground: #171717;
+  --color-border: #d4d4d8;
+  --color-focus-ring: #03068d;
+}
+
+[data-theme="dark"] {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-primary: #a78bfa;
+  --color-primary-foreground: #000000;
+  --color-muted: #18181b;
+  --color-muted-foreground: #a1a1aa;
+  --color-card: #18181b;
+  --color-card-foreground: #ffffff;
+  --color-border: #27272a;
+  --color-focus-ring: #a78bfa;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -55,29 +72,11 @@
   }
 }
 
-/* Visible focus indicator for all interactive elements — never suppress this. */
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 
-/*
- * Accessibility modes, set as [data-a11y="<DisabilityCategory>"] on <html>
- * by the portal-select flow (see apps/job-portal/src/lib/a11y). Values match
- * the DisabilityCategory enum exactly. Overriding the same custom properties
- * @theme already declared above works the same way the dark-mode block
- * does — Tailwind's generated utilities (bg-primary, text-muted-foreground,
- * h-touch-target, ...) read these variables at paint time, not build time,
- * so no new utilities need generating here.
- *
- * Hearing / Speech / Chronic illness / Other intentionally have no rules
- * yet — the attribute is still set for future policy work (captions-by-
- * default, no-voice-requirement, autosave-everywhere) that isn't a pure CSS
- * lever. Cognitive's copy-simplification is likewise a content change, not
- * a CSS one — only its motion reduction is handled here.
- */
-
-/* Visual: larger base text, low-contrast secondary text removed, stronger focus rings */
 [data-a11y="VISUAL"] {
   font-size: 118%;
   --color-muted-foreground: var(--color-foreground);
@@ -87,12 +86,10 @@
   outline-offset: 3px;
 }
 
-/* Mobility: every element using h-touch-target/w-touch-target grows platform-wide */
 [data-a11y="MOBILITY"] {
   --spacing-touch-target: 3.25rem;
 }
 
-/* Cognitive + Mental health: no motion, ever, regardless of OS setting */
 [data-a11y="COGNITIVE"] *,
 [data-a11y="COGNITIVE"] *::before,
 [data-a11y="COGNITIVE"] *::after,
@@ -105,12 +102,6 @@
   scroll-behavior: auto !important;
 }
 
-/* Mental health: a deliberately softer, less saturated primary color */
 [data-a11y="MENTAL_HEALTH"] {
   --color-primary: #5c7a93;
-}
-@media (prefers-color-scheme: dark) {
-  [data-a11y="MENTAL_HEALTH"] {
-    --color-primary: #90abbf;
-  }
 }

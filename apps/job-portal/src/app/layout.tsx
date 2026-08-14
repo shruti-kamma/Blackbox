@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import { Nav } from "@/components/nav";
 import { PortalSelectProvider } from "@/components/a11y/portal-select-provider";
+import { ThemeToggleFloating } from "@/components/theme-toggle-floating";
 import { A11Y_COOKIE_NAME } from "@/lib/a11y/cookie";
 
 // Sitewide editorial redesign (see docs/decisions.md — "Editorial
@@ -42,10 +43,11 @@ export default async function RootLayout({
       className={`${lexend.variable} ${geistMono.variable} h-full antialiased`}
       data-a11y={a11yMode || undefined}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col relative">
         <PortalSelectProvider>
           <Nav />
           {children}
+          <ThemeToggleFloating />
         </PortalSelectProvider>
       </body>
     </html>
