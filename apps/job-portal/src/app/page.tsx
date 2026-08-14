@@ -194,18 +194,6 @@ export default async function Home() {
               </p>
             </div>
           </div>
-
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-            <PortalSelectTrigger className="flex h-touch-target items-center justify-center rounded-full bg-primary px-8 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
-              Enter Job Portal →
-            </PortalSelectTrigger>
-            <Link
-              href="/ranking"
-              className="flex h-touch-target items-center justify-center rounded-full border border-border bg-muted px-8 text-sm font-semibold text-foreground hover:bg-background transition-colors"
-            >
-              See Inclusion Rankings →
-            </Link>
-          </div>
         </div>
       </section>
     </main>
