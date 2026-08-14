@@ -32,25 +32,21 @@ export default async function Home() {
         <div className="absolute inset-0 z-0 opacity-80">
           <HeroShapeGrid />
         </div>
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans">
-          <div>
-            <p className="text-xl md:text-2xl font-semibold tracking-tight text-primary font-sans inline-flex items-center gap-0.5">
-              <span>Blackbox INDEX</span>
-              <sup className="text-xs font-bold text-primary opacity-80 select-none">™</sup>
-            </p>
-            <p className="mt-1 text-sm md:text-base font-medium text-muted-foreground font-sans">
-              (Indian National Disability Ecosystem Exchange)
-            </p>
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans flex flex-col items-start justify-center">
+          {/* Blackbox INDEX™ in a shadowed dropdown box */}
+          <div className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card/90 px-8 py-5 shadow-2xl backdrop-blur-md transition-all hover:border-primary/40">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-foreground font-sans">
+              Blackbox INDEX
+            </h1>
+            <sup className="text-lg sm:text-2xl font-extrabold text-primary select-none">™</sup>
           </div>
-          <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground font-sans max-w-3xl leading-tight">
-            What Gets Measured <span className="text-primary">Gets Improved</span>
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted-foreground font-sans">
-            One platform where candidates with disabilities find genuinely matched roles, and employers hire
-            against real, enforced accommodation commitments — not just promises.
+
+          {/* Subtitle in brackets */}
+          <p className="mt-4 text-base sm:text-lg md:text-xl font-semibold tracking-wide text-primary font-sans">
+            (Indian National Disability Ecosystem Exchange)
           </p>
 
-          <div className="mt-12 flex justify-center">
+          <div className="mt-14 w-full flex justify-center">
             <a
               href="#rankings"
               aria-label="Scroll to next section"
@@ -64,7 +60,7 @@ export default async function Home() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="h-6 w-6 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
+                className="h-7 w-7 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
               >
                 <path d="M12 5v14M19 12l-7 7-7-7" />
               </svg>
