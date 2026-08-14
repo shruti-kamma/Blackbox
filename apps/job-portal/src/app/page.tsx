@@ -28,44 +28,42 @@ export default async function Home() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30 min-h-[calc(100vh-4.25rem)] flex flex-col justify-between py-12 md:py-16">
         <div className="absolute inset-0 z-0 opacity-80">
           <HeroShapeGrid />
         </div>
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans flex flex-col items-start justify-center">
-          {/* Blackbox INDEX™ in a shadowed dropdown box */}
-          <div className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card/90 px-8 py-5 shadow-2xl backdrop-blur-md transition-all hover:border-primary/40">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-foreground font-sans">
-              Blackbox INDEX
-            </h1>
-            <sup className="text-lg sm:text-2xl font-extrabold text-primary select-none">™</sup>
-          </div>
 
-          {/* Subtitle in brackets */}
-          <p className="mt-4 text-base sm:text-lg md:text-xl font-semibold tracking-wide text-primary font-sans">
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col justify-center text-left font-sans">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-2">
+            <span>Blackbox INDEX</span>
+            <sup className="text-xl sm:text-3xl font-extrabold text-primary select-none">™</sup>
+          </h1>
+
+          <p className="mt-4 text-lg sm:text-xl md:text-2xl font-semibold tracking-wide text-primary font-sans">
             (Indian National Disability Ecosystem Exchange)
           </p>
+        </div>
 
-          <div className="mt-14 w-full flex justify-center">
-            <a
-              href="#rankings"
-              aria-label="Scroll to next section"
-              className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+        {/* First Scroll Reveal Indicator */}
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-4 flex items-center justify-center">
+          <a
+            href="#rankings"
+            aria-label="Scroll to next section"
+            className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-7 w-7 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-7 w-7 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
-              >
-                <path d="M12 5v14M19 12l-7 7-7-7" />
-              </svg>
-            </a>
-          </div>
+              <path d="M12 5v14M19 12l-7 7-7-7" />
+            </svg>
+          </a>
         </div>
       </section>
 
