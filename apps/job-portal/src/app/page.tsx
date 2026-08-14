@@ -33,9 +33,15 @@ export default async function Home() {
           <HeroShapeGrid />
         </div>
         <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans">
-          <p className="text-xl md:text-2xl font-medium tracking-tight text-primary font-sans">
-            Blackbox India&apos;s Inclusion Intelligence Index
-          </p>
+          <div>
+            <p className="text-xl md:text-2xl font-semibold tracking-tight text-primary font-sans inline-flex items-center gap-0.5">
+              <span>Blackbox INDEX</span>
+              <sup className="text-xs font-bold text-primary opacity-80 select-none">™</sup>
+            </p>
+            <p className="mt-1 text-sm md:text-base font-medium text-muted-foreground font-sans">
+              (Indian National Disability Ecosystem Exchange)
+            </p>
+          </div>
           <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground font-sans max-w-3xl leading-tight">
             What Gets Measured <span className="text-primary">Gets Improved</span>
           </h1>
