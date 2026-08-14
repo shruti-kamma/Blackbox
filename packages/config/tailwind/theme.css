@@ -46,14 +46,14 @@
 [data-theme="dark"] {
   --color-background: #000000;
   --color-foreground: #ffffff;
-  --color-primary: #7c3ca1;
-  --color-primary-foreground: #ffffff;
+  --color-primary: #a78bfa;
+  --color-primary-foreground: #000000;
   --color-muted: #18181b;
   --color-muted-foreground: #a1a1aa;
   --color-card: #18181b;
   --color-card-foreground: #ffffff;
   --color-border: #27272a;
-  --color-focus-ring: #7c3ca1;
+  --color-focus-ring: #a78bfa;
 }
 
 @media (prefers-reduced-motion: reduce) {

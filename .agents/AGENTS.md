@@ -14,7 +14,7 @@ When the user asks to switch the website theme to **Light Theme** or **Dark Them
 
 ### 🌙 Dark Theme (`dark`)
 * **Background Color**: `#000000` (Pure Black)
-* **Primary / Brand Color**: `#7c3ca1` (Purple)
+* **Primary / Brand Color**: `#a78bfa` (Lavender)
 * **Foreground Text Color**: `#f4f4f5` / `#ffffff`
 * **Card / Muted Background**: `#18181b`
 * **Border Color**: `#27272a`
