@@ -73,14 +73,10 @@ export default async function Home() {
 
       {/* Two products */}
       <section id="rankings" className="scroll-mt-16 border-b border-border bg-muted py-14 md:py-20">
-        <div className="mx-auto w-full max-w-5xl px-4 text-center mb-12">
+        <div className="mx-auto w-full max-w-5xl px-4 text-center mb-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
-            What Gets Measured <span className="text-primary">Gets Improved</span>
+            What Gets Measured, <span className="text-primary">Gets Improved</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-muted-foreground font-sans max-w-2xl mx-auto leading-relaxed">
-            One platform where candidates with disabilities find genuinely matched roles, and employers hire
-            against real, enforced accommodation commitments — not just promises.
-          </p>
         </div>
 
         <div className="mx-auto grid w-full max-w-5xl gap-5 px-4 md:grid-cols-2">
