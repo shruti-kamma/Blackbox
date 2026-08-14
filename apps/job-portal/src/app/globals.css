@@ -1,11 +1,6 @@
 @import "tailwindcss";
 @import "@blackbox/config/tailwind/theme.css";
 
-/* Tailwind's automatic content detection only scans this app's own
-   directory tree. The /ranking section's feature code lives in sibling
-   `packages/module-*` packages (ported from the shruti branch), so each
-   one needs an explicit @source or its class names get purged from the
-   production build even though dev looks fine. */
 @source "../../../../packages/module-methodology/src/**/*.tsx";
 @source "../../../../packages/module-leaderboards/src/**/*.tsx";
 @source "../../../../packages/module-org-snapshot/src/**/*.tsx";
@@ -25,39 +20,40 @@
    primary/secondary hierarchy, not split by section. Overrides the shared
    base theme's default blue (#1d4ed8). --color-card is a job-portal-only
    addition (the shared base theme doesn't define one) for the
-   border-only card treatment the ranking pages use throughout. */
-@theme {
+   border-only card treatment the ranking pages use throughout.
+
+   Explicit toggle now (ThemeToggleFloating, layout.tsx), not just OS
+   preference — [data-theme] set on <html> and persisted to localStorage,
+   defaulting to light until the toggle is used. */
+:root, [data-theme="light"] {
   --color-primary: #03068d;
   --color-secondary: #7c3ca1;
   --color-focus-ring: #03068d;
-  --color-card: #ffffff;
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-muted: #f4f4f5;
+  --color-border: #d4d4d8;
+  --color-card: #f4f4f5;
 }
 
-/* Mode follows the device/OS preference only (see
-   packages/config/tailwind/theme.css's own comment) — no manual toggle,
-   no hardcoded default, applied identically across the whole site. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #6a67ff;
-    --color-secondary: #b28ce0;
-    --color-focus-ring: #6a67ff;
-    --color-card: #0a0a0a;
-  }
+[data-theme="dark"] {
+  --color-primary: #a78bfa;
+  --color-secondary: #03068d;
+  --color-focus-ring: #a78bfa;
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-muted: #18181b;
+  --color-border: #27272a;
+  --color-card: #18181b;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans), sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Centered within the resume document itself (relative to the nearest
-   positioned ancestor, the resume <article>) — deliberately `absolute`, not
-   `fixed`. `fixed` would repeat per printed page in theory, but tested
-   against a real generated PDF it renders off-center in Chrome's print
-   pipeline; `absolute` measured correctly centered in the same test, so
-   it's the reliable choice even though it won't repeat on every page of a
-   very long resume. */
 .resume-watermark {
   position: absolute;
   top: 50%;
@@ -67,8 +63,6 @@ body {
   white-space: nowrap;
 }
 
-/* Printable pages (e.g. the candidate resume) shouldn't carry the site nav
-   or dark-mode colors onto paper/PDF, regardless of the viewer's OS theme. */
 @media print {
   .no-print {
     display: none !important;
