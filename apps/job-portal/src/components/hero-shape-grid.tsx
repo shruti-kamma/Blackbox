@@ -9,7 +9,7 @@ export function HeroShapeGrid() {
   useEffect(() => {
     const updateColor = () => {
       const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-      setBorderColor(currentTheme === "dark" ? "#4c3b69" : "#b9b8d7");
+      setBorderColor(currentTheme === "dark" ? "#231a33" : "#b9b8d7");
     };
 
     updateColor();
@@ -17,7 +17,7 @@ export function HeroShapeGrid() {
     const handleThemeChange = (e: Event) => {
       const customEv = e as CustomEvent<{ theme: "light" | "dark" }>;
       if (customEv.detail?.theme) {
-        setBorderColor(customEv.detail.theme === "dark" ? "#4c3b69" : "#b9b8d7");
+        setBorderColor(customEv.detail.theme === "dark" ? "#231a33" : "#b9b8d7");
       } else {
         updateColor();
       }

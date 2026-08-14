@@ -18,7 +18,7 @@ When the user asks to switch the website theme to **Light Theme** or **Dark Them
 * **Foreground Text Color**: `#f4f4f5` / `#ffffff`
 * **Card / Muted Background**: `#18181b`
 * **Border Color**: `#27272a`
-* **React Bits ShapeGrid Hexagons Border Color**: `#4c3b69`
+* **React Bits ShapeGrid Hexagons Border Color**: `#231a33` (Dim Violet)
 
 ---
 

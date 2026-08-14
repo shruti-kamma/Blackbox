@@ -29,7 +29,7 @@ export default async function Home() {
     <main className="flex flex-1 flex-col">
       {/* Full-Screen Landing Hero Section */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30 min-h-[calc(100vh-4.25rem)] flex flex-col justify-between py-12 md:py-16">
-        <div className="absolute inset-0 z-0 opacity-60">
+        <div className="absolute inset-0 z-0 opacity-60 dark:opacity-40">
           <HeroShapeGrid />
         </div>
 
@@ -56,9 +56,9 @@ export default async function Home() {
         <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-4 flex items-center justify-center">
           <a
             href="#products"
-            className="flex flex-col items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+            aria-label="Scroll to next section"
+            className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
           >
-            <span>Scroll to explore</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -67,7 +67,7 @@ export default async function Home() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-5 w-5 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
+              className="h-6 w-6 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
             >
               <path d="M12 5v14M19 12l-7 7-7-7" />
             </svg>
