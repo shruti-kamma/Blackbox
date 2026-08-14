@@ -144,13 +144,13 @@ export default async function Home() {
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-wide text-primary uppercase">
-              Our Cause & Motive
+              Our Purpose & Motive
             </span>
             <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
-              Why Blackbox INDEX<sup className="text-xl sm:text-2xl font-bold text-primary select-none">™</sup> Exists
+              Why Blackbox Exists
             </h2>
             <p className="mt-4 text-lg text-muted-foreground font-sans leading-relaxed">
-              We are not an NGO or a charity. We are a purpose-built technology platform solving the systemic exclusion of persons with disabilities in the workforce through enforceable data and real accessibility.
+              We are a purpose-built technology platform solving the systemic exclusion of persons with disabilities in the workforce through enforceable data and real accessibility.
             </p>
           </div>
 
@@ -175,9 +175,9 @@ export default async function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-foreground font-sans">Driven By Cause, Not Charity</h3>
+              <h3 className="text-xl font-bold text-foreground font-sans">Driven By Purpose & Data</h3>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                Blackbox is an infrastructure of accountability, not a sympathy campaign. We measure real accommodation track records and employee reviews to hold employers accountable against enforced commitments.
+                Blackbox is an infrastructure of systemic accountability. We measure real accommodation track records and employee reviews to hold employers accountable against enforced commitments.
               </p>
             </div>
 
