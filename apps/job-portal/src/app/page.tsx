@@ -41,7 +41,7 @@ export default async function Home() {
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-sans max-w-4xl leading-[1.1]">
             What Gets Measured <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent">
+            <span className="text-primary">
               Gets Improved
             </span>
           </h1>
@@ -50,18 +50,6 @@ export default async function Home() {
             One platform where candidates with disabilities find genuinely matched roles, and employers hire
             against real, enforced accommodation commitments — not just promises.
           </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <PortalSelectTrigger className="flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg hover:bg-primary/90 transition-all cursor-pointer">
-              Explore Blackbox Jobs →
-            </PortalSelectTrigger>
-            <Link
-              href="/ranking"
-              className="flex h-12 items-center justify-center rounded-lg border-2 border-border bg-background px-8 text-base font-semibold text-foreground hover:bg-muted transition-all"
-            >
-              See Rankings
-            </Link>
-          </div>
         </div>
 
         {/* First Scroll Reveal Indicator */}
@@ -123,25 +111,25 @@ export default async function Home() {
       <section className="border-b border-border py-16">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-extrabold tabular-nums text-transparent">
+            <p className="text-primary text-4xl font-extrabold tabular-nums">
               {openJobsCount}
             </p>
             <p className="mt-1 text-sm font-medium text-muted-foreground">Open roles</p>
           </div>
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-extrabold tabular-nums text-transparent">
+            <p className="text-primary text-4xl font-extrabold tabular-nums">
               {organizationsCount}
             </p>
             <p className="mt-1 text-sm font-medium text-muted-foreground">Organizations hiring</p>
           </div>
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-extrabold tabular-nums text-transparent">
+            <p className="text-primary text-4xl font-extrabold tabular-nums">
               {DISABILITY_CATEGORY_OPTIONS.length}
             </p>
             <p className="mt-1 text-sm font-medium text-muted-foreground">Disability categories supported</p>
           </div>
           <div>
-            <p className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-extrabold tabular-nums text-transparent">
+            <p className="text-primary text-4xl font-extrabold tabular-nums">
               {MATCH_THRESHOLD}%
             </p>
             <p className="mt-1 text-sm font-medium text-muted-foreground">Minimum fit to ever appear as a match</p>
