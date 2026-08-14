@@ -1,0 +1,93 @@
+{
+  "symbol": "CENTRALBK",
+  "company_name": "Central Bank of India",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 31.9,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 40,
+      "rationale": "Physical accessibility is described qualitatively (ramps/lifts, most branches on ground floor or with elevators) but no percentage of accessible premises is given, and no digital accessibility measures (screen-reader support, accessible app/website) are disclosed.",
+      "recommendation": "Disclose the percentage of branches/offices that are physically accessible and describe any digital accessibility measures such as website/app screen-reader support.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 60,
+      "rationale": "A named 'Equal Opportunity Policy' under the RPwD Act 2016 is described, covering non-discrimination and employment opportunities for PwD, but no concrete accommodation-request process or response-time commitment is described.",
+      "recommendation": "Describe a concrete workplace-accommodation request and fulfillment process for PwD employees.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 78,
+      "rationale": "Reports a precise headcount of differently-abled employees (898 total; 688 male, 210 female; all permanent) with percentage breakdowns for FY2025-26.",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No recruitment targets, PwD-specific hiring outreach, or attainment figures are disclosed.",
+      "recommendation": "Disclose whether the bank sets PwD hiring targets tied to the RPwD Act 2016 quota and report attainment against them.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No attrition, tenure, or promotion data specific to PwD employees is disclosed.",
+      "recommendation": "Report attrition/retention rates specifically for differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior/management roles is provided; Board and KMP disclosures do not reference disability status.",
+      "recommendation": "Disclose PwD representation at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "Training tables cover health & safety and skill upgradation for all employees but do not mention any disability-sensitization or PwD-specific training program.",
+      "recommendation": "Introduce and disclose a disability-sensitization/awareness training program for staff.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices (ERGs, flexible work arrangements, accommodation response-time commitments) specific to PwD employees are described beyond the general non-discrimination policy statement.",
+      "recommendation": "Describe ongoing inclusion practices such as PwD employee resource groups or flexible-work accommodations.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "Grievance and POSH complaint data reported is general and not broken out for PwD employees; no PwD-specific satisfaction or grievance data is disclosed.",
+      "recommendation": "Publish grievance/satisfaction data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 45,
+      "rationale": "The filing affirms accessibility of branches/offices under the Rights of Persons with Disabilities Act, 2016, but does not quantify the percentage of compliant premises or report attainment against the statutory PwD employment quota.",
+      "recommendation": "Disclose the specific percentage of branches/offices meeting RPwD Act 2016 accessibility standards and report attainment against the statutory PwD employment quota.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "BSE",
+  "company_name": "BSE LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 27.9,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "BSE describes specific physical accessibility features: ramps at entrance gates, on-site wheelchairs, designated accessible urinals, and an exclusive lift for specially abled persons. No digital accessibility measures (website/app conformance, assistive technology) are disclosed.",
+      "recommendation": "Disclose digital accessibility measures such as WCAG conformance for BSE's website and trading platforms.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 40,
+      "rationale": "An equal opportunity policy addressing non-discrimination and respect for persons with disabilities per the RPwD Act, 2016 is confirmed, but described only in general terms with no concrete accommodation request/approval process.",
+      "recommendation": "Describe a concrete workplace accommodation process for PwD employees, including how requests are made and resolved.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "A specific, internally consistent PwD headcount is disclosed: 1 differently abled employee (male, permanent) and 0 differently abled workers out of a total workforce of 850, but the figure is very limited and no context or trend is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce, disclose trends, and outline plans to grow representation.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No hiring targets, attainment rates, or disability-specific recruitment outreach are disclosed.",
+      "recommendation": "Disclose any PwD hiring targets or disability-specific outreach efforts and whether they were met.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No attrition, tenure, or promotion data specific to PwD employees is disclosed.",
+      "recommendation": "Report PwD-specific retention or attrition data separately from overall workforce figures.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No disclosure of PwD representation in senior or management roles.",
+      "recommendation": "Disclose PwD representation specifically within senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No training or sensitization programs related to disability/PwD inclusion are described.",
+      "recommendation": "Introduce and disclose disability-sensitization training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No PwD-specific ongoing culture practices (ERGs, flexible work, accommodation response-time commitments) are described.",
+      "recommendation": "Establish and disclose PwD-specific culture practices, such as an employee resource group or documented accommodation response-time commitment.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed.",
+      "recommendation": "Track and disclose PwD-specific employee feedback or grievance outcomes.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 45,
+      "rationale": "BSE affirmatively answers the mandated BRSR statutory questions on RPwD Act workplace and visitor accessibility (with specific described features) and equal opportunity policy, but does not report RPwD Act quota attainment or any audited/verifiable compliance claim.",
+      "recommendation": "Disclose RPwD Act statutory quota attainment figures rather than only affirming general accessibility and policy compliance.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

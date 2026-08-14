@@ -1,0 +1,42 @@
+{
+  "symbol": "AJANTPHARM",
+  "company_name": "Ajanta Pharma Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/ajanta-pharma-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 12, "total_pages": 140, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The company answers 'Yes' to having an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016, with a web-link to a consolidated Business Responsibility Policies document (no further description of the policy's content is given in the surrounding text). Separately, MD&A narrative states the Company 'maintains strict adherence to its internal codes of conduct, with a clear zero-tolerance approach towards discrimination in any form.'",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "BRSR tables report 10 total differently-abled employees (9 male, 1 female, all permanent) and 15 total differently-abled workers (1 permanent, 14 other-than-permanent, all male) for FY2025-26 -- 25 differently-abled employees+workers combined, matching the Company's stated performance line: 'Included 25 specially abled person in day to day activities giving them equal opportunity.' Separately, the MD&A narrative elsewhere states the Company supports '28 differently abled employees' (a differing figure from a non-BRSR-table source).",
+    "physical_accessibility_measures": null,
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": true,
+    "recruitment_details": "The Company's stated FY2027 target is to 'Continue for inclusion of specially abled people at operation site, add 15 more people by FY 2027,' and reports current-year progress as 'Included 25 specially abled person in day to day activities giving them equal opportunity.'",
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "The filing answers 'Yes' to both BRSR questions on whether premises/offices are accessible to differently abled employees/workers and to differently abled visitors, 'as per the requirements of the Rights of Persons with Disabilities Act, 2016,' and separately confirms (with web-link) an equal opportunity policy 'as per the Rights of Persons with Disabilities Act, 2016.' No quantified compliance percentage or employment-quota attainment figure is given beyond the specially-abled inclusion count/target noted under Recruitment.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? Yes. If yes, provide a web-link to the policy: https://www.ajantapharma.com/assets/frontend/images/investors/files/policies_and_codes/BusinessResponsibilityPolicies.pdf", "original_page": 50, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total employees (E+F) 10 9 90.00 1 10.00 0 0.00", "original_page": 41, "source": "BRSR"},
+      {"field": "recruitment_disclosed", "quote": "Continue for inclusion of specially abled people at operation site, add 15 more people by FY 2027.", "original_page": 45, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Are the premises / offices of the entity accessible to differently abled employees and workers, as per the requirements of the Rights of Persons with Disabilities Act, 2016? ... Yes", "original_page": 50, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

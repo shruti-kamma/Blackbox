@@ -1,0 +1,93 @@
+{
+  "symbol": "ASHOKLEY",
+  "company_name": "Ashok Leyland Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 32.9,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 40,
+      "rationale": "Filing states infrastructure has been proactively enhanced for mobility/accessibility at offices and plants, and that facilities are designed/adapted for visitors with disabilities, but no specific features (ramps, restrooms, elevators) are itemised and no digital accessibility measures are mentioned at all.",
+      "recommendation": "Itemise the specific physical accessibility features implemented and disclose any digital accessibility (website/app/assistive technology) measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "An equal opportunity policy referencing the RPwD Act is described via the Code of Conduct and a named Affirmative-Action Policy, and a concrete accommodation process is described (case-by-case reasonable accommodations backed by feasibility assessments), though no formal response-time commitment is given.",
+      "recommendation": "Publish a standalone accommodation-request procedure with a stated response-time commitment.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "Specific PwD headcounts are disclosed (6 differently abled employees, 47 differently abled workers, with a male/female split) against a total workforce of over 36,000, which is verifiable but shows very limited representation and no trend data.",
+      "recommendation": "Report PwD headcount trends year-over-year and by function/site.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment target, outreach programme, or hiring attainment figure is disclosed anywhere in the filing.",
+      "recommendation": "Disclose a PwD hiring target and any disability-focused recruitment outreach, with attainment reported.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; the turnover and return-to-work/retention tables are not broken out by disability status.",
+      "recommendation": "Track and disclose attrition/retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed; the diversity disclosures cover only gender representation on the Board and in Key Management Personnel.",
+      "recommendation": "Disclose PwD representation figures specifically at senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programme is described; training disclosures cover PoSH, safety and human rights but do not mention disability awareness.",
+      "recommendation": "Introduce and disclose a disability-awareness/sensitization training module for managers and staff.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 50,
+      "rationale": "Filing describes an ongoing practice of actively seeking feedback from employees, workers and visitors on accessibility, backed by 'detailed feasibility assessments to identify and address the specific needs of persons with disabilities at each location' -- a concrete, ongoing commitment, though no ERG or flexible-work option is named.",
+      "recommendation": "Name a specific ongoing structure (e.g., a PwD employee resource group or a stated accommodation turnaround-time commitment) to complement the feedback/feasibility-assessment process.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; general discrimination-complaint counts (5 filed in FY2025-26) are reported but not broken out by disability.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 40,
+      "rationale": "Filing directly answers the mandated BRSR RPwD Act questions with an unqualified 'Yes' that premises are accessible to PwD employees, workers and visitors, and confirms an equal-opportunity policy aligned with the Act, but no statutory employment quota attainment percentage or WCAG conformance level is stated.",
+      "recommendation": "Disclose the specific RPwD Act statutory employment quota attainment percentage.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

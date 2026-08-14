@@ -1,0 +1,93 @@
+{
+  "symbol": "ATGL",
+  "company_name": "Adani Total Gas Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 21.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 50,
+      "rationale": "Physical accessibility measures are described with some specificity -- ramps at entry points and internal areas, dedicated restrooms, signage/layout planning -- but no digital accessibility measures are mentioned anywhere in the filing.",
+      "recommendation": "Disclose digital accessibility measures such as website/app conformance or assistive technology provisioning.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "The company states a commitment to equal opportunity for persons with disabilities, but this is embedded within the general Human Rights Policy rather than a standalone disability policy, and no accommodation-request process is described.",
+      "recommendation": "Publish a standalone disability inclusion policy with a defined accommodation-request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "Specific headcounts are disclosed: 2 differently abled employees (1 male, 1 female) and 1 differently abled worker (male), all in the other-than-permanent category, with gender percentage breakdowns.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and disclose trend over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, hiring outreach, or attainment figures are disclosed anywhere in the filing.",
+      "recommendation": "Disclose any PwD-specific hiring targets or outreach programs.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Retention/return-to-work rates are reported only for the general permanent employee/worker population, with no breakdown specific to PwD employees.",
+      "recommendation": "Report attrition/tenure data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data or statement addresses PwD representation in senior or management roles.",
+      "recommendation": "Disclose PwD representation specifically within management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No training or sensitisation program specific to disability inclusion is disclosed anywhere in the filing.",
+      "recommendation": "Introduce and disclose a training program specifically on disability inclusion/sensitisation.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ERG, flexible-work commitment, or accommodation response-time practice specific to PwD employees is disclosed.",
+      "recommendation": "Disclose ongoing culture practices for PwD employees such as an ERG or flexible-work arrangements.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed; the general grievance mechanism described is not broken out by disability status.",
+      "recommendation": "Disclose PwD-specific employee feedback or grievance-resolution data.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act statutory quota attainment or a WCAG conformance level for digital properties.",
+      "recommendation": "Disclose specific statutory compliance metrics, such as RPwD Act quota attainment or a stated WCAG conformance level.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

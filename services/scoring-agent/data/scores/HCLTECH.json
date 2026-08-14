@@ -1,0 +1,93 @@
+{
+  "symbol": "HCLTECH",
+  "company_name": "HCL Technologies Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 45.7,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 72,
+      "rationale": "The filing names specific physical measures (ramps, voice-enabled lifts, PwD washrooms, reserved parking, audio/visual emergency alarms) verified by third-party inspections, plus a named digital standard (WCAG 2.2) for websites and portals, but gives no quantified audit coverage or stated conformance level.",
+      "recommendation": "Disclose the percentage/number of sites third-party audited for accessibility and specify the WCAG 2.2 conformance level (A/AA/AAA) achieved.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "A written equal opportunity policy is confirmed (via the Human Rights Policy, with a public web link, and COBEC), satisfying the RPwD Act 2016 requirement, but no concrete accommodation request/response process is described.",
+      "recommendation": "Publish a dedicated PwD accommodation process with defined request channels and response-time commitments, separate from the general equal-opportunity clause.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 80,
+      "rationale": "A specific, gender-disaggregated PwD headcount table is disclosed as part of the statutory BRSR filing (1,269 total differently abled employees as of March 31, 2026, with permanent/other-than-permanent split), which is concrete and verifiable.",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No PwD-specific hiring targets, attainment reporting, or disability-focused recruitment outreach is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific hiring targets, dedicated recruitment/outreach channels, and attainment against RPwD Act reservation expectations.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "The turnover-rate table is broken down only by gender, not by disability status, so no PwD-specific attrition, tenure, or promotion data is disclosed.",
+      "recommendation": "Report attrition, average tenure, or promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed; the materiality/risk matrix flags 'underrepresentation of persons with disabilities' as a risk theme but provides no supporting figures.",
+      "recommendation": "Disclose the number or percentage of PwD employees in management and senior leadership positions.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is described; disclosed training programs (OHS, DEI Allyship) are general and not targeted at disability awareness or inclusive-hiring skills.",
+      "recommendation": "Introduce and disclose participation metrics for a disability-sensitization or inclusive-hiring training program.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 45,
+      "rationale": "The Ability Connect Network, an employee resource group supporting employees with disabilities through accessibility initiatives and awareness-building, is named as an ongoing practice, but no participation figures, activity details, or PwD-specific commitments (e.g., flexible work, accommodation response times) are given.",
+      "recommendation": "Provide participation numbers and activity detail for the Ability Connect Network, and add explicit PwD-focused culture commitments such as accommodation response-time pledges.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; general grievance channels (e.g., Global Ethics Helpline) are described without any breakdown by disability status.",
+      "recommendation": "Publish PwD-specific grievance or satisfaction metrics, such as the number of disability-related grievances filed and resolved.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 68,
+      "rationale": "The filing makes specific statutory claims -- accessibility of premises per the Rights of Persons with Disabilities Act, 2016 (confirmed for employees, workers, and visitors), an equal opportunity policy per the same Act, and WCAG 2.2 conformance for digital properties -- but does not report RPwD Act reservation/quota attainment percentage or a specific WCAG conformance level.",
+      "recommendation": "Report the RPwD Act statutory reservation quota attainment percentage and specify the WCAG conformance level (A/AA/AAA) achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

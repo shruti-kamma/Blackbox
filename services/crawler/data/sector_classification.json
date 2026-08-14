@@ -1,0 +1,517 @@
+[
+  {
+    "symbol": "ADANIENT",
+    "company_name": "Adani Enterprises Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "ADANIPOWER",
+    "company_name": "ADANI POWER LIMITED",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "AEGISLOG",
+    "company_name": "Aegis Logistics Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "AJANTPHARM",
+    "company_name": "Ajanta Pharma Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "ANANTRAJ",
+    "company_name": "Anant Raj Limited",
+    "industry": "NIFTY REALTY"
+  },
+  {
+    "symbol": "ASHOKLEY",
+    "company_name": "Ashok Leyland Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "ATGL",
+    "company_name": "Adani Total Gas Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "AXISBANK",
+    "company_name": "Axis Bank Limited",
+    "industry": "NIFTY PRIVATE BANK"
+  },
+  {
+    "symbol": "BAJAJ-AUTO",
+    "company_name": "BAJAJ AUTO LIMITED",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "BAJFINANCE",
+    "company_name": "Bajaj Finance Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "BANKINDIA",
+    "company_name": "BANK OF INDIA",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "BATAINDIA",
+    "company_name": "Bata India Limited",
+    "industry": "NIFTY CONSUMER DURABLES"
+  },
+  {
+    "symbol": "BHARATFORG",
+    "company_name": "Bharat Forge Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "BHEL",
+    "company_name": "BHARAT HEAVY ELECTRICALS LIMITED",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "BIOCON",
+    "company_name": "Biocon Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "BLUESTARCO",
+    "company_name": "Blue Star Limited",
+    "industry": "NIFTY CONSUMER DURABLES"
+  },
+  {
+    "symbol": "BOSCHLTD",
+    "company_name": "BOSCH LIMITED",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "BRIGADE",
+    "company_name": "Brigade Enterprises Limited",
+    "industry": "NIFTY REALTY"
+  },
+  {
+    "symbol": "BRITANNIA",
+    "company_name": "Britannia Industries Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "BSE",
+    "company_name": "BSE Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "CENTRALBK",
+    "company_name": "Central Bank of India",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "CGPOWER",
+    "company_name": "CG Power and Industrial Solutions Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "CHOLAFIN",
+    "company_name": "Cholamandalam Investment and Finance Company Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "COLPAL",
+    "company_name": "Colgate Palmolive (India) Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "COROMANDEL",
+    "company_name": "COROMANDEL INTERNATIONAL LIMITED",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "CROMPTON",
+    "company_name": "Crompton Greaves Consumer Electricals Limited",
+    "industry": "NIFTY CONSUMER DURABLES"
+  },
+  {
+    "symbol": "DABUR",
+    "company_name": "Dabur India Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "DEEPAKNTR",
+    "company_name": "Deepak Nitrite Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "DIVISLAB",
+    "company_name": "Divi's Laboratories Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "DRREDDY",
+    "company_name": "DR. REDDY'S LABORATORIES LIMITED",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "EICHERMOT",
+    "company_name": "EICHER MOTORS LIMITED",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "EXIDEIND",
+    "company_name": "Exide Industries Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "FORTIS",
+    "company_name": "Fortis Healthcare Limited",
+    "industry": "NIFTY HEALTHCARE INDEX"
+  },
+  {
+    "symbol": "GODREJPROP",
+    "company_name": "Godrej Properties Limited",
+    "industry": "NIFTY REALTY"
+  },
+  {
+    "symbol": "HATHWAY",
+    "company_name": "Hathway Cable & Datacom Limited",
+    "industry": "NIFTY MEDIA"
+  },
+  {
+    "symbol": "HAVELLS",
+    "company_name": "Havells India Limited",
+    "industry": "NIFTY CONSUMER DURABLES"
+  },
+  {
+    "symbol": "HCLTECH",
+    "company_name": "HCL Technologies Limited",
+    "industry": "NIFTY IT"
+  },
+  {
+    "symbol": "HDFCLIFE",
+    "company_name": "HDFC Life Insurance Company Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "HEROMOTOCO",
+    "company_name": "Hero MotoCorp Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "HINDUNILVR",
+    "company_name": "Hindustan Unilever Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "HINDZINC",
+    "company_name": "Hindustan Zinc Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "HSCL",
+    "company_name": "Himadri Speciality Chemical Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "ICICIBANK",
+    "company_name": "ICICI Bank Limited",
+    "industry": "NIFTY PRIVATE BANK"
+  },
+  {
+    "symbol": "ICICIGI",
+    "company_name": "ICICI Lombard General Insurance Company Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "INDIANB",
+    "company_name": "Indian Bank",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "IOB",
+    "company_name": "INDIAN OVERSEAS BANK",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "IPCALAB",
+    "company_name": "Ipca Laboratories Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "ITC",
+    "company_name": "ITC Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "JPPOWER",
+    "company_name": "JAIPRAKASH POWER VENTURES LIMITED",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "JSWENERGY",
+    "company_name": "JSW Energy Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "JSWSTEEL",
+    "company_name": "JSW Steel Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "KOTAKBANK",
+    "company_name": "Kotak Mahindra Bank Limited",
+    "industry": "NIFTY PRIVATE BANK"
+  },
+  {
+    "symbol": "LAURUSLABS",
+    "company_name": "LAURUS LABS LIMITED",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "LINDEINDIA",
+    "company_name": "Linde India Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "LLOYDSME",
+    "company_name": "Lloyds Metals and Energy Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "LODHA",
+    "company_name": "MACROTECH DEVELOPERS LIMITED",
+    "industry": "NIFTY REALTY"
+  },
+  {
+    "symbol": "LUPIN",
+    "company_name": "Lupin Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "MAHABANK",
+    "company_name": "BANK OF MAHARASHTRA",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "MANKIND",
+    "company_name": "Mankind Pharma Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "MARICO",
+    "company_name": "Marico Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "MFSL",
+    "company_name": "Max Financial Services Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "MOTHERSON",
+    "company_name": "SAMVARDHANA MOTHERSON INTERNATIONAL LIMITED",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "NAVA",
+    "company_name": "NAVA LIMITED",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "NAVINFLUOR",
+    "company_name": "Navin Fluorine International Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "OBEROIRLTY",
+    "company_name": "Oberoi Realty Limited",
+    "industry": "NIFTY REALTY"
+  },
+  {
+    "symbol": "PERSISTENT",
+    "company_name": "Persistent Systems Limited",
+    "industry": "NIFTY IT"
+  },
+  {
+    "symbol": "PIDILITIND",
+    "company_name": "Pidilite Industries Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "PIIND",
+    "company_name": "PI INDUSTRIES LIMITED",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "PPLPHARMA",
+    "company_name": "Piramal Pharma Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "PSB",
+    "company_name": "Punjab & Sind Bank",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "RADICO",
+    "company_name": "RADICO KHAITAN LIMITED",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "RELIANCE",
+    "company_name": "Reliance Industries Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "RPOWER",
+    "company_name": "Reliance Power Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "SBILIFE",
+    "company_name": "SBI Life Insurance Company Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "SHRIRAMFIN",
+    "company_name": "Shriram Finance Limited",
+    "industry": "NIFTY FINANCIAL SERVICES"
+  },
+  {
+    "symbol": "SOBHA",
+    "company_name": "Sobha Limited",
+    "industry": "NIFTY REALTY"
+  },
+  {
+    "symbol": "SOLARINDS",
+    "company_name": "Solar Industries India Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "SONACOMS",
+    "company_name": "Sona BLW Precision Forgings Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "SRF",
+    "company_name": "SRF Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "SUMICHEM",
+    "company_name": "SUMITOMO CHEMICAL INDIA LIMITED",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "SYNGENE",
+    "company_name": "Syngene International Limited",
+    "industry": "NIFTY HEALTHCARE INDEX"
+  },
+  {
+    "symbol": "TATACHEM",
+    "company_name": "Tata Chemicals Limited",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "TATACONSUM",
+    "company_name": "Tata Consumer Products Limited",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "TATAPOWER",
+    "company_name": "Tata Power Company Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "TATASTEEL",
+    "company_name": "Tata Steel Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "TCS",
+    "company_name": "Tata Consultancy Services Limited",
+    "industry": "NIFTY IT"
+  },
+  {
+    "symbol": "TECHM",
+    "company_name": "Tech Mahindra Limited",
+    "industry": "NIFTY IT"
+  },
+  {
+    "symbol": "THERMAX",
+    "company_name": "Thermax Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "TIINDIA",
+    "company_name": "Tube Investments of India Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "TORNTPOWER",
+    "company_name": "Torrent Power Limited",
+    "industry": "NIFTY ENERGY"
+  },
+  {
+    "symbol": "TVSMOTOR",
+    "company_name": "TVS Motor Company Limited",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "UBL",
+    "company_name": "UNITED BREWERIES LIMITED",
+    "industry": "NIFTY FMCG"
+  },
+  {
+    "symbol": "UCOBANK",
+    "company_name": "UCO BANK",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "UNIONBANK",
+    "company_name": "UNION BANK OF INDIA",
+    "industry": "NIFTY PSU BANK"
+  },
+  {
+    "symbol": "UNOMINDA",
+    "company_name": "UNO MINDA LIMITED",
+    "industry": "NIFTY AUTO"
+  },
+  {
+    "symbol": "UPL",
+    "company_name": "UPL LIMITED",
+    "industry": "NIFTY CHEMICALS"
+  },
+  {
+    "symbol": "VEDL",
+    "company_name": "Vedanta Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "VOLTAS",
+    "company_name": "Voltas Limited",
+    "industry": "NIFTY CONSUMER DURABLES"
+  },
+  {
+    "symbol": "WELCORP",
+    "company_name": "Welspun Corp Limited",
+    "industry": "NIFTY METAL"
+  },
+  {
+    "symbol": "WIPRO",
+    "company_name": "Wipro Limited",
+    "industry": "NIFTY IT"
+  },
+  {
+    "symbol": "WOCKPHARMA",
+    "company_name": "Wockhardt Limited",
+    "industry": "NIFTY PHARMA"
+  },
+  {
+    "symbol": "YESBANK",
+    "company_name": "Yes Bank Limited",
+    "industry": "NIFTY PRIVATE BANK"
+  },
+  {
+    "symbol": "ZYDUSLIFE",
+    "company_name": "Zydus Lifesciences Limited",
+    "industry": "NIFTY PHARMA"
+  }
+]

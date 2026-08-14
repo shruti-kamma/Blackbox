@@ -1,0 +1,41 @@
+{
+  "symbol": "ATGL",
+  "company_name": "Adani Total Gas Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/adani-total-gas-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 14, "total_pages": 46, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The Company states it is committed to providing equal opportunity to all employees, including persons with disabilities, in accordance with the Rights of Persons with Disabilities Act, 2016. This commitment is currently embedded within the Company's Human Rights Policy, available at a public web link, rather than as a standalone disability policy.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26: 2 total differently abled employees (1 male, 50%; 1 female, 50%), all in the 'Other than Permanent' category; and 1 differently abled worker (male, 100%), also other-than-permanent.",
+    "physical_accessibility_measures": "Corporate offices are designed to be accessible to persons with disabilities per the RPwD Act 2016, with ramps at entry points and within internal areas to facilitate wheelchair access, dedicated restrooms for differently abled employees and workers, and signage/layout planning to support navigation. The Company states premises are also accessible to differently abled visitors.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "The Company is committed to providing equal opportunity to all employees, including persons with disabilities, in accordance with the principles of the Rights of Persons with Disabilities Act, 2016. Equal opportunity is currently embedded within the Company's Human Rights Policy.", "original_page": 18, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total Differently Abled Employees (D+E) 2 ... 1 100% ... 1 50% ... Total Differently Abled Workers (F+G) 1 1 -- --", "original_page": 4, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Accessibility provisions include ramps at entry points and within internal areas to facilitate smooth wheelchair access, as well as dedicated restrooms for differently abled employees and workers.", "original_page": 18, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

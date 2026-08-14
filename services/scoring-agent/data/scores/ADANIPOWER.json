@@ -1,0 +1,93 @@
+{
+  "symbol": "ADANIPOWER",
+  "company_name": "Adani Power Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 29.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 55,
+      "rationale": "Detailed physical accessibility measures are described -- ramps at entry points/lobbies, elevators with Braille signage for the visually impaired, dedicated restrooms, and a stated comprehensive accessibility plan across work areas and common spaces -- but no digital accessibility measures (accessible website/app, screen-reader support) are disclosed.",
+      "recommendation": "Disclose digital accessibility measures such as screen-reader compatibility or WCAG conformance for the company's website/apps.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "A named Diversity, Equality, and Inclusion Policy explicitly includes disability among protected characteristics and is web-accessible, but no concrete accommodation-request process or response-time commitment is described.",
+      "recommendation": "Describe a concrete process and timeline for employees to request and receive workplace accommodations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "The mandated BRSR table explicitly reports 0 differently-abled employees and 0 differently-abled workers for FY2025-26 -- a specific but substance-free data point with no further context provided.",
+      "recommendation": "Provide context or an improvement plan given the reported zero differently-abled employees/workers.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No recruitment targets, disability-specific hiring outreach, or attainment figures are disclosed.",
+      "recommendation": "Disclose PwD-specific hiring targets or outreach programs and report attainment against them.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No attrition, tenure, or promotion data specific to differently-abled employees is disclosed.",
+      "recommendation": "Report attrition/retention rates specifically for differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on representation of differently-abled employees in senior or management roles is provided.",
+      "recommendation": "Disclose representation of PwD employees at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "Listed training topics (POSH, human rights, mental health & wellbeing, safety, compliance) do not include any disability-specific sensitization or awareness program.",
+      "recommendation": "Introduce and disclose a disability-sensitization training program for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "Beyond the written DEI policy and accessibility infrastructure, no ongoing culture practices (ERGs, flexible work, accommodation response-time commitments) specific to differently-abled employees are described.",
+      "recommendation": "Describe ongoing inclusion practices supporting differently-abled employees, such as an employee resource group or flexible-work accommodations.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "The SPEAK UP grievance mechanism and POSH complaint data disclosed are general and not broken out for differently-abled employees.",
+      "recommendation": "Publish grievance or satisfaction data specific to differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 50,
+      "rationale": "APL states twice that it conforms with the Rights of Persons with Disabilities Act, 2016 (for employee and visitor accessibility respectively) with supporting infrastructure detail, but does not quantify compliance (e.g., % of accessible sites) or report attainment against the statutory PwD employment quota.",
+      "recommendation": "Disclose quantified compliance with RPwD Act 2016 accessibility standards and report attainment against the statutory employment quota.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

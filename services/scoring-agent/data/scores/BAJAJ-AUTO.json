@@ -1,0 +1,93 @@
+{
+  "symbol": "BAJAJ-AUTO",
+  "company_name": "Bajaj Auto Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 24.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 35,
+      "rationale": "Bajaj Auto states its corporate office (not all premises) is accessible to differently abled employees and workers per the RPwD Act, 2016, and that national premises are accessible to differently abled visitors; no specific physical features or any digital accessibility measures are disclosed.",
+      "recommendation": "Clarify accessibility status across all plants/offices (not just the corporate office) and disclose digital accessibility measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "An Equal Opportunity Policy adopted specifically under the RPwD Act, 2016 is disclosed with a public web-link, but no accommodation-request process is described.",
+      "recommendation": "Describe a concrete workplace accommodation process for PwD employees, including how requests are made and response times.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "Specific PwD headcounts are disclosed (3 differently abled employees, 7 differently abled workers, all permanent and all male) against total employee/worker bases, but the numbers are very small and no trend, context, or female representation is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce, disclose trends over time, and address the lack of female PwD representation.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No PwD-specific hiring targets, attainment figures, or disability-focused recruitment outreach are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD hiring targets and attainment, and name specific disability-focused recruitment channels or partners.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed.",
+      "recommendation": "Disclose PwD-specific attrition and promotion rates.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No PwD presence in senior/management roles is disclosed anywhere in the filing.",
+      "recommendation": "Report PwD representation specifically within senior management and leadership roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is disclosed in the filing.",
+      "recommendation": "Introduce and disclose a disability-sensitization or inclusion training program for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices specific to PwD employees (ERGs, flexible work, accommodation response-time commitments) are disclosed.",
+      "recommendation": "Describe ongoing inclusion practices for PwD employees, such as an ERG, flexible-work provisions, or accommodation response-time commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific feedback channels and any satisfaction or grievance metrics collected from PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 45,
+      "rationale": "Bajaj Auto affirmatively answers the mandated BRSR RPwD Act, 2016 questions (corporate office accessibility, Equal Opportunity Policy, visitor accessibility), but the accessibility claim is scoped only to the corporate office and no WCAG conformance level or quota-attainment figure is stated.",
+      "recommendation": "Confirm and disclose RPwD Act accessibility compliance across all plants and offices, and state a WCAG conformance level for digital properties.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

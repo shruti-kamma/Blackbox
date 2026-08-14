@@ -1,0 +1,42 @@
+{
+  "symbol": "BAJAJ-AUTO",
+  "company_name": "Bajaj Auto Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/bajaj-auto-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 15, "total_pages": 64, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Bajaj Auto states it has adopted an Equal Opportunity Policy in accordance with the provisions of the Rights of Persons with Disabilities Act, 2016 and the rules framed thereunder; the policy is available on the company website with a web-link provided.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "3 differently abled employees (all permanent, 100% male) out of 2,998 total employees; 7 differently abled workers (all permanent, 100% male) out of 2,598 total workers.",
+    "physical_accessibility_measures": "Bajaj Auto states 'our corporate office is accessible to differently abled employees and workers, as per the requirements of the Rights of Persons with Disabilities Act, 2016' (scoped to the corporate office rather than all premises), and separately that 'our national premise/office located nationally are accessible to differently abled visitors' per the same Act.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "In the mandated BRSR statutory questions, Bajaj Auto answers 'Yes' that its corporate office is accessible to differently abled employees and workers per the RPwD Act, 2016, confirms it has adopted an Equal Opportunity Policy under the RPwD Act, 2016, and answers 'Yes' that its national premises are accessible to differently abled visitors per the same Act.",
+    "evidence": [
+      {"field": "policy_summary", "quote": "Bajaj Auto has adopted an Equal Opportunity Policy in accordance with the provisions of the Rights of Persons with Disabilities Act, 2016 and the rules framed thereunder.", "original_page": 23, "source": "BRSR"},
+      {"field": "pwd_employee_count_details", "quote": "1. Permanent (D) 3 3 100% ... 4. Permanent (F) 3 3 100% ... 7 7 100%", "original_page": 5, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Yes, our corporate office is accessible to differently abled employees and workers, as per the requirements of the Rights of Persons with Disabilities Act, 2016.", "original_page": 23, "source": "BRSR"},
+      {"field": "compliance_details", "quote": "Response: Yes, our national premise/office located nationally are accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016.", "original_page": 36, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

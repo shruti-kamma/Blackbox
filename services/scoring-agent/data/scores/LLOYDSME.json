@@ -1,0 +1,93 @@
+{
+  "symbol": "LLOYDSME",
+  "company_name": "Lloyds Metals And Energy Ltd",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 29.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 35,
+      "rationale": "States that requisite facilities (ramps, wheelchairs) are in place for people with disability, but this is a brief, generic statement with no quantification (e.g., % of sites covered) and no digital accessibility measures are mentioned.",
+      "recommendation": "Quantify the share of sites/offices with disability-accessible infrastructure and disclose any digital accessibility measures (accessible website/app, assistive technology).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "Confirms an equal opportunity policy aligned with the Rights of Persons with Disabilities Act, 2016 and integrated into the Human Rights policy, prohibiting disability discrimination, but no accommodation-request process or response-time commitment is described.",
+      "recommendation": "Describe a concrete process and timeline for employees to request and receive workplace accommodations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 75,
+      "rationale": "Reports exact headcounts of differently-abled employees (3, all male, all permanent) and workers (1, male, permanent) for FY2025-26 in the mandated BRSR format.",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No recruitment targets, disability-specific hiring outreach, or attainment figures are disclosed.",
+      "recommendation": "Disclose PwD-specific hiring targets or outreach programs and report attainment.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Turnover rates are disclosed only at the overall employee/worker level; no attrition, tenure, or promotion data specific to differently-abled employees is disclosed.",
+      "recommendation": "Break out attrition and tenure data specifically for differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on representation of differently-abled employees in senior or management roles is provided.",
+      "recommendation": "Disclose representation of PwD employees at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "Training coverage tables reference topics like POSH, financial wellness, health & safety, and skill development, but no disability-specific sensitization or awareness training is mentioned.",
+      "recommendation": "Introduce and disclose a disability-sensitization training program for employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices (ERGs, flexible work, accommodation response-time commitments) specific to differently-abled employees are described.",
+      "recommendation": "Describe ongoing inclusion practices supporting differently-abled employees beyond the written policy.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "Grievance mechanism and POSH complaint data disclosed are general and not broken out for differently-abled employees.",
+      "recommendation": "Publish grievance or satisfaction data specific to differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 40,
+      "rationale": "The filing ties its accessibility facilities and equal opportunity policy directly to the Rights of Persons with Disabilities Act, 2016, but does not quantify compliance (e.g., % of accessible sites) or report attainment against the statutory PwD employment quota.",
+      "recommendation": "Disclose quantified compliance with RPwD Act 2016 accessibility standards and report attainment against the statutory employment quota.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

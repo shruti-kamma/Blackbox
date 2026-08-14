@@ -1,0 +1,41 @@
+{
+  "symbol": "ANANTRAJ",
+  "company_name": "ANANT RAJ LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/anant-raj-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 13, "total_pages": 41, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The Company states it is committed to providing equal opportunities in employment and fostering an inclusive work environment in line with the Rights of Persons with Disabilities Act, 2016. Its Equal Opportunity Policy is published at a public web link.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26: the filing explicitly reports Nil differently abled employees (permanent and other-than-permanent) and Nil differently abled workers, and states 'The Company currently does not have any employees with disabilities.'",
+    "physical_accessibility_measures": "The Registered Office at Manesar and office premises at Sector 63A, Gurugram are stated to be designed to be accessible to persons with disabilities per RPwD Act 2016 requirements. Separately, for visitor accessibility: 'Most of the Company's offices are accessible to differently abled visitors with ramps, wheelchairs, etc.'",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "The Company is committed to providing equal opportunities in employment and fostering an inclusive work environment, which is also in line with the Rights of Persons with Disabilities Act, 2016.The Company's Equal Opportunity Policy is available at https://blob.anantrajlimited.com/anantraj/1783592868399-Equal%20Opportunity%20Policy.pdf", "original_page": 15, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "The Company currently does not have any employees with disabilities. ... Total differently abled employees (D+E) Nil ... Total differently abled workers (F+G) Nil", "original_page": 15, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "our Registered Office at Manesar and the office premises at Sector 63A, Gurugram, are designed to be accessible to persons with disabilities, in accordance with the applicable provisions of the Rights of Persons with Disabilities Act, 2016.", "original_page": 15, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

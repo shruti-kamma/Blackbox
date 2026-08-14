@@ -1,0 +1,41 @@
+{
+  "symbol": "DIVISLAB",
+  "company_name": "DIVI'S LABORATORIES LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/divi-s-laboratories-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 13, "total_pages": 35, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "In response to the BRSR question on an RPwD Act 2016 equal opportunity policy, the Company states its Code of Ethics and Business Conduct provides equal opportunities for all employees and applicants without regard to disability (to the extent it does not affect performance of expected functions), with a public weblink to the Code.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As at end of FY: 17 total differently abled employees (15 male, 88.24%; 2 female, 11.76%), all permanent; and 10 total differently abled workers (10 male, 100%; 0 female), all other-than-permanent.",
+    "physical_accessibility_measures": "In response to the BRSR question on whether premises/offices are accessible to differently abled employees and workers per the RPwD Act 2016, the Company answers simply 'Yes.' The same one-word 'Yes' answer is given for visitor accessibility. No specific measures (ramps, elevators, accessible restrooms, etc.) are itemized.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes. The Company's Code of Ethics and Business Conduct provides for equal opportunities for all its employees and all qualified applicants for employment without regard to their race, caste, religion, colour, ancestry, marital status, gender, age, nationality, ethnic origin or disability...", "original_page": 14, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total differently abled employees (D + E) 17 ... Total differently abled workers (F + G) 10", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Accessibility of workplaces: Are the premises / offices of the entity accessible to differently abled employees and workers, as per the requirements of the Rights of Persons with Disabilities Act, 2016?... Yes.", "original_page": 14, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

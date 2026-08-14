@@ -1,0 +1,41 @@
+{
+  "symbol": "LODHA",
+  "company_name": "LODHA DEVELOPERS LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/lodha-developers-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 10, "total_pages": 33, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The Company states 'Yes' to having an equal opportunity policy per the RPwD Act 2016 -- the 'Equal Opportunities Policy' -- and provides a website link to it.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As at end of financial year: 1 total differently abled employee (1 male, 100%, permanent; 0 female) out of 5,836 total employees; 0 differently abled workers out of 20,150 total workers.",
+    "physical_accessibility_measures": "The Company states its corporate headquarters are accessible to differently abled individuals, including a dedicated entrance porch ramp, ground-level wheelchair availability, a wide-flap barrier security turnstile, a fully equipped wheelchair-accessible washroom, and elevators (used in place of escalators for main-lobby access) fitted with Assistive Control Panels and auditory/visual guidance systems designed to support visually impaired individuals. These measures are described only for the corporate headquarters, not other sites/offices.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes. The Equal Opportunities Policy is available on our website at www.lodhagroup.com/esg-sustainablity-environmental-social-governance.", "original_page": 14, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total differently abled employees (D + E) 1 ... Total differently abled workers (F + G) 0", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Our corporate headquarters are accessible to differently abled individuals. These include dedicated entrance porch ramp, ground-level wheelchair availability, a wide-flap barrier security turnstile and a fully equipped, wheelchair-accessible washroom... elevators are outfitted with Assistive Control Panels alongside both auditory and visual guidance systems specifically designed to support visually impaired individuals.", "original_page": 13, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

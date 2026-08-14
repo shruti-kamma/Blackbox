@@ -1,0 +1,93 @@
+{
+  "symbol": "DIVISLAB",
+  "company_name": "DIVI'S LABORATORIES LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 10.7,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 10,
+      "rationale": "The filing answers the RPwD Act premises-accessibility question with a bare 'Yes' for both employees/workers and visitors, with no itemized physical measures and no digital accessibility measures disclosed at all.",
+      "recommendation": "Disclose specific physical accessibility measures (ramps, elevators, accessible restrooms) and any digital accessibility efforts.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 20,
+      "rationale": "The Code of Ethics and Business Conduct is cited as covering non-discrimination on the basis of disability among many other grounds, which is boilerplate equal-opportunity language rather than a dedicated disability/accommodation policy; no accommodation process is described.",
+      "recommendation": "Adopt and disclose a dedicated disability inclusion/accommodation policy with a concrete accommodation request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "Specific PwD headcounts are given (17 employees, 10 workers) with gender breakdowns, but no percentage of total workforce is stated and the raw numbers are very small relative to the ~19,000 total employees/workers reported.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and show trend over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, attainment data, or outreach channels are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD hiring targets, attainment, and any disability-focused recruitment outreach.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Return-to-work/retention data disclosed is for parental leave only and is not broken out by disability status; no PwD-specific attrition or tenure data is given.",
+      "recommendation": "Disclose attrition/retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed; the Board/KMP representation table covers only gender.",
+      "recommendation": "Report PwD representation specifically within management/leadership bands.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs for employees are disclosed in the filing.",
+      "recommendation": "Disclose any disability-awareness or sensitization training delivered to employees or managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERGs, flexible work, accommodation response-time commitments) are disclosed. A CSR program 'Support to Differently Abled' is mentioned but is a community/external beneficiary program, not an employee culture practice.",
+      "recommendation": "Describe any PwD-focused employee culture initiatives such as employee resource groups or accommodation commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed in the filing.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act statutory quota attainment or any WCAG digital accessibility conformance level.",
+      "recommendation": "State RPwD Act statutory quota attainment and any digital accessibility conformance level.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

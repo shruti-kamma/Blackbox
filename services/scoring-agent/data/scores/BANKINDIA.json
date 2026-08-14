@@ -1,0 +1,93 @@
+{
+  "symbol": "BANKINDIA",
+  "company_name": "BANK OF INDIA",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 19.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 30,
+      "rationale": "The Bank states ramps have been incorporated at branches and ATMs 'wherever feasible' to aid accessibility, but this is the only concrete measure named, no itemized list of features is given, and no digital accessibility measures are disclosed at all.",
+      "recommendation": "Disclose a fuller list of physical accessibility measures and any digital accessibility efforts (website/app conformance, assistive technology).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 40,
+      "rationale": "A named 'Equal Opportunity Policy' with a public weblink is disclosed as the Bank's RPwD Act-aligned policy, but no concrete accommodation process for PwD employees is described.",
+      "recommendation": "Describe a concrete workplace accommodation request/approval process for PwD employees.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 65,
+      "rationale": "A specific PwD headcount is disclosed (1,359 employees, 2.6% of total staff) with a male/female breakdown, giving a verifiable percentage figure, though no trend over time is shown.",
+      "recommendation": "Show PwD headcount/percentage trend across reporting years.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, attainment data, or outreach channels are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD hiring targets and attainment, and any disability-focused recruitment outreach.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Return-to-work/retention data is disclosed only for parental leave, not broken out by disability status; no PwD-specific attrition or tenure data is given.",
+      "recommendation": "Disclose attrition/retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed.",
+      "recommendation": "Report PwD representation specifically within management/leadership bands.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs are mentioned in the filing.",
+      "recommendation": "Disclose any disability-awareness or sensitization training delivered to employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERGs, flexible work, accommodation response-time commitments) are disclosed.",
+      "recommendation": "Describe any PwD-focused culture initiatives or accommodation turnaround commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "Only a generic Employee Grievance Redressal Forum/HRMS mechanism for all employees is described; no satisfaction or grievance data specific to PwD employees is disclosed.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act statutory quota attainment or any WCAG digital accessibility conformance level.",
+      "recommendation": "State RPwD Act statutory quota attainment and any digital accessibility conformance level.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

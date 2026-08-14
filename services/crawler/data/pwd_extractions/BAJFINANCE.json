@@ -1,0 +1,43 @@
+{
+  "symbol": "BAJFINANCE",
+  "company_name": "Bajaj Finance Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/bajaj-finance-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 21, "total_pages": 64, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "BFL Group has a dedicated internal 'Policy for person with Specially abled' (listed in its principle-wise policy register, marked as an internal document). It is also covered by the Code of Ethics and Personal Conduct (CoEPC), an Equal Employment Opportunity and Non-Discrimination policy adopted in accordance with the RPwD Act 2016, and the Employee Charter - Human Rights Statement, all prohibiting disability-based discrimination in employment. Policies are available at a public web link.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26: 77 total differently abled employees (25 permanent, 52 other-than-permanent) -- 68 male (88.31%) and 9 female (11.69%). Noted as based on disability certificates voluntarily disclosed by employees. Not applicable for workers (BFL is a financial services business with no worker category).",
+    "physical_accessibility_measures": "Some of BFL's offices and branches are designed to ensure accessibility for differently abled employees; 320+ branches and offices are equipped with wheelchairs; 3,300+ branches are equipped with magnifying glasses; some corporate and branch offices have ramps for easy movement of differently abled people.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": true,
+    "recruitment_details": "Among BFL's stated FY2027 commitments/goals: 'To hire 200+ Specially abled employees, to promote an inclusive and diverse workforce.' This is a forward-looking numeric target for a future financial year; no attainment against it is reported in this filing (which covers FY2025-26).",
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": true,
+    "culture_practices_details": "Persons with disability are named as an identified stakeholder group (alongside women and other genders) with a dedicated ongoing engagement channel: 'HR connect forums' held on an ongoing/need-based basis, aimed at creating 'a thriving, safe and inclusive workplace.' No further detail on forum frequency, participation, or specific outcomes for PwD employees is given.",
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "91 Policy for person with Specially abled*", "original_page": 53, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total differently abled employees (E + F) 77 ... 68 88.31% ... 9 11.69% ... Note: Basis disability certificates voluntarily disclosed by employees.", "original_page": 4, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "320+ branches and offices are equipped with wheelchairs, and 3,300+ branches are equipped with magnifying glass to foster an inclusive environment.", "original_page": 21, "source": "BRSR"},
+      {"field": "recruitment_disclosed", "quote": "To hire 200+ Specially abled employees, to promote an inclusive and diverse workforce", "original_page": 11, "source": "BRSR"},
+      {"field": "culture_practices_disclosed", "quote": "Person (s) with Disability ... HR connect forums ... On-going ... To create a thriving, safe and inclusive workplace for its employees", "original_page": 28, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

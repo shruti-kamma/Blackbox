@@ -1,0 +1,42 @@
+{
+  "symbol": "ADANIPOWER",
+  "company_name": "Adani Power Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/adani-power-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 17, "total_pages": 34, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "APL has a Diversity, Equality, and Inclusion (DEI) Policy (part of its Policy on Human Rights & Diversity, Equity, and Inclusion, accessible on the company website) which promotes an inclusive work culture and explicitly lists disability among the characteristics it embraces, alongside age, gender identity/expression, sexual orientation, race, religion, place of origin, and others.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26 BRSR table reports 0 differently-abled employees (both permanent and other-than-permanent) and 0 differently-abled workers (both permanent and other-than-permanent) -- i.e., the company reports no differently-abled employees or workers on its rolls for the year.",
+    "physical_accessibility_measures": "Corporate offices have ramps at entry points and lobbies for wheelchair access, elevators equipped with Braille signage for visually impaired individuals, and dedicated/designated restrooms for differently-abled employees and workers. All existing and new APL infrastructure is stated to be developed with a comprehensive accessibility plan covering work areas, restrooms, common spaces and movement zones; other locations are stated to comply with national and local accessibility requirements.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "APL states, in response to the BRSR accessibility question, 'APL conforms with the requirements of the Rights of Persons with Disabilities Act, 2016,' and separately, regarding visitor accessibility, that 'all our offices have made special provisions for employees and workers with disabilities, in line with the requirements of the Rights of Persons with Disabilities Act, 2016.' No quantified compliance percentage or RPwD hiring-quota attainment figure is provided.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes. APL has a Diversity, Equality, and Inclusion Policy which promotes an inclusive work culture, driven by the values of empathy and mutual respect... These include, but are not limited to, age, disability, gender identity or expression, sexual orientation, race, religion...", "original_page": 16, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total Differently abled employees (D+E) 0 0 0 0 0", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "The corporate offices have a ramp at the entry across office locations, the elevators have braille signs and are designed for visually impaired, and there are dedicated toilets for differently abled employees and workers.", "original_page": 16, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Yes, APL conforms with the requirements of the Rights of Persons with Disabilities Act, 2016, and is committed to providing the employees and workers a diverse and equitable work environment.", "original_page": 16, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

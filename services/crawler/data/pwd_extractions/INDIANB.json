@@ -1,0 +1,43 @@
+{
+  "symbol": "INDIANB",
+  "company_name": "Indian Bank",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/indian-bank-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 38, "total_pages": 123, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The Bank has established an Equal Opportunity Policy in line with the Rights of Persons with Disabilities Act, 2016, providing a structured framework to promote inclusion and empowerment of people with disabilities in the workplace and guidance for addressing disability-related matters in accordance with applicable laws.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "1,210 permanent differently abled employees reported (951 male, 78.59%; 259 female, 21.40%); differently abled workers reported as 0 / Not Applicable.",
+    "physical_accessibility_measures": "Ramps installed across most branches and offices to support mobility of differently abled individuals; most offices equipped with elevators and other necessary infrastructure; few locations offer accessible wheelchairs and restrooms; approximately 75% of the Bank's offices are stated to be accessible to individuals with disabilities, including wheelchair-accessible elevators.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": "Programs on Vishaka Guidelines, Gender Sensitivity & Disability inclusion are made available on the Bank's LMS self-learning portal for all employees; a training/workshop on implementation of the GoI reservation policy and accessible services for PWDs is listed among leadership/HR training programs conducted during the year.",
+    "recruitment_disclosed": true,
+    "recruitment_details": "In line with Government of India guidelines, the Bank provides reservations in direct recruitment for Persons with Disabilities (PWD) alongside SC/ST/OBC categories. No specific numeric hiring target, quota percentage, or attainment figures for PWD recruitment are reported.",
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "The Bank has established an Equal Opportunity Policy in line with the Rights of Persons with Disabilities Act, 2016 ... offering practical guidance for addressing disability-related matters in accordance with applicable laws.", "original_page": 87, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total differently abled employees (D + E): 1210, 951 (78.59%), 259 (21.40%)", "original_page": 67, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Ramps have been installed to ensure easy access, and most offices are equipped with elevators and other necessary infrastructure ... Approximately 75% of its offices are accessible to individuals with disabilities.", "original_page": 87, "source": "BRSR"},
+      {"field": "training_or_sensitization_programs", "quote": "Programs on Vishaka Guidelines, Gender Sensitivity & Disability inclusion are available on LMS the self-learning portal for all employees.", "original_page": 96, "source": "BRSR"},
+      {"field": "recruitment_disclosed", "quote": "In line with Government of India guidelines, the Bank provides reservations in direct recruitment for Scheduled Castes (SCs), Scheduled Tribes (STs), Other Backward Classes (OBCs), and Persons with Disabilities (PWD).", "original_page": 87, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

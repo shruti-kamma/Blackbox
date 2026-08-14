@@ -1,0 +1,93 @@
+{
+  "symbol": "IOB",
+  "company_name": "INDIAN OVERSEAS BANK",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 31.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "Both a physical measure (ramps installed across workplaces and visitor premises) and a digital/assistive-technology measure (specialized software provided to visually impaired staff) are disclosed, which is more specific than a generic compliance statement, but no named vendor/product or WCAG conformance level is given.",
+      "recommendation": "Name the specific assistive software/technology deployed and disclose a WCAG conformance level for digital properties.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "An equal opportunity policy per the RPwD Act, 2016 is disclosed with a public web-link, but no concrete accommodation-request process is described.",
+      "recommendation": "Describe a concrete workplace accommodation process for PwD employees, including how requests are made and response times.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 60,
+      "rationale": "A specific, sizeable PwD headcount is disclosed (531 differently abled employees, 412 male and 119 female, out of 21,034 total employees, i.e. about 2.5% of the workforce), which is more verifiable than a token headcount, though no trend or attainment-against-target context is given.",
+      "recommendation": "Disclose the PwD employment ratio against any statutory or internal target, and report year-over-year trends.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No PwD-specific hiring targets, attainment figures, or disability-focused recruitment outreach are disclosed.",
+      "recommendation": "Disclose PwD hiring targets and attainment, and name specific disability-focused recruitment channels.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed.",
+      "recommendation": "Disclose PwD-specific attrition and promotion rates.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No PwD presence in senior/management roles is disclosed anywhere in the filing.",
+      "recommendation": "Report PwD representation specifically within senior management and leadership roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is disclosed.",
+      "recommendation": "Introduce and disclose a disability-sensitization or inclusion training program for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices specific to PwD employees (ERGs, flexible work, accommodation response-time commitments) are disclosed; the general SEGRS grievance portal is not PwD-specific.",
+      "recommendation": "Describe ongoing inclusion practices for PwD employees, such as an ERG, flexible-work provisions, or accommodation response-time commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific feedback channels and any satisfaction or grievance metrics collected from PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "The Bank affirmatively answers the mandated BRSR RPwD Act, 2016 questions with specific supporting measures (ramps, specialized software), but there is no claimed WCAG conformance level or quantified quota-attainment figure.",
+      "recommendation": "State a specific WCAG conformance level for digital properties and report attainment against any statutory disability-employment quota.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

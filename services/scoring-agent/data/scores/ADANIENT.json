@@ -1,0 +1,93 @@
+{
+  "symbol": "ADANIENT",
+  "company_name": "Adani Enterprises Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 39.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 70,
+      "rationale": "The company describes detailed, specific physical accessibility features: dedicated PWD parking near lift lobbies, ramps at all entrances and basement lift areas, Braille-equipped wheelchair-compatible elevators, accessible washrooms on every floor, motorised wheelchairs, and audio-visual emergency alarm systems. No digital accessibility measures (website/app conformance, assistive technology) are disclosed.",
+      "recommendation": "Disclose digital accessibility measures such as WCAG conformance for corporate websites and internal digital tools.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "An Equal Opportunity Policy for PwDs integrated into the HR/D&I framework is confirmed with a working web-link to the Diversity, Equity and Inclusion policy document, but no concrete accommodation request/approval process is described.",
+      "recommendation": "Describe a concrete workplace accommodation process for PwD employees, including how requests are made and resolved.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 60,
+      "rationale": "Specific, internally consistent PwD headcounts are disclosed for both employees (15: 12 male, 3 female) and workers (16: 15 male, 1 female) with gender breakdowns, but no percentage of total workforce or trend context is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and disclose year-over-year trends.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 35,
+      "rationale": "The company states it actively promotes PwD inclusion by 'ensuring their placement in roles that best leverage their unique skills, capabilities, and functional suitability,' but discloses no numeric hiring targets, attainment rates, or named disability-specific recruitment outreach.",
+      "recommendation": "Disclose numeric PwD hiring targets and whether they were met, along with any disability-specific recruitment outreach partners.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No attrition, tenure, or promotion data specific to PwD employees is disclosed.",
+      "recommendation": "Report PwD-specific retention or attrition data separately from overall workforce figures.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No disclosure of PwD representation in senior or management roles.",
+      "recommendation": "Disclose PwD representation specifically within senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No training or sensitization programs specific to disability/PwD inclusion are described; the disclosed training table covers general health & safety and skill-upgradation training only.",
+      "recommendation": "Introduce and disclose disability-sensitization training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No PwD-specific ongoing culture practices (ERGs, flexible work, accommodation response-time commitments) are described; the disclosed grievance mechanism and 14-day resolution timeline apply generally, not specifically to PwD accommodation.",
+      "recommendation": "Establish and disclose PwD-specific culture practices, such as an employee resource group or documented accommodation response-time commitment.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed; only a general employee grievance mechanism is described.",
+      "recommendation": "Track and disclose PwD-specific employee feedback or grievance outcomes.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "The company affirmatively answers the mandated BRSR statutory questions on RPwD Act workplace and visitor accessibility (with detailed supporting description) and equal opportunity policy (with web-link), but does not report RPwD Act quota attainment or any independently audited compliance claim.",
+      "recommendation": "Disclose RPwD Act statutory quota attainment figures rather than only affirming general accessibility and policy compliance.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

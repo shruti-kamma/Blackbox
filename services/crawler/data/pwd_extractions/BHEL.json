@@ -1,0 +1,41 @@
+{
+  "symbol": "BHEL",
+  "company_name": "BHARAT HEAVY ELECTRICALS LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/bharat-heavy-electricals-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 25, "total_pages": 48, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": false,
+    "policy_summary": null,
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As of FY2025-26: 888 differently-abled employees (816 permanent + 72 other-than-permanent; 847 male/95.38%, 41 female/4.62%) and 415 differently-abled workers (343 permanent + 72 other-than-permanent; 395 male/95.18%, 20 female/4.82%).",
+    "physical_accessibility_measures": "BHEL states its premises and offices are accessible to differently-abled employees, workers and visitors, with structural modifications and other policy changes made according to the requirements of the Rights of Persons with Disabilities Act, 2016.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "BHEL states its premises/offices are accessible to differently-abled employees, workers and visitors per the RPwD Act, 2016, but explicitly states it does NOT have an equal opportunity policy as required under the RPwD Act, 2016 ('No, the entity does not have an equal opportunity policy'). No RPwD Act employment-quota attainment percentage is disclosed.",
+    "evidence": [
+      {"field": "pwd_employee_count_stated", "quote": "Total employees (D+E) 888 [847 Male, 41 Female]; Total workers (F+G) 415 [395 Male, 20 Female]", "original_page": 4, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Yes, BHEL's premises and office are accessible to differently abled employees and workers. The structural modifications and other changes (in policies, etc.) are made according to the requirements of the Rights of Persons with Disabilities Act, 2016.", "original_page": 20, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Yes, BHEL's premises and office are accessible to differently abled employees and workers... No, the entity does not have an equal opportunity policy.", "original_page": 20, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "DRREDDY",
+  "company_name": "Dr. Reddy's Laboratories Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 50.7,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 65,
+      "rationale": "Physical accessibility (ramps, elevators, ground-floor offices, accessible restrooms) is described with some specificity, and the company also states it conducts audits for both physical and digital accessibility with remedial follow-up, but no digital accessibility standard, audit results, or specific assistive technologies are named.",
+      "recommendation": "Publish results of the digital accessibility audits and any conformance standard targeted (e.g. WCAG level).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 60,
+      "rationale": "Two named, linked policies (COBE Equal Opportunity Policy and EEO Statement) explicitly cover disability, but no concrete individual accommodation-request process is described.",
+      "recommendation": "Describe a concrete workplace accommodation-request process with defined response times.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 70,
+      "rationale": "A detailed statutory-format headcount table is disclosed: 124 differently abled employees (81 male, 43 female) and 18 differently abled workers (16 male, 2 female), split by permanent/other-than-permanent status.",
+      "recommendation": "Add PwD headcount as a percentage of total workforce and show year-over-year trend.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 55,
+      "rationale": "A named initiative exists: partnership with Dr. Reddy's Foundation on a focused internship program to bring PwD employees into the workforce, plus sensitisation of hiring managers/recruiters, but no numeric hiring target or attainment figure is reported.",
+      "recommendation": "Report a numeric PwD hiring target and disclose attainment against it.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Return-to-work/retention rates are disclosed only for the general employee population (parental leave); nothing is broken out specifically for PwD employees.",
+      "recommendation": "Disclose attrition/tenure data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No statement or data addresses PwD presence in senior or management roles; leadership representation targets discussed in the filing are gender-focused only.",
+      "recommendation": "Disclose PwD representation specifically at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 60,
+      "rationale": "A named, recurring sensitisation program run in partnership with Dr. Reddy's Foundation is described, tied to PwD hiring events and recruiter/manager training, but no participation numbers or coverage percentage are given.",
+      "recommendation": "Report participation metrics (number trained, % coverage) for the disability sensitisation program.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 45,
+      "rationale": "An Employee Resource Group (ERG) for people with disabilities is stated to exist, but no detail is given on its activities, membership size, or any accommodation response-time commitment.",
+      "recommendation": "Disclose ERG activities, participation, and any service-level commitments (e.g. accommodation response time).",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific employee feedback or grievance-resolution data.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not cite RPwD Act statutory hiring quota attainment or any WCAG conformance level; accessibility commitments are described only in general terms.",
+      "recommendation": "Disclose specific statutory compliance metrics, such as RPwD Act quota attainment or a stated WCAG conformance level.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

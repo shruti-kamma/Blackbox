@@ -1,0 +1,41 @@
+{
+  "symbol": "NAVINFLUOR",
+  "company_name": "Navin Fluorine International Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/navin-fluorine-international-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 12, "total_pages": 50, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Navin Fluorine promotes equal opportunity for all employees regardless of caste, creed, gender, disability, or religion, maintains a zero-tolerance policy against discrimination in opportunities across all levels, and has a human rights policy stated to protect the rights of all employees including those with disabilities.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "1 differently abled permanent employee reported (100% male, 0 female); 13 differently abled workers reported (4 permanent, 9 other than permanent; all 100% male, 0 female).",
+    "physical_accessibility_measures": "Navin Fluorine states it promotes the inclusion of differently abled employees and prioritizes their placement within office spaces; due to the nature of work and multi-floor building structures, roles are assigned to offices that have been 'appropriately outfitted' to accommodate their needs. No specific features (ramps, elevators, restrooms, etc.) are itemized. Visitor access to differently abled visitors is stated to be restricted to office areas due to the nature of Company operations, with 'designated provisions' made for their accessibility.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "Navin Fluorine promotes equal opportunity for all employees, regardless of their caste, creed, gender, disability, or religion. The Company maintains a zero-tolerance policy against discrimination...", "original_page": 26, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "3 Total Differently Abled Employees (D+E) 1  1  100%  0  0% ... 6 Total Differently Abled Workers (F+G) 13  13  100%  0  0%", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Navin Fluorine promotes the inclusion of differently abled employees and prioritizes their placement within office spaces. However, due to operational considerations... roles are assigned to offices that have been appropriately outfitted to accommodate their needs.", "original_page": 26, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "COLPAL",
+  "company_name": "Colgate-Palmolive (India) Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 29.7,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 48,
+      "rationale": "The Company reports a DE&I-Council-led facility access audit that 'made locations accessible,' but a separate visitor-accessibility answer states infrastructure 'continues to modify' at certain locations (ongoing, not complete), and no digital accessibility measures are disclosed.",
+      "recommendation": "Disclose digital accessibility measures and publish a completion timeline for the ongoing physical infrastructure modifications.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "An equal opportunity policy referencing the RPwD Act 2016 is confirmed with a non-discrimination statement, but no policy weblink is given in the extracted text and no concrete accommodation-request process (beyond the general job-mapping/audit initiative) is described.",
+      "recommendation": "Publish a direct weblink to the equal opportunity/disability policy and define an individual accommodation-request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 40,
+      "rationale": "PwD headcount is disclosed with gender breakdown, but shows 0 differently abled employees and only 34 differently abled workers (all male), with no percentage-of-workforce context or trend.",
+      "recommendation": "Set and disclose targets to grow PwD representation in the employee (not just worker) category, with year-over-year tracking.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 35,
+      "rationale": "A 'PwD job mapping' initiative run by the DE&I Council with external agencies is disclosed, but no hiring numbers, targets, or attainment figures are given for it.",
+      "recommendation": "Disclose numeric PwD hiring targets and attainment resulting from the job-mapping initiative.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed.",
+      "recommendation": "Report attrition and tenure data specifically for PwD employees and workers.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed.",
+      "recommendation": "Disclose PwD representation at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs are mentioned anywhere in the filing.",
+      "recommendation": "Introduce and disclose disability sensitization/awareness training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices such as ERGs, flexible work arrangements, or accommodation response-time commitments specific to PwD employees are disclosed beyond the one-off job-mapping/audit initiative.",
+      "recommendation": "Establish and disclose ongoing PwD-focused culture initiatives (ERG, flexible work, accommodation SLAs).",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed.",
+      "recommendation": "Track and disclose grievance/satisfaction data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 40,
+      "rationale": "The Company answers 'Yes' to the RPwD Act accessibility question citing DE&I Council job-mapping and a facility access audit, but its own visitor-accessibility answer indicates infrastructure modification is still ongoing at certain locations rather than fully attained; no hiring-quota attainment or WCAG conformance level is stated.",
+      "recommendation": "Disclose RPwD Act statutory hiring-quota attainment and a completion date for full facility accessibility compliance.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

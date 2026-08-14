@@ -1,0 +1,93 @@
+{
+  "symbol": "WIPRO",
+  "company_name": "Wipro Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 23.6,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 20,
+      "rationale": "The filing answers only a bare 'Yes' to whether premises are accessible to differently-abled employees, workers, and visitors per the RPwD Act, 2016, with no specific infrastructure detail (no ramps, elevators, washrooms described), and no digital accessibility measures are disclosed.",
+      "recommendation": "Disclose the specific physical accessibility infrastructure in place and add digital accessibility measures (accessible intranet/tools, assistive software).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "Wipro names a specific, publicly linked, Board-approved 'Global Policy on Equal Employment Opportunity for Persons with Disabilities,' mapped across multiple NGRBC principles, but no concrete accommodation-request process is described.",
+      "recommendation": "Describe a concrete accommodation-request process with defined response times.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 60,
+      "rationale": "A substantial and specific PwD employee headcount is disclosed with gender breakdown (2,537 employees, roughly 1% of the 246,990-strong workforce), covering both permanent and other-than-permanent categories.",
+      "recommendation": "Add PwD headcount as an explicit percentage of total workforce and compare against the RPwD Act quota.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, outreach programmes, or hiring attainment figures are disclosed.",
+      "recommendation": "Disclose PwD-specific hiring targets and attainment for the reporting year.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general turnover figures do not break out PwD employees.",
+      "recommendation": "Report attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "Gender diversity is reported at the leadership level (18.1% at D2-E band), but no PwD representation in senior or management roles is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD representation figures within senior/management leadership tiers.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "General Code of Business Conduct training completion is reported (85% of employees), but no disability-specific sensitization training is described.",
+      "recommendation": "Introduce and disclose a dedicated disability-sensitization training programme.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "'Employees with disability' are named as one of several focus groups in stakeholder/community engagement, but no concrete ongoing internal culture practice (ERG, flexible work, accommodation response-time commitment) is described.",
+      "recommendation": "Establish and disclose a concrete internal PwD-inclusion culture practice such as an ERG or accommodation SLA.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "General employee wellness and feedback mechanisms are described, but no PwD-specific satisfaction survey or grievance data is disclosed.",
+      "recommendation": "Track and disclose PwD-specific employee feedback or grievance metrics.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 30,
+      "rationale": "Wipro answers 'Yes' to RPwD Act, 2016 accessibility and equal opportunity policy questions with a named policy, but discloses no specific employment-quota attainment percentage or other verifiable compliance metric.",
+      "recommendation": "Disclose the specific RPwD Act employment-quota attainment percentage.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

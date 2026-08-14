@@ -1,0 +1,93 @@
+{
+  "symbol": "DABUR",
+  "company_name": "Dabur India Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 24.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 30,
+      "rationale": "Physical accessibility is addressed but the company explicitly states facilities are only 'partially accessible' to persons with disabilities, with ergonomic upgrades in 'some' manufacturing units and vague forward-looking commitments; no digital accessibility (website/app/assistive tech) is mentioned at all.",
+      "recommendation": "Publish a concrete facility-accessibility roadmap with target dates and disclose digital accessibility measures (e.g. WCAG conformance for website/app).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "An equal-opportunity policy referencing disability non-discrimination exists within the Human Rights Policy and Code of Conduct with public links, but no distinct disability/accessibility policy or accommodation process is described.",
+      "recommendation": "Publish a standalone disability inclusion/accommodation policy with a defined accommodation request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "Specific PwD headcounts are disclosed (1 differently abled employee, 59 differently abled workers) with gender breakdown, but the numbers are very low relative to total workforce (8,711 employees, 5,964 workers) and no context or trend is given.",
+      "recommendation": "Disclose PwD employment as a percentage of total workforce and set year-over-year improvement targets.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, hiring outreach, or attainment data are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD hiring targets and specific disability-focused recruitment outreach with attainment tracking.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general parental-leave retention rates are reported but not broken out by disability status.",
+      "recommendation": "Report attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed.",
+      "recommendation": "Disclose PwD representation at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs are mentioned; only general human rights training is referenced, with no disability focus.",
+      "recommendation": "Introduce and disclose disability sensitization/awareness training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices such as ERGs, flexible work arrangements, or accommodation response-time commitments specific to PwD employees are disclosed.",
+      "recommendation": "Establish and disclose ongoing PwD-focused culture initiatives (ERG, flexible work, accommodation SLAs).",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; general grievance mechanisms exist but are not broken out by disability status.",
+      "recommendation": "Track and disclose grievance/satisfaction data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 41,
+      "rationale": "The company directly answers the mandated RPwD Act accessibility question, disclosing that facilities are only 'partially' compliant; no RPwD Act hiring quota attainment or WCAG conformance level is stated.",
+      "recommendation": "Disclose RPwD Act statutory hiring quota attainment and a timeline to reach full facility accessibility compliance.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

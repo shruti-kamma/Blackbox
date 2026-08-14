@@ -1,0 +1,42 @@
+{
+  "symbol": "CHOLAFIN",
+  "company_name": "Cholamandalam Investment and Finance Company Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/cholamandalam-investment-and-finance-company-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 19, "total_pages": 41, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The Company states it is an equal opportunity employer and follows a policy in accordance with the Rights of Persons with Disabilities Act, 2016, which is accessible to all employees through the Company's intranet portal.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As of FY2025-26: 25 differently-abled employees, all permanent (24 male/96%, 1 female/4%). The company has no 'workers' category (Not Applicable, given it is a financial services entity).",
+    "physical_accessibility_measures": "Company premises/offices are stated to be accessible to differently-abled employees and workers per the RPwD Act, 2016, with 'Persons With Disabilities friendly wash rooms wherever possible.' Separately, the filing states the Company has ramp/wheelchair facility at its Head Office and Central Processing Unit for differently-abled visitors.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "The Company states it complies with the RPwD Act, 2016 both in terms of workplace accessibility and having an equal opportunity policy ('in letter and spirit'). No RPwD Act employment-quota attainment percentage is disclosed. The CSR section also lists several disability-focused community programmes (e.g., 'Accessible Transportation Support for Persons with Disabilities', 'Assistive Technology for Independent Living Program', 'Empowering Vision: Scholarships for Students with Disabilities') but these are external CSR beneficiary initiatives, not employee-facing compliance measures.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes. The Company is an equal opportunity employer and follows the policy as per the Rights of Persons with Disabilities Act, 2016 in letter and spirit. The policy is accessible to all our employees through the Company's intra-net portal.", "original_page": 15, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total differently abled employees (D+E) 25 [24 Male, 1 Female]", "original_page": 4, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Yes. As per the requirements of the Rights of Persons with Disabilities Act, 2016, the premises / offices of the entity are accessible to differently abled employees and workers with Persons With Disabilities friendly wash rooms wherever possible.", "original_page": 15, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Yes. The Company is an equal opportunity employer and follows the policy as per the Rights of Persons with Disabilities Act, 2016 in letter and spirit.", "original_page": 15, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

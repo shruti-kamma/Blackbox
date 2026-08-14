@@ -1,0 +1,93 @@
+{
+  "symbol": "BHEL",
+  "company_name": "BHARAT HEAVY ELECTRICALS LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 18.6,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 40,
+      "rationale": "BHEL states its premises/offices are accessible to differently-abled employees, workers and visitors with structural modifications made per the RPwD Act, 2016, but gives no specifics (no ramps/elevators/washroom detail) and no digital accessibility measures are mentioned at all.",
+      "recommendation": "Disclose specific physical accessibility infrastructure installed and add digital accessibility measures (e.g., assistive software, accessible website/app).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 0,
+      "rationale": "BHEL explicitly states it does not have an equal opportunity policy as required under the RPwD Act, 2016, and no accommodation process is described anywhere in the filing.",
+      "recommendation": "Adopt and publish a formal equal opportunity/accommodation policy aligned with the RPwD Act, 2016.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 50,
+      "rationale": "Specific PwD headcounts are disclosed with gender and permanent/other-than-permanent breakdown (888 employees, 415 workers), but without percentage-of-workforce context or comparison to the RPwD Act quota.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and against the statutory reservation requirement.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, outreach programmes, or hiring attainment figures are disclosed.",
+      "recommendation": "Disclose PwD-specific hiring targets and attainment for the reporting year.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general workforce data does not break out PwD employees.",
+      "recommendation": "Report attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "The filing reports women's representation on the Board and in KMP roles but makes no mention of PwD representation in senior or management positions.",
+      "recommendation": "Disclose PwD representation figures within senior/management leadership tiers.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "General employee training programmes (technical, safety, managerial, human-rights sensitization) are described, but none is identified as disability-specific.",
+      "recommendation": "Introduce and disclose a dedicated disability-sensitization training programme.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "Aside from a generic non-discrimination statement listing 'divyang-jan' among protected categories, no ongoing PwD-specific culture practice (ERG, flexible work, accommodation response-time commitment) is disclosed.",
+      "recommendation": "Establish and disclose a concrete ongoing PwD-inclusion practice such as an ERG or accommodation SLA.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction survey or grievance data is disclosed; general grievance mechanisms are not broken out by disability status.",
+      "recommendation": "Track and disclose PwD-specific employee feedback or grievance metrics.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 40,
+      "rationale": "BHEL transparently discloses a mixed compliance picture under the RPwD Act, 2016: it claims accessible premises but explicitly admits it has no RPwD-mandated equal opportunity policy; no employment-quota attainment percentage is given.",
+      "recommendation": "Adopt the RPwD Act-mandated equal opportunity policy and disclose quota attainment percentage to close the stated compliance gap.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

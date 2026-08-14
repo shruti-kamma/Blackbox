@@ -1,0 +1,93 @@
+{
+  "symbol": "BOSCHLTD",
+  "company_name": "BOSCH LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 48.1,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "Bosch describes systematic accessibility audits and phased enhancement of office/plant locations, and states most locations are compliant for differently-abled visitor accessibility with a named-location audit (Adugodi) and phased follow-up; however full attainment is not claimed and no digital accessibility (website, app, assistive tech) is mentioned.",
+      "recommendation": "Disclose digital accessibility measures (e.g. WCAG conformance for website/apps) and publish the completion timeline/status of the phased physical accessibility audits.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 72,
+      "rationale": "A named, publicly linked 'Equal Opportunity Policy for Persons with Disabilities' is disclosed, describing concrete accommodation elements: workplace amenities/facilities, roles and tasks specifically designated for PWDs, provision of assistive devices, and a grievance redressal mechanism.",
+      "recommendation": "Add a stated accommodation-request turnaround time or SLA to make the process more verifiable.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "Specific PwD headcounts with gender breakdown are disclosed (2 differently abled employees, 15 differently abled workers), but no percentage-of-workforce framing or multi-year trend is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and disclose year-over-year trend.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 45,
+      "rationale": "A CSR skill-development program ('Economic Empowerment of People with Disabilities through Skill Development') reached 350 PwDs with 100% attainment of its beneficiary target and mentions 'placement linkages,' but the filing does not confirm these are hires into Bosch itself, limiting verifiability as a recruitment disclosure.",
+      "recommendation": "Clarify whether the PwD skill-development program leads to placements/hires within Bosch and disclose an internal PwD hiring target.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general parental-leave retention rates are reported but not broken out by disability status.",
+      "recommendation": "Report attrition and tenure data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed.",
+      "recommendation": "Disclose PwD representation at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 50,
+      "rationale": "A CSR skill-development program for PwDs is quantified (350 individuals, 100% target attainment, accessible training formats), but this is community/CSR-oriented rather than confirmed internal employee sensitization or manager training on disability inclusion.",
+      "recommendation": "Introduce and disclose internal disability-sensitization training for employees and managers, distinct from the CSR skill program.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices such as ERGs, flexible work arrangements, or accommodation response-time commitments specific to PwD employees are disclosed.",
+      "recommendation": "Establish and disclose ongoing PwD-focused culture initiatives such as an ERG or flexible-work commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; a general employee grievance mechanism and a separate consumer-complaints channel exist, but neither is broken out by disability status.",
+      "recommendation": "Track and disclose grievance/satisfaction data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "Bosch directly answers the mandated RPwD Act accessibility questions, stating it is 'fully committed' with audits underway and that 'most' locations are compliant for visitor accessibility, but does not report full attainment, a hiring-quota percentage, or a WCAG conformance level.",
+      "recommendation": "Disclose RPwD Act statutory hiring-quota attainment and a target date for reaching full facility accessibility compliance.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

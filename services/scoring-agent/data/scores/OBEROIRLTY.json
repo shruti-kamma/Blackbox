@@ -1,0 +1,93 @@
+{
+  "symbol": "OBEROIRLTY",
+  "company_name": "Oberoi Realty Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 40.0,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 45,
+      "rationale": "States premises/offices are accessible to differently abled employees and visitors, citing accessible restrooms and ramps, tied to the RPwD Act 2016, but with no quantification (e.g., % of sites) and no digital accessibility measures disclosed.",
+      "recommendation": "Quantify the share of premises meeting accessibility standards and disclose any digital accessibility measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 60,
+      "rationale": "A Code of Conduct and a dedicated Diversity, Equity and Inclusion Policy explicitly list physical disability as a protected characteristic across all employment stages, with working web links provided, but no accommodation-request process is described.",
+      "recommendation": "Describe a concrete process and timeline for employees to request and receive workplace accommodations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 80,
+      "rationale": "Reports a specific, cross-validated headcount of 8 differently-abled employees (all male, all permanent; split 1 in real estate, 7 in hospitality), corroborated by the company's own ESG goal tracker figure for FY2025-26.",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 50,
+      "rationale": "PwD inclusion is listed as a long-term (FY2030) social ESG goal with annual attainment tracked as a headcount (8 PWD working in FY2025-26), but no specific numeric hiring target, quota, or disability-specific recruitment outreach program is described.",
+      "recommendation": "Set and disclose a specific numeric PwD hiring target or outreach program with year-over-year attainment tracking.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No attrition, tenure, or promotion data specific to differently-abled employees is disclosed.",
+      "recommendation": "Report attrition/retention rates specifically for differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on representation of differently-abled employees in senior or management roles is provided.",
+      "recommendation": "Disclose representation of PwD employees at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific sensitization or awareness training program is mentioned anywhere in the filing.",
+      "recommendation": "Introduce and disclose a disability-sensitization training program for employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "Aside from a CSR partnership on external disability inclusion (Apnalaya), no ongoing internal culture practices (ERGs, flexible work, accommodation response-time commitments) for differently-abled employees are described.",
+      "recommendation": "Describe ongoing internal inclusion practices supporting differently-abled employees, such as an employee resource group or flexible-work accommodations.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to differently-abled employees is disclosed.",
+      "recommendation": "Publish grievance or satisfaction data specific to differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 45,
+      "rationale": "The filing states accessibility for both employees and visitors is provided 'as per'/'in line with' the Rights of Persons with Disabilities Act, 2016, but does not quantify compliance or report attainment against the statutory PwD employment quota.",
+      "recommendation": "Disclose the specific percentage of premises meeting RPwD Act 2016 accessibility standards and report attainment against the statutory employment quota.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

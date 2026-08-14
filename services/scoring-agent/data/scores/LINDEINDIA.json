@@ -1,0 +1,93 @@
+{
+  "symbol": "LINDEINDIA",
+  "company_name": "LINDE INDIA LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 20.0,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 35,
+      "rationale": "The Company states its Head Office is disabled-friendly and similar infrastructure has been added elsewhere 'wherever practically possible,' signalling incomplete rollout; no digital accessibility measures are disclosed at all.",
+      "recommendation": "Disclose the percentage of sites made accessible and add digital accessibility measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 40,
+      "rationale": "An Equal Opportunity Policy per the RPwD Act, 2016 is listed as Board-approved and mapped to Principle 3, but the provided web-link points to the general Code of Business Integrity rather than a distinct policy document, and no accommodation process is described.",
+      "recommendation": "Publish the Equal Opportunity Policy as a standalone document and describe a concrete accommodation-request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 35,
+      "rationale": "The filing explicitly and specifically discloses zero differently-abled employees and zero differently-abled workers across its entire workforce of over 2,400 people, a specific but concerning disclosure indicating no current PwD representation.",
+      "recommendation": "Set and disclose concrete PwD hiring targets to address the current zero representation.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, outreach programmes, or hiring attainment figures are disclosed.",
+      "recommendation": "Disclose PwD-specific hiring targets and outreach initiatives given the current zero PwD headcount.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed (and no PwD employees are reported to begin with).",
+      "recommendation": "Once PwD hiring begins, track and disclose retention metrics specific to this group.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No disclosure of PwD representation in senior or management roles anywhere in the filing.",
+      "recommendation": "Disclose PwD representation figures within senior/management leadership tiers.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "General training programmes (health and safety, skill upgradation) are disclosed, but none is identified as disability-specific sensitization.",
+      "recommendation": "Introduce and disclose a dedicated disability-sensitization training programme.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific workplace culture practice (ERG, flexible work, accommodation response-time commitment) is disclosed anywhere in the filing.",
+      "recommendation": "Establish and disclose a concrete PwD-inclusion culture initiative.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction survey or grievance data is disclosed.",
+      "recommendation": "Track and disclose PwD-specific employee feedback or grievance metrics.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 30,
+      "rationale": "The Company claims RPwD Act, 2016 compliance for both accessibility and having an equal opportunity policy, but this claim is undermined by the filing's own disclosure of zero PwD employees/workers, and no quota attainment percentage is given.",
+      "recommendation": "Disclose the specific RPwD Act employment-quota attainment percentage and take concrete steps to close the current zero-PwD-representation gap.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

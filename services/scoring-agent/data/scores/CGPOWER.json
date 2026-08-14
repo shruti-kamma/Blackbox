@@ -1,0 +1,93 @@
+{
+  "symbol": "CGPOWER",
+  "company_name": "CG Power and Industrial Solutions Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 24.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 50,
+      "rationale": "Filing describes specific physical accessibility measures -- structural mobility accommodations and visual signage for hearing-impaired personnel at a majority of sites, plus an ongoing phased infrastructure upgrade for remaining facilities -- but no digital accessibility (website/app/assistive technology) is mentioned at all.",
+      "recommendation": "Disclose digital accessibility measures (e.g., website/app conformance, assistive technology support) alongside the physical infrastructure upgrades.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 40,
+      "rationale": "A Human Rights Policy with explicit clauses on equal opportunity and workplace facilities for persons with disabilities is named and linked, but no concrete accommodation-request process is described.",
+      "recommendation": "Describe a specific process by which a PwD employee can request and receive a workplace accommodation, including response-time expectations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 40,
+      "rationale": "Specific PwD headcounts are disclosed (1 differently abled employee, 3 differently abled workers) against a total workforce of over 6,600, which is verifiable but very limited and given without trend or contextual detail.",
+      "recommendation": "Report PwD headcount trends year-over-year and by function/location.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment target, outreach programme, or hiring attainment figure is disclosed anywhere in the filing.",
+      "recommendation": "Disclose a PwD hiring target and any disability-focused recruitment outreach, with attainment reported.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; the general turnover and retention tables are not broken out by disability status.",
+      "recommendation": "Track and disclose attrition/retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed; leadership diversity disclosures cover only gender (e.g., women in top/middle/junior management).",
+      "recommendation": "Disclose PwD representation figures specifically at senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programme is described; the learning and development section covers e-learning, POSH, leadership and technical training but does not mention disability awareness.",
+      "recommendation": "Introduce and disclose a disability-awareness/sensitization training module.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERG, flexible work, accommodation response-time commitment) are disclosed beyond the general non-discrimination policy statement.",
+      "recommendation": "Establish and disclose concrete ongoing PwD-inclusion practices such as an employee resource group or accommodation turnaround commitment.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; the annual Employee Engagement Survey ('Connections') reports overall and gender-related scores but no disability breakdown.",
+      "recommendation": "Track and disclose employee engagement/grievance metrics specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 40,
+      "rationale": "Filing directly answers the mandated BRSR RPwD Act questions, stating major sites/plants are accessible to differently abled employees, workers and visitors, but frames coverage as 'a majority' of facilities with phased upgrades still underway at the rest; no statutory employment quota attainment percentage or WCAG conformance level is stated.",
+      "recommendation": "Disclose the specific RPwD Act statutory employment quota attainment percentage and target date for completing accessibility upgrades at all remaining facilities.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "symbol": "CENTRALBK",
+  "company_name": "Central Bank of India",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/central-bank-of-india-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 0, "total_pages": 34, "ocr_fallback": false, "no_signal_fallback": true}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "The Bank has formulated an 'Equal Opportunity Policy' under the Rights of Persons with Disabilities Act, 2016, which bestows special attention on differently-abled persons, aims to create employment opportunities for people with disabilities, and provides a conducive working environment free from discrimination on grounds including physical ability. It applies to all differently-abled employees of the Bank.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26: Total differently-abled employees = 898, all permanent (0 'other than permanent'); 688 male (76.61%) and 210 female (23.39%), out of a total workforce of 34,050 employees.",
+    "physical_accessibility_measures": "Branches/offices of the Bank have ramps/lifts for easy movement of differently-abled people; most branches/offices are located on the ground floor or have elevators and infrastructure for differently-abled individuals. This is stated both in relation to employees and to differently-abled visitors/customers, and is framed as addressing the Rights of Persons with Disabilities Act, 2016 requirement for accessible premises.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "In response to the BRSR question on whether premises are accessible to differently-abled employees/visitors as required under the Rights of Persons with Disabilities Act, 2016, the Bank affirms that branches/offices have ramps/lifts and are largely ground-floor or elevator-equipped, but does not quantify the percentage of compliant premises or report attainment against the statutory PwD employment quota.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "our Bank has formulated an \"Equal Opportunity Policy\" which bestows special attention to the differently-abled persons and aims at creating employment opportunities for people with disabilities and also creating for them a conducive working environment free from any kind of discrimination", "original_page": 12, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Total differently abled employees (D + E) 898 688 76.61 210 23.39", "original_page": 4, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Branches/offices of our Bank have ramps/lifts for easy movement of differently-abled people. Most of our branches/offices are located either on the ground floor or have elevators and infrastructure for differently-abled individuals.", "original_page": 12, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Are the premises/offices of the entity accessible to differently abled employees, as per the requirements of the Rights of Persons with Disabilities Act, 2016? If not, whether any steps are being taken by the entity in this regard.", "original_page": 12, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

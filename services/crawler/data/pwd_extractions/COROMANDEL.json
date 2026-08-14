@@ -1,0 +1,42 @@
+{
+  "symbol": "COROMANDEL",
+  "company_name": "COROMANDEL INTERNATIONAL LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/coromandel-international-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 8, "total_pages": 20, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Coromandel states it 'believes in building and promoting an inclusive workplace and does not discriminate based on any factor, including gender, nationality, culture, age, disability, etc.' The Coromandel Guide to Business Conduct (CGBC) guidelines ensure equal opportunity for all employees and 'promote non-discrimination, inclusion, and equal opportunities for persons with disabilities in recruitment, employment, and workplace engagement.'",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26: 10 total differently abled employees (9 male/90%, 1 female/10%), all permanent, out of 5,085 total employees; 18 total differently abled workers (17 male/~94%, 1 female/~6%: 3 permanent + 15 other-than-permanent), out of 16,379 total workers.",
+    "physical_accessibility_measures": "Company describes specific infrastructure: 'Ramp facilities, access to canteen and washrooms, wheelchairs, doctors on call across plant locations etc. Lift facilities at locations are available at the basement for differently abled employees.' Elsewhere restated: 'Infrastructure such as ramps, handrails, accessible canteen and washroom facilities, wheelchairs, and availability of doctors on call are provided, wherever applicable, across plant locations. Additionally, lift facilities are available at divisional and corporate offices, including basement access, to support ease of movement for differently abled employees.'",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "The Company states: 'Coromandel employs persons with disabilities and is committed to ensuring accessibility across its facilities,' listing specific infrastructure (ramps, handrails, accessible canteen/washroom facilities, wheelchairs, doctors on call, lift facilities with basement access) provided 'wherever applicable, across plant locations' in response to the mandated RPwD Act 2016 accessibility question. The phrase 'wherever applicable' indicates the measures are not confirmed as universal across every location. No RPwD Act statutory hiring-quota attainment percentage or WCAG conformance level is stated.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "Coromandel believes in building and promoting an inclusive workplace and does not discriminate based on any factor, including gender, nationality, culture, age, disability, etc. ... Coromandel International Ltd. follows this policy to promote non-discrimination, inclusion, and equal opportunities for persons with disabilities in recruitment, employment, and workplace engagement.", "original_page": 10, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "3. Total differently abled employees (D + E) 10 9 90% ... 1 10% ... 6. Total differently-abled workers (F + G) 18 17 ...", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Ramp facilities, access to canteen and washrooms, wheelchairs, doctors on call across plant locations etc. Lift facilities at locations are available at the basement for differently abled employees.", "original_page": 10, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Coromandel employs persons with disabilities and is committed to ensuring accessibility across its facilities. Infrastructure such as ramps, handrails, accessible canteen and washroom facilities, wheelchairs, and availability of doctors on call are provided, wherever applicable, across plant locations.", "original_page": 14, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "symbol": "CGPOWER",
+  "company_name": "CG Power and Industrial Solutions Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/cg-power-and-industrial-solutions-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 23, "total_pages": 76, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "CG enforces a Human Resource Policy and a Human Rights Policy that mandate equal opportunity across all employment phases and prohibit discrimination based on gender, ethnicity, disability, age, religion, or sexual orientation. The Human Rights Policy 'contains explicit clauses ensuring equal opportunity and workplace facilities for persons with disabilities, in alignment with statutory requirements,' publicly available at cgglobal.com/policy.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "Differently abled Employees: 1 permanent (100% male), 0 other-than-permanent, total 1. Differently abled Workers: 2 permanent (100% male), 1 other-than-permanent, total 3. Against a total workforce of 1,398 employees and 5,215 workers.",
+    "physical_accessibility_measures": "CG provides accessible infrastructure across a majority of its manufacturing plants and corporate offices, including 'structural accommodations to support mobility, alongside visual signage deployed across units for hearing-impaired personnel.' 'Periodic accessibility upgrades at key corporate offices and manufacturing locations are implemented to ensure a barrier-free working environment,' and the Company states it 'is currently executing phased infrastructure upgrades at its remaining facilities to establish uniform accessibility and compliance across its operational footprint.' Major sites/plant facilities are also stated as accessible to differently abled visitors per the RPwD Act, 2016.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "Filing answers the mandated BRSR RPwD Act questions: premises/offices are stated as accessible to differently abled employees, workers and visitors 'in alignment with the Rights of Persons with Disabilities Act, 2016,' though phrased as a majority/phased-rollout status rather than full attainment ('CG provides accessible infrastructure across a majority of its manufacturing plants and corporate offices... currently executing phased infrastructure upgrades at its remaining facilities'). No statutory employment quota attainment percentage or WCAG conformance level is stated.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "CG enforces a Human Resource Policy and a Human Rights Policy. These frameworks mandate equal opportunity across all employment phases and strictly prohibit discrimination based on gender, ethnicity, disability, age, religion, or sexual orientation. The Human Rights Policy contains explicit clauses ensuring equal opportunity and workplace facilities for persons with disabilities.", "original_page": 25, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "3. Total Differently abled employees (D+E) 1 ... 3. Total Differently abled workers (F+G) 3", "original_page": 8, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "CG provides accessible infrastructure across a majority of its manufacturing plants and corporate offices. These locations feature structural accommodations to support mobility, alongside visual signage deployed across units for hearing-impaired personnel.", "original_page": 25, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "CG's major sites and plant facilities are accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016.", "original_page": 53, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

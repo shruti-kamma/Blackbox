@@ -1,0 +1,93 @@
+{
+  "symbol": "BIOCON",
+  "company_name": "Biocon Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 46.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 35,
+      "rationale": "Biocon affirms (Yes/No compliance question) that premises are accessible to differently abled employees, workers and visitors per the RPwD Act, 2016, but no specific physical features are described and no digital accessibility measures (website, apps, assistive technology) are mentioned at all.",
+      "recommendation": "Disclose concrete physical accessibility features and add a digital accessibility statement (e.g. website/app conformance level, assistive technology provided).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "An equal opportunity policy per the RPwD Act, 2016 exists within the Code of Conduct with a public web-link, and PwD are named in the DEI strategy, but no distinct accommodation-request process is described.",
+      "recommendation": "Publish a concrete workplace accommodation process for PwD employees, including how requests are made and response-time expectations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 65,
+      "rationale": "Specific PwD headcounts are disclosed by entity and category (21 at Biocon Limited, 6 at Biocon Biologics) with permanent/non-permanent and gender breakdowns, though these are small numbers relative to total headcount with no trend or context given.",
+      "recommendation": "Provide PwD headcount as a percentage of total workforce and disclose year-over-year trends.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 30,
+      "rationale": "A vague reference to 'inclusive hiring practices' for PwD is made, but no hiring targets, attainment figures, or named disability-focused outreach programs are disclosed.",
+      "recommendation": "Set and report a numeric PwD hiring target with attainment, and name specific disability-focused recruitment channels or partners.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific attrition and promotion rates alongside overall workforce retention data.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "Board and Key Management Personnel representation is reported only by gender; no PwD presence in senior/management roles is disclosed.",
+      "recommendation": "Report PwD representation specifically within senior management and leadership roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 40,
+      "rationale": "A 'DEI sensitization program' and PwD-focused ERG are referenced, but no detail is given on training content, frequency, mandatory status, or number of employees reached.",
+      "recommendation": "Disclose specifics of the DEI/disability sensitization program, including audience, frequency, and completion metrics.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 45,
+      "rationale": "A dedicated 'We Stand for PwD' Employee Resource Group is named and described as providing community and peer support, but no accommodation response-time commitments or other operational practices are described.",
+      "recommendation": "Describe concrete ongoing practices such as flexible-work provisions for PwD employees or accommodation response-time commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction, engagement, or grievance data is disclosed; only general (non-PwD-specific) discrimination/harassment mechanisms (PoSH, Whistleblower Policy) are described.",
+      "recommendation": "Disclose PwD-specific feedback channels and any satisfaction or grievance metrics collected from PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "Biocon affirmatively answers the mandated BRSR statutory questions on RPwD Act, 2016 compliance (accessible premises, equal opportunity policy, accessible visitor premises), but there is no claimed WCAG conformance level or quantified RPwD Act quota attainment.",
+      "recommendation": "State a specific WCAG conformance level for digital properties and, if applicable, report quota attainment against any statutory disability-employment target.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

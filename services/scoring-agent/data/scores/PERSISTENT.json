@@ -1,0 +1,93 @@
+{
+  "symbol": "PERSISTENT",
+  "company_name": "Persistent Systems Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 43.6,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 80,
+      "rationale": "Both physical accessibility (accessible parking, ramps, elevators, signage, disabled-friendly restrooms, height-adjustable workstations, modernised campus entry/exit for PWDs) and digital accessibility (explicit adherence to WCAG 2.0 for internal digital platforms) are disclosed with specific, named detail.",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 65,
+      "rationale": "A detailed EEO Policy aligned with the RPwD Act, 2016 covers the full employee lifecycle and commits to reasonable accommodations and barrier-free environments, but no concrete accommodation request/approval process with defined steps or response times is described.",
+      "recommendation": "Describe the concrete process (steps, owner, response-time commitment) by which a PwD employee requests a workplace accommodation.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 65,
+      "rationale": "A specific and internally cross-confirmed headcount is disclosed (58 differently abled employees, gender split, against a stated total workforce of 27,502), enabling a rough percentage calculation, though the percentage itself is not directly stated.",
+      "recommendation": "State PwD headcount explicitly as a percentage of total workforce and disclose the trend over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 30,
+      "rationale": "The EEO Policy states that recruitment and hiring are covered by its commitment to equal opportunity for persons with disabilities, but no numeric hiring target, disability-specific outreach program, or attainment figures are reported.",
+      "recommendation": "Publish a disability-specific hiring target or outreach program and report attainment against it.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Only general permanent-employee turnover rates are disclosed; no PwD-specific attrition, tenure, or promotion data is given.",
+      "recommendation": "Disclose attrition and retention data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "Leadership representation data disclosed ('12.51% Women in leadership roles') is gender-specific only; no PwD representation in senior/management roles is disclosed.",
+      "recommendation": "Report PwD representation specifically within senior/management roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is described anywhere in the filing; only general Code of Conduct and EHS training are mentioned.",
+      "recommendation": "Disclose any disability sensitization or accessibility training programs offered to employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (employee resource group, flexible work commitments, accommodation response-time pledges) are disclosed beyond the general policy and infrastructure statements already captured elsewhere.",
+      "recommendation": "Disclose ongoing culture practices supporting PwD employees, such as a dedicated employee resource group or a stated accommodation response-time commitment.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "General grievance and whistleblower mechanisms are described, but none are disability-specific and no PwD satisfaction or grievance data is given.",
+      "recommendation": "Disclose satisfaction or grievance-resolution data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 65,
+      "rationale": "The Company explicitly states adherence to the Web Content Accessibility Guidelines (WCAG 2.0) for internal digital platforms, a specific named conformance standard, though it does not report RPwD Act quota attainment as a percentage or cite independent audit verification.",
+      "recommendation": "Disclose RPwD Act statutory quota attainment as a percentage and specify the WCAG conformance level (A/AA/AAA) targeted or achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

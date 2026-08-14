@@ -1,0 +1,42 @@
+{
+  "symbol": "TCS",
+  "company_name": "Tata Consultancy Services Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/tata-consultancy-services-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 17, "total_pages": 53, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "TCS states it has a 'Disability Inclusion (Equal Opportunity) policy as per the RPwD Act 2016,' which 'adds on to the impact of TCS Global Diversity, Equity & Inclusion policy and the Tata Code of Conduct' (public link to the Tata Code of Conduct provided; no separate direct link to the disability policy text given).",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2026: 1,082 total differently abled employees (1,069 permanent + 13 other than permanent) out of 6,17,437 total employees (~0.18%); of these, 796 (73.6%) male and 286 (26.4%) female. Figures are based on voluntary disclosure by employees; 'differently abled includes hearing, visual, locomotor, orthopedic and others.'",
+    "physical_accessibility_measures": "In response to the mandated RPwD Act 2016 question, TCS states: 'Yes. All TCS-owned premises have accessibility provided as per the Rights of Persons with Disabilities Act, 2016 (RPwD Act 2016)' for employees, and separately 'Yes. All TCS-owned premises are accessible to differently abled visitors, as per the RPwD Act, 2016.'",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "TCS gives unqualified 'Yes' answers to both mandated RPwD Act 2016 questions: that all TCS-owned premises are accessible to differently abled employees, and separately that all TCS-owned premises are accessible to differently abled visitors, 'as per the RPwD Act, 2016.' It also confirms it has a Disability Inclusion (Equal Opportunity) policy as per the RPwD Act 2016. No RPwD Act statutory hiring-quota attainment percentage or WCAG conformance level is stated.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes. TCS has a Disability Inclusion (Equal Opportunity) policy as per the RPwD Act 2016. This adds on to the impact of TCS Global Diversity, Equity & Inclusion policy and the Tata Code of Conduct.", "original_page": 15, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "3 Total differently abled employees (D + E) ... 1,082 ... 796 73.6 ... 286 26.4 ... Differently abled includes hearing, visual, locomotor, orthopedic and others.", "original_page": 5, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Yes. All TCS-owned premises have accessibility provided as per the Rights of Persons with Disabilities Act, 2016 (RPwD Act 2016)", "original_page": 15, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Yes. All TCS-owned premises are accessible to differently abled visitors, as per the RPwD Act, 2016.", "original_page": 29, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

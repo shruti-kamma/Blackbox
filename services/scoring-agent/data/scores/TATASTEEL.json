@@ -1,0 +1,93 @@
+{
+  "symbol": "TATASTEEL",
+  "company_name": "Tata Steel Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 32.1,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "Filing describes both physical measures (ramps, elevators, disabled-friendly washrooms being installed, modified workstations/washrooms) and digital measures (tailored laptops, assistive software/hardware, O365 accessibility features), which is concrete but not independently audited or quantified.",
+      "recommendation": "Disclose the number/percentage of sites fully retrofitted and any third-party accessibility audit results.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 65,
+      "rationale": "A named Equal Opportunity Policy aligned to the RPwD Act, 2016 is disclosed, and the accommodation process (assistive tech, onboarding housing, buddy system) is described with some specificity, though without a formal response-time commitment.",
+      "recommendation": "Publish the policy document/web-link directly and add a defined turnaround-time commitment for accommodation requests.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "Specific PwD headcounts are disclosed by gender and employment type (149 employees, 118 workers) on a consolidated basis, but without percentage-of-workforce context or RPwD Act quota comparison, and European subsidiary data is explicitly excluded.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and include European subsidiary data or explain the gap.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, hiring outreach, or attainment figures are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific hiring targets and actual attainment for the reporting year.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general workforce turnover figures do not break out PwD employees.",
+      "recommendation": "Break out attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "The filing reports women's representation on the Board, KMP, and Senior Leadership Team but makes no mention of PwD representation in senior or management roles.",
+      "recommendation": "Disclose PwD representation figures specifically within senior/management leadership tiers.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "General employee training (Code of Conduct, POSH, safety, skill development) is described, but no disability-specific sensitization or training programme is mentioned.",
+      "recommendation": "Introduce and disclose a dedicated disability-sensitization training programme for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices specific to PwD employees (ERGs, flexible work arrangements, accommodation response-time commitments) are disclosed beyond the one-time onboarding buddy process already captured under Policy.",
+      "recommendation": "Establish and disclose an ongoing PwD-focused ERG or similar culture initiative.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction survey or grievance data is disclosed; general grievance mechanisms are not broken out by disability status.",
+      "recommendation": "Track and disclose PwD-specific employee satisfaction or grievance metrics.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 45,
+      "rationale": "The filing states general compliance with the RPwD Act, 2016 for accessibility, but does not report specific quota attainment figures against the statutory reservation requirement or any WCAG conformance level for digital properties.",
+      "recommendation": "Disclose the specific RPwD Act employment-quota attainment percentage and any formal accessibility (e.g., WCAG) conformance level achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

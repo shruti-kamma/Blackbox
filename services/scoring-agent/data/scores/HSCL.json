@@ -1,0 +1,93 @@
+{
+  "symbol": "HSCL",
+  "company_name": "Himadri Speciality Chemical Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 40.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 45,
+      "rationale": "Filing states facilities/offices are accessible to differently abled workforce and visitors per the RPwD Act, with ongoing infrastructure upgrades and an accessibility-by-design commitment for new construction, but gives no specifics (e.g., ramps, accessible restrooms count, sites covered) and no digital accessibility measures are mentioned at all.",
+      "recommendation": "Disclose specific physical accessibility features implemented (ramps, accessible restrooms, elevators) and add any digital/website/app accessibility measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "A named DEI Policy explicitly aligned with the RPwD Act, 2016 is disclosed with a public web link, and a concrete accommodation process (job-role mapping for differently abled candidates) is described, though without a formal accommodation request/approval workflow or response-time commitment.",
+      "recommendation": "Publish a dedicated accommodation-request process with defined steps and turnaround commitments, distinct from the general DEI policy.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "A specific PwD headcount is disclosed (1 permanent differently abled employee, 0 differently abled workers, out of ~3,193 total employees+workers), which is verifiable but reveals very limited representation and no year-over-year trend or context.",
+      "recommendation": "Report PwD headcount trends over time and context (e.g., by role/function) alongside the raw count.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 35,
+      "rationale": "A job-role mapping process to identify positions suitable for differently abled candidates is described, and the DEI Policy commits to equal recruitment opportunity, but no PwD hiring target, disability-specific outreach channel, or attainment figure is disclosed.",
+      "recommendation": "Set and report a measurable PwD hiring target with year-over-year attainment, and disclose any disability-focused recruitment partnerships.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; the return-to-work/retention table covers parental leave only and is not broken out by disability status.",
+      "recommendation": "Track and disclose attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD representation figures specifically at senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programme is described; the filing mentions general human-rights/D&I training (UTKARSH LMS) covering anti-discrimination broadly, but does not name disability awareness or PwD sensitization as a topic.",
+      "recommendation": "Introduce and disclose a disability-awareness/sensitization training module for managers and staff.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 45,
+      "rationale": "The filing states differently abled individuals are 'treated with dignity, have equal access to development and career opportunities and receive necessary accommodations to perform effectively,' but this is a general statement with no named ERG, flexible-work option, or accommodation response-time commitment.",
+      "recommendation": "Establish and disclose concrete ongoing practices such as a PwD employee resource group or a stated accommodation turnaround-time commitment.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; general grievance mechanisms exist but are not broken out for PwD employees.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 58,
+      "rationale": "The filing directly answers the mandated BRSR RPwD Act questions, stating premises are accessible to differently abled workforce and visitors and that an equal-opportunity policy aligned with the Act exists, while candidly noting 'remaining barriers' are still being addressed; no statutory employment quota attainment figure or WCAG conformance level is stated.",
+      "recommendation": "Disclose the specific RPwD Act employment quota attainment percentage and any formal accessibility audit/WCAG conformance claim.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "TCS",
+  "company_name": "Tata Consultancy Services Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 33.6,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 65,
+      "rationale": "TCS gives an unqualified 'Yes' that all TCS-owned premises are accessible to differently abled employees and visitors per the RPwD Act 2016, a stronger claim than a partial-compliance statement, but no specific physical measures (ramps, accessible restrooms, etc.) or any digital accessibility disclosure (website/app/assistive tech) are given.",
+      "recommendation": "Disclose digital accessibility measures (e.g. WCAG conformance level for tcs.com and internal portals) and specific physical accessibility features.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 50,
+      "rationale": "TCS confirms a named 'Disability Inclusion (Equal Opportunity) policy' under the RPwD Act 2016, but provides no direct link to that specific policy (only to the general Tata Code of Conduct) and describes no concrete accommodation process.",
+      "recommendation": "Publish a direct link to the Disability Inclusion policy text and describe a concrete workplace accommodation request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 58,
+      "rationale": "A specific, gender-broken-down PwD headcount is disclosed (1,082 differently abled employees, ~0.18% of the 6,17,437 total workforce, categorized by disability type at a high level), though the figures rely on voluntary self-disclosure and no trend or workforce-percentage framing is given.",
+      "recommendation": "Report PwD headcount as an explicit percentage of total workforce with year-over-year trend.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, hiring outreach programs, or attainment data are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific hiring targets, outreach programs, and attainment tracking.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general parental-leave retention rates are reported but not broken out by disability status.",
+      "recommendation": "Report attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed.",
+      "recommendation": "Disclose PwD representation at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs are mentioned; general OHS, environmental, and skill-upgradation training figures are disclosed but none are disability-focused.",
+      "recommendation": "Introduce and disclose disability sensitization/awareness training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices such as ERGs, flexible work arrangements, or accommodation response-time commitments specific to PwD employees are disclosed.",
+      "recommendation": "Establish and disclose ongoing PwD-focused culture initiatives (ERG, flexible work, accommodation SLAs).",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; a general multi-channel employee grievance mechanism exists but is not broken out by disability status.",
+      "recommendation": "Track and disclose grievance/satisfaction data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 62,
+      "rationale": "TCS gives clear, unqualified 'Yes' answers confirming RPwD Act 2016 accessibility compliance for both employee and visitor premises and confirms a named disability equal-opportunity policy exists, but discloses no RPwD Act statutory hiring-quota attainment percentage or WCAG conformance level.",
+      "recommendation": "Disclose RPwD Act statutory hiring-quota attainment and a stated WCAG conformance level for digital properties.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "symbol": "IPCALAB",
+  "company_name": "Ipca Laboratories Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/ipca-laboratories-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 9, "total_pages": 36, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Yes, the Company has an Equal Opportunity Policy in line with the Rights of Persons with Disabilities Act, 2016, covered under the 'Diversity, Equal Opportunity and Non-Discrimination' section of its Human Rights Policy, with a web-link provided to the policy document.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "FY2025-26 BRSR table reports 2 total differently-abled employees (both male, both permanent, 0 female) and 0 differently-abled workers (permanent and other-than-permanent categories both reported as nil/dash).",
+    "physical_accessibility_measures": "\"Our facilities are equipped with ramps, assistance personnel, and other amenities to provide support for individuals with disabilities,\" stated in response to the BRSR question on whether premises/offices are accessible to differently abled employees and workers per the Rights of Persons with Disabilities Act, 2016.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "The filing states facilities are equipped with ramps and assistance personnel in response to the BRSR question tied to the Rights of Persons with Disabilities Act, 2016, confirms an Equal Opportunity Policy 'in line with' the Act, and separately (Leadership Indicators) answers 'Yes' to whether premises are accessible to differently abled visitors per the Act. No quantified compliance percentage or PwD employment-quota attainment figure is given.",
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes, the Company has an Equal Opportunity Policy in line with the Rights of Persons with Disabilities Act, 2016. Please refer to the section \"Diversity, Equal Opportunity and Non-Discrimination\" under the Human Rights Policy available on the Company's website.", "original_page": 15, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Differently abled Employees ... Total Employees 2 2 100 - -", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Our facilities are equipped with ramps, assistance personnel, and other amenities to provide support for individuals with disabilities", "original_page": 15, "source": "BRSR"},
+      {"field": "compliance_disclosed", "quote": "Is the premise/office of the entity accessible to differently abled visitors as per the requirements of the Rights of Persons with Disabilities Act 2016? Yes.", "original_page": 22, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

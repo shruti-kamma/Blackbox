@@ -1,0 +1,93 @@
+{
+  "symbol": "HINDZINC",
+  "company_name": "Hindustan Zinc Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 30.7,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 65,
+      "rationale": "Both physical accessibility (braille-inscribed elevators, ramps, touchless entry, wheelchair-accessible restrooms) and a digital/assistive measure (text-to-speech software for visually impaired employees) are disclosed with specific detail, though coverage is only 'most premises' and no accessibility audit or conformance standard is cited.",
+      "recommendation": "Publish the percentage of sites/offices meeting full accessibility standards and any accessibility audit results.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 50,
+      "rationale": "An Equal Opportunity Policy aligned to the RPwD Act, 2016, plus Code of Conduct and DEI Policy references to disability non-discrimination are disclosed, but no concrete accommodation request/approval process is described.",
+      "recommendation": "Describe the concrete process by which a PwD employee requests and receives a workplace accommodation.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 50,
+      "rationale": "Specific headcounts are disclosed (3 differently abled employees, 15 differently abled workers, with gender breakdown), but no percentage of total workforce or multi-year trend is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and track it over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No PwD-specific recruitment targets, disability-focused outreach programs, or hiring attainment figures are disclosed anywhere in the filing.",
+      "recommendation": "Disclose any disability-specific hiring targets or outreach programs and report attainment against them.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "General permanent-employee/worker turnover rates are disclosed but not broken out for PwD employees specifically.",
+      "recommendation": "Report attrition and tenure data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "'Specially abled' diversity is listed only as a general 2030 diversity goal category alongside gender and regional diversity; the only performance KPI reported against it is gender diversity in executives, with no PwD-specific leadership representation data.",
+      "recommendation": "Report PwD representation specifically within senior/management roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 50,
+      "rationale": "A specific training type is named (Indian Sign Language training to assist communication with deaf and mute colleagues) plus a diversity/inclusion sensitisation workshop, but no participation numbers or coverage rates are disclosed.",
+      "recommendation": "Report participation/completion rates for disability sensitization and sign-language training.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERG, flexible work arrangements, accommodation response-time commitments) are disclosed beyond general policy statements.",
+      "recommendation": "Disclose ongoing culture practices supporting PwD employees, such as a dedicated employee resource group.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "General grievance redressal mechanisms (Grievance Redressal Committees, Sampark CEO townhall, Vigil Mechanism) are described, but none are disability-specific and no PwD satisfaction data is given.",
+      "recommendation": "Disclose satisfaction or grievance-resolution data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act quota attainment as a percentage or claim any accessibility conformance standard (e.g. WCAG level); only general policy-alignment language is used.",
+      "recommendation": "State the RPwD Act statutory quota attainment percentage or any formal accessibility conformance standard achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

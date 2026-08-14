@@ -1,0 +1,93 @@
+{
+  "symbol": "HINDUNILVR",
+  "company_name": "Hindustan Unilever Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 36.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "A detailed, itemized list of physical accessibility measures is disclosed (ramps, lowered reception desks, evacuation chairs, tactile flooring/Braille signage, induction loops, accessible toilets) with named certified sites (Amli, Haridwar, Mumbai/Bengaluru R&D centres, Head Office), but no digital accessibility measures (website/app, screen readers) are mentioned at all.",
+      "recommendation": "Disclose digital accessibility measures such as website/app WCAG conformance or assistive technology provided to employees.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 65,
+      "rationale": "A named Equal Opportunity Policy and a distinct named 'Disability Accommodation Policy' are disclosed, along with a described accommodation process (voluntary self-disclosure leading to tailored accommodations), though no detail on the accommodation policy's actual provisions or turnaround commitments is given.",
+      "recommendation": "Publish the substantive content of the Disability Accommodation Policy, including any response-time commitments for accommodation requests.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "Specific PwD headcounts with gender and permanent/other-than-permanent breakdowns are disclosed (34 employees, 100 workers), but no percentage of total workforce or year-over-year trend is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and show trend across reporting years.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 25,
+      "rationale": "The filing states PWDs are treated fairly 'across recruitment' under the Equal Opportunity Policy, but no hiring targets, attainment figures, or disability-specific outreach channels are disclosed.",
+      "recommendation": "Publish a specific PwD hiring target and report attainment, along with any disability-focused sourcing channels.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Turnover-rate and parental-leave return-to-work/retention tables are disclosed but not broken out by disability status; no PwD-specific attrition or tenure data is given.",
+      "recommendation": "Disclose attrition/retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "Board and KMP representation data covers only gender; no PwD presence in senior or management roles is disclosed.",
+      "recommendation": "Report PwD representation within management/leadership bands.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs for employees are disclosed; DEI narrative references general 'diversity awareness' capability-building for leaders but not disability-specific content.",
+      "recommendation": "Disclose any disability-awareness/sensitization training delivered to employees or managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERGs, flexible-work commitments, accommodation response-time commitments) are disclosed beyond the general accommodation policy already captured under Policy.",
+      "recommendation": "Describe ongoing PwD-focused culture initiatives such as employee resource groups or accommodation turnaround-time commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "Only generic grievance-redressal channels for all employees/workers are described; no satisfaction or grievance data specific to PwD employees is disclosed.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 50,
+      "rationale": "Specific named sites are stated to be certified for accessibility and the company states an explicit aim to certify 100% of sites against the RPwD Act's Minimum Mandatory Standards, but full attainment across all sites is not yet claimed and no WCAG digital conformance level is stated.",
+      "recommendation": "Report full RPwD Act Minimum Mandatory Standards certification attainment across all sites and any digital accessibility (WCAG) conformance level.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

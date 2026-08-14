@@ -1,0 +1,93 @@
+{
+  "symbol": "LODHA",
+  "company_name": "LODHA DEVELOPERS LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 20.0,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 65,
+      "rationale": "A specific, itemized list of physical accessibility features is disclosed (entrance ramp, wheelchair availability, accessible washroom, assistive elevator control panels, auditory/visual guidance for visually impaired), but these are described only for the corporate headquarters, not company-wide, and no digital accessibility measures are disclosed.",
+      "recommendation": "Extend and disclose accessibility infrastructure across all offices and project sites, and disclose any digital accessibility (website/app) measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "A named 'Equal Opportunities Policy' with a public weblink is disclosed as the RPwD Act-aligned policy, but no concrete accommodation process for PwD employees is described.",
+      "recommendation": "Describe a concrete workplace accommodation request/approval process for PwD employees.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 30,
+      "rationale": "A specific PwD headcount is disclosed (1 employee out of 5,836 total, 0 workers out of 20,150), but the figure is negligible, no percentage or contextual trend is given, and it suggests minimal substantive tracking.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce, investigate the very low count, and disclose year-over-year trend.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, attainment data, or outreach channels are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD hiring targets, attainment, and any disability-focused recruitment outreach.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Return-to-work/retention data disclosed is for parental leave only and is not broken out by disability status; no PwD-specific attrition or tenure data is given.",
+      "recommendation": "Disclose attrition/retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed in the filing.",
+      "recommendation": "Report PwD representation specifically within management/leadership bands.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "Training disclosures cover OHS, safety, and human-rights sensitisation generally, but no disability-specific training or sensitization program is mentioned.",
+      "recommendation": "Disclose any disability-awareness or sensitization training delivered to employees or managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERGs, flexible work, accommodation response-time commitments) are disclosed.",
+      "recommendation": "Describe any PwD-focused employee culture initiatives such as employee resource groups or accommodation commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "Only a generic grievance-redressal mechanism (on-site registers, digital portal, Whistle Blower/POSH/Stakeholder Grievance policies) is described for all employees/contract workers; no satisfaction or grievance data specific to PwD employees is disclosed.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act statutory quota attainment or any WCAG digital accessibility conformance level.",
+      "recommendation": "State RPwD Act statutory quota attainment and any digital accessibility conformance level.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

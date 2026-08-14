@@ -1,0 +1,93 @@
+{
+  "symbol": "DEEPAKNTR",
+  "company_name": "Deepak Nitrite Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 20.0,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 45,
+      "rationale": "Physical accessibility features are itemized (ramps, lifts, bars and handles, dedicated washrooms for differently abled employees), but no digital accessibility measures are disclosed at all.",
+      "recommendation": "Disclose digital accessibility measures such as website/app accessibility or assistive technology support.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 50,
+      "rationale": "The Company confirms an equal opportunity policy under the RPwD Act, 2016 and provides a public web link to its Diversity, Equal Opportunity and Freedom of Association policy, but no concrete accommodation request/approval process is described.",
+      "recommendation": "Describe a concrete process for employees to request and receive workplace accommodations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "Specific but very small headcounts are disclosed (2 differently abled permanent employees, 1 differently abled permanent worker, all male), with no percentage of total workforce or trend context.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and track it over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, outreach programs, or hiring attainment figures are disclosed anywhere in the filing.",
+      "recommendation": "Disclose any disability-specific hiring targets or outreach programs and report attainment against them.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "General parental-leave return/retention rates are disclosed but not broken out for PwD employees specifically.",
+      "recommendation": "Disclose attrition and retention data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed anywhere in the filing.",
+      "recommendation": "Report PwD representation broken out by seniority/management level.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is described; only general EHS and human rights training are mentioned.",
+      "recommendation": "Disclose any disability sensitization or accessibility training programs offered to employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERG, flexible work, accommodation response-time commitments) are disclosed.",
+      "recommendation": "Disclose ongoing culture practices supporting PwD employees, such as a dedicated employee resource group.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "General grievance committees are described for workers and employees, but none are disability-specific and no PwD satisfaction data is given.",
+      "recommendation": "Disclose satisfaction or grievance-resolution data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act quota attainment as a percentage or claim any accessibility conformance standard; only a general policy-alignment statement is made.",
+      "recommendation": "State the RPwD Act statutory quota attainment percentage or any accessibility conformance standard achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "BAJFINANCE",
+  "company_name": "Bajaj Finance Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 39.7,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "Physical accessibility is disclosed with specific numbers -- 320+ branches/offices equipped with wheelchairs, 3,300+ equipped with magnifying glasses, and ramps at some offices -- but no digital accessibility measures (website/app/assistive tech) are mentioned anywhere.",
+      "recommendation": "Disclose digital accessibility measures such as website/app conformance or assistive technology provisioning.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "A dedicated internal 'Policy for person with Specially abled' is named, alongside an Equal Employment Opportunity and Non-Discrimination policy citing the RPwD Act, but the specially-abled policy is marked internal (not public) and no concrete accommodation-request process is described.",
+      "recommendation": "Publish the Policy for person with Specially abled externally and describe a concrete accommodation-request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 68,
+      "rationale": "A detailed headcount is disclosed: 77 differently abled employees (25 permanent, 52 other-than-permanent; 68 male, 9 female), with methodology noted (based on voluntarily disclosed disability certificates).",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and show trend over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 50,
+      "rationale": "A specific numeric hiring target is stated -- 'to hire 200+ Specially abled employees' -- as an FY2027 commitment, but this is forward-looking and no attainment figure is reported in this filing.",
+      "recommendation": "Report attainment against the 200+ specially-abled hiring target once the FY2027 period closes.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Return-to-work/retention rates are disclosed only for the general permanent employee population (parental leave); nothing is broken out specifically for PwD employees.",
+      "recommendation": "Disclose attrition/tenure data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No statement or data addresses PwD presence in senior or management roles.",
+      "recommendation": "Disclose PwD representation specifically at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No training or sensitisation program specific to disability inclusion is disclosed anywhere in the filing.",
+      "recommendation": "Introduce and disclose a disability sensitisation/training program for employees and hiring managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 45,
+      "rationale": "Persons with disability are named as an identified stakeholder group with a dedicated ongoing engagement channel ('HR connect forums'), but no detail is given on frequency, participation, or outcomes.",
+      "recommendation": "Disclose specifics of the HR connect forums for PwD employees, such as frequency, attendance, and resulting actions.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed; general employee engagement mechanisms are not broken out by disability status.",
+      "recommendation": "Disclose PwD-specific employee feedback or grievance-resolution data.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "No RPwD Act statutory quota attainment figure or WCAG conformance level is stated anywhere in the filing.",
+      "recommendation": "Disclose specific statutory compliance metrics, such as RPwD Act quota attainment or a stated WCAG conformance level for digital properties.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

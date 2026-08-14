@@ -1,0 +1,93 @@
+{
+  "symbol": "BRITANNIA",
+  "company_name": "Britannia Industries Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 26.4,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 45,
+      "rationale": "Britannia states premises are accessible to PwDs per the RPwD Act, 2016 and specifically names wheelchairs and evacuation chairs as provided facilities, but no digital accessibility measures (website, app, assistive technology) are mentioned anywhere.",
+      "recommendation": "Disclose digital accessibility measures such as website/app conformance standards or assistive technology support.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 40,
+      "rationale": "An equal opportunity policy is referenced via the Code of Business Conduct (prohibiting discrimination on the basis of physical disability) with a public web-link, but this is a general non-discrimination clause rather than a disability-specific policy, and no accommodation process is described.",
+      "recommendation": "Publish a distinct disability-inclusion/accommodation policy with a concrete request-and-response process, rather than relying on the general non-discrimination clause.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 50,
+      "rationale": "Specific PwD headcounts are disclosed (2 differently-abled employees, 9 differently-abled workers, with gender breakdowns) against total employee/worker bases, but the numbers are very small relative to the ~23,750 total workforce and no trend or context is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and disclose year-over-year trends or targets.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No PwD-specific recruitment targets, attainment figures, or disability-focused outreach programs are disclosed; only a general merit-based equal-opportunity hiring statement is made.",
+      "recommendation": "Disclose any PwD hiring targets and attainment, and name specific disability-focused recruitment channels or partners.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Turnover/attrition rates are disclosed only by gender, with no PwD-specific attrition, tenure, or promotion data.",
+      "recommendation": "Disclose PwD-specific attrition and promotion rates alongside the existing gender-based turnover data.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "Board of Directors and KMP representation is reported only by gender; no PwD presence in senior/management roles is disclosed.",
+      "recommendation": "Report PwD representation specifically within senior management and leadership roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is disclosed; the only training/awareness program mentioned in the filing is tied to POSH/harassment prevention, not disability inclusion.",
+      "recommendation": "Introduce and disclose a disability-sensitization or inclusion training program for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices specific to PwD employees (ERGs, flexible work, accommodation response-time commitments) are disclosed beyond the physical facilities already captured under Accessibility.",
+      "recommendation": "Describe ongoing inclusion practices for PwD employees, such as an ERG, flexible-work provisions, or accommodation response-time commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; POSH complaint statistics reported relate to sexual harassment, not disability.",
+      "recommendation": "Disclose PwD-specific feedback channels and any satisfaction or grievance metrics collected from PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 50,
+      "rationale": "Britannia affirmatively answers the mandated BRSR RPwD Act, 2016 questions (accessible premises with named facilities, equal opportunity policy, accessible visitor premises), but there is no claimed WCAG conformance level or quantified quota attainment.",
+      "recommendation": "State a specific WCAG conformance level for digital properties and report attainment against any statutory disability-employment target.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

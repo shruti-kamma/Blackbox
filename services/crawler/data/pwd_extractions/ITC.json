@@ -1,0 +1,42 @@
+{
+  "symbol": "ITC",
+  "company_name": "ITC Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/itc-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 54, "total_pages": 56, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "ITC states it has a Policy on Diversity, Equity and Inclusion which serves as its equal opportunity policy under the Rights of Persons with Disabilities Act, 2016. The policy articulates commitment to equal opportunity and a Zero Tolerance Policy on discrimination, inter alia, on the grounds of disability. The policy is published at a public URL.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As at end of FY2025-26: 224 differently abled employees (14 permanent: 10 male, 4 female; 210 other-than-permanent: 129 male, 81 female) out of 12,078 total employees, and 232 differently abled workers (15 permanent: 12 male, 3 female; 217 other-than-permanent: 185 male, 32 female) out of 36,559 total workers.",
+    "physical_accessibility_measures": "ITC states its establishments are accessible to the differently abled and that it is continuously working towards improving infrastructure for eliminating barriers to accessibility, in response to the BRSR question on RPwD Act 2016 premises-accessibility requirements. No specific measures (ramps, elevators, accessible restrooms, etc.) are itemized.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": true,
+    "recruitment_details": "Under its people strategy pillars, ITC states it will 'implement measures to ensure sufficient representation of women in selection pools and deployment of the differently-abled across suitable opportunities towards meeting the diversity and inclusion goals of the organisation.' No numeric hiring targets, attainment figures, or disability-specific outreach channels are given.",
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": false,
+    "compliance_details": null,
+    "evidence": [
+      {"field": "policy_exists", "quote": "Yes, the Company has a Policy on Diversity, Equity and Inclusion which clearly articulates its emphasis on Equal Opportunity... Zero Tolerance Policy on discrimination, inter alia, on the grounds of disability.", "original_page": 25, "source": "BRSR"},
+      {"field": "pwd_employee_count_stated", "quote": "Differently abled Employees and workers: Total employees (D+E) 224 ... Total workers (F+G) 232", "original_page": 7, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "ITC's establishments are accessible to the differently abled, and we are continuously working towards improving infrastructure for eliminating barriers to accessibility.", "original_page": 25, "source": "BRSR"},
+      {"field": "recruitment_disclosed", "quote": "Implement measures to ensure sufficient representation of women in selection pools and deployment of the differently-abled across suitable opportunities towards meeting the diversity and inclusion goals of the organisation.", "original_page": 13, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

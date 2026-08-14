@@ -1,0 +1,43 @@
+{
+  "symbol": "IOB",
+  "company_name": "INDIAN OVERSEAS BANK",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/indian-overseas-bank-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 13, "total_pages": 80, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Indian Overseas Bank states it has an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016, with a web-link to the policy document provided.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "531 total differently abled employees (412 male, 119 female) out of 21,034 total employees; the Bank reports 0 workers in the 'workers' category (all staff are classified as employees), so 0 differently abled workers.",
+    "physical_accessibility_measures": "Ramps have been installed to facilitate easy access for differently-abled employees across various workplaces, and ramps have also been installed at various premises to ensure barrier-free and convenient access for visitors with disabilities.",
+    "digital_accessibility_measures": "Specialized software is provided to visually impaired staff members to support their work and enhance convenience.",
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "In the mandated BRSR statutory questions, the Bank answers 'Yes' that its premises/offices are accessible to differently abled employees and workers per the RPwD Act, 2016 (citing ramps and specialized software for visually impaired staff), confirms an equal opportunity policy per the RPwD Act, 2016 with a web-link, and answers 'Yes' that its premises are accessible to differently abled visitors per the same Act.",
+    "evidence": [
+      {"field": "policy_summary", "quote": "Yes, the Bank has an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016.", "original_page": 30, "source": "BRSR"},
+      {"field": "pwd_employee_count_details", "quote": "3 Total Differently Abled Employees (D+E) ... 531 ... 412 ... 119", "original_page": 8, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Ramps have been installed to facilitate easy access, and specialized software is provided to visually impaired staff members to support their work and enhance convenience", "original_page": 30, "source": "BRSR"},
+      {"field": "digital_accessibility_measures", "quote": "specialized software is provided to visually impaired staff members to support their work and enhance convenience", "original_page": 30, "source": "BRSR"},
+      {"field": "compliance_details", "quote": "Yes, ramps have been installed at various premises to ensure barrier-free and convenient access for visitors, especially individuals with disabilities.", "original_page": 43, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

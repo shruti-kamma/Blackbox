@@ -1,0 +1,93 @@
+{
+  "symbol": "AJANTPHARM",
+  "company_name": "Ajanta Pharma Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 32.1,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 0,
+      "rationale": "The BRSR accessibility question is answered with a bare 'Yes' -- no ramps, restrooms, elevators, or other physical accessibility measures are described, and no digital accessibility measures are mentioned anywhere in the filing.",
+      "recommendation": "Describe the specific physical accessibility facilities in place (ramps, accessible restrooms, elevators) and disclose any digital accessibility measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 35,
+      "rationale": "The company confirms 'Yes' to having an equal opportunity policy under the RPwD Act 2016 with a web-link to a consolidated policies document, but no descriptive detail about the policy's content or scope is given, and no accommodation process is described.",
+      "recommendation": "Provide a substantive description of the equal opportunity policy's provisions for PwD employees, and describe a concrete accommodation-request process.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 80,
+      "rationale": "Reports precise, gender-disaggregated headcounts for both differently-abled employees (10) and workers (15) in the mandated BRSR tables for FY2025-26, cross-validated by a narrative statement of '25 specially abled person' included in operations.",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 80,
+      "rationale": "States a specific forward-looking target ('add 15 more people by FY 2027') for inclusion of specially abled people at operation sites and reports current-year attainment ('Included 25 specially abled person in day to day activities').",
+      "recommendation": null,
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "Return-to-work and retention rate data is disclosed only for parental leave, not for differently-abled employees specifically; no PwD-specific attrition or tenure data is disclosed.",
+      "recommendation": "Report attrition/retention rates specifically for differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on representation of differently-abled employees in senior or management roles is provided.",
+      "recommendation": "Disclose representation of PwD employees at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "Training tables cover only 'Health and safety measures' and 'Skill upgradation' for the general workforce; no disability-specific sensitization or awareness program is mentioned.",
+      "recommendation": "Introduce and disclose a disability-sensitization training program for employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "Aside from CSR education/vocational projects benefiting the differently abled in the community, no ongoing internal culture practices (ERGs, flexible work, accommodation response-time commitments) for differently-abled employees are described.",
+      "recommendation": "Describe ongoing internal inclusion practices supporting differently-abled employees.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "A detailed multi-channel grievance framework is described (Open Door Policy, Human Rights Committee, POSH Framework, suggestion boxes, whistleblower policy) but none of it is broken out for differently-abled employees specifically.",
+      "recommendation": "Publish grievance or satisfaction data specific to differently-abled employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 30,
+      "rationale": "The filing answers 'Yes' to BRSR questions on RPwD Act 2016 accessibility compliance (for both employees/workers and visitors) and equal opportunity policy alignment, but these are bare affirmations with no elaboration or quantified compliance figure.",
+      "recommendation": "Provide a substantive, quantified account of RPwD Act 2016 compliance (e.g., % of accessible sites, employment quota attainment) rather than a bare yes/no answer.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

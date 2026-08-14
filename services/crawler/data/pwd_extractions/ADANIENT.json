@@ -1,0 +1,43 @@
+{
+  "symbol": "ADANIENT",
+  "company_name": "Adani Enterprises Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/adani-enterprises-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 12, "total_pages": 30, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Adani Enterprises states it has an Equal Opportunity Policy as per the Rights of Persons with Disabilities Act, 2016: 'the Company is steadfast in its commitment to fostering an inclusive and equitable workplace for Persons with Disabilities (PwDs),' with these principles 'deeply integrated into our HR and Diversity & Inclusion (D&I) frameworks.' A web-link to the Policy on Diversity, Equity and Inclusion is provided (adanienterprises.com .../Policy-on-Diversity-Equity-and-Inclusion.pdf).",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As at end of FY 2025-26, the Company reports 15 total differently abled employees (12 male, 80.00%; 3 female, 20.00%; all Permanent, 0 Other than Permanent), and 16 total differently abled workers (15 male, 93.75%; 1 female, 6.25%; comprising 4 Permanent and 12 Other than Permanent).",
+    "physical_accessibility_measures": "Adani Enterprises describes detailed physical accessibility measures: corporate offices are 'barrier-free and inclusive from the point of entry, with dedicated parking for PWD employees near lift lobbies and accessible ramps installed at all building entrances and basement lift areas'; 'wheelchair-compatible elevators equipped with Braille features for visually impaired employees'; 'each floor is provisioned with accessible washrooms'; for visitors, the company adds 'audio-visual alarm systems to effectively communicate emergency situations' and states it 'also provides motorised wheelchairs to further enhance mobility support within its premises.' The Company states it follows 'a structured approach to ensure accessibility across both existing and new infrastructure,' covering workstations, restrooms, common areas, and pathways.",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": true,
+    "recruitment_details": "The Company states: 'In strict alignment with the Rights of Persons with Disabilities Act, 2016, we actively promote the inclusion of PwDs by ensuring their placement in roles that best leverage their unique skills, capabilities, and functional suitability.' No numeric hiring targets, attainment rates, or named disability-specific recruitment outreach partners are disclosed.",
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": false,
+    "culture_practices_details": null,
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "The Company affirmatively answers the mandated BRSR statutory questions on the Rights of Persons with Disabilities Act, 2016: premises/offices accessible to differently abled employees and workers ('Yes', with detailed infrastructure described); an Equal Opportunity Policy in place with a web-link; and premises accessible to differently abled visitors ('Yes', with detailed accessibility measures described).",
+    "evidence": [
+      {"field": "policy_summary", "quote": "Yes, the Company is steadfast in its commitment to fostering an inclusive and equitable workplace for Persons with Disabilities (PwDs).", "original_page": 14, "source": "BRSR"},
+      {"field": "pwd_employee_count_details", "quote": "Total Differently abled employees (D+E) 15 12 80.00% 3 20.00% ... Total differently abled Workers (F+G) 16 15 93.75% 1 6.25%", "original_page": 3, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "Our corporate offices are designed to be barrier-free and inclusive from the point of entry, with dedicated parking for PWD employees near lift lobbies and accessible ramps installed at all building entrances and basement lift areas... Vertical mobility is supported through wheelchair-compatible elevators equipped with Braille features for visually impaired employees", "original_page": 14, "source": "BRSR"},
+      {"field": "recruitment_details", "quote": "we actively promote the inclusion of PwDs by ensuring their placement in roles that best leverage their unique skills, capabilities, and functional suitability", "original_page": 14, "source": "BRSR"},
+      {"field": "compliance_details", "quote": "The Company has implemented comprehensive accessibility measures to ensure a safe and inclusive workplace for all visitors including differently abled. Ramps have been installed at all entry points of the office building as well as across basement lift lobbies", "original_page": 19, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

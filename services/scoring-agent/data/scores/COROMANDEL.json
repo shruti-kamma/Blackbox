@@ -1,0 +1,93 @@
+{
+  "symbol": "COROMANDEL",
+  "company_name": "COROMANDEL INTERNATIONAL LIMITED",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 29.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 55,
+      "rationale": "The Company lists specific physical infrastructure -- ramps, handrails, accessible canteen/washroom facilities, wheelchairs, doctors on call, and lift/basement access -- provided 'wherever applicable, across plant locations,' but that caveat signals the measures are not confirmed as universal, and no digital accessibility (website/app/assistive tech) is mentioned at all.",
+      "recommendation": "Disclose digital accessibility measures (e.g. WCAG conformance level) and clarify what share of locations currently have the listed physical infrastructure.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "A non-discrimination commitment covering disability is stated under the Coromandel Guide to Business Conduct (CGBC), including a reference to equal opportunities in recruitment, employment, and workplace engagement, but no accommodation process is described and no direct policy weblink is given.",
+      "recommendation": "Publish a standalone disability inclusion/accommodation policy with a defined accommodation-request process and public weblink.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 50,
+      "rationale": "Specific PwD headcounts with gender breakdown are disclosed (10 differently abled employees, 18 differently abled workers), but no percentage-of-workforce framing or year-over-year trend is given.",
+      "recommendation": "Report PwD headcount as an explicit percentage of total workforce with year-over-year trend.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, hiring outreach programs, or attainment data are disclosed; the policy statement only restates general non-discrimination in recruitment.",
+      "recommendation": "Disclose PwD-specific hiring targets, outreach programs, and attainment tracking.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed.",
+      "recommendation": "Report attrition and tenure/promotion data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed; only overall gender diversity of the Board/KMP is reported.",
+      "recommendation": "Disclose PwD representation at management/leadership levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programs are mentioned; general human rights/non-discrimination training is referenced but not disability-focused.",
+      "recommendation": "Introduce and disclose disability sensitization/awareness training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices such as ERGs, flexible work arrangements, or accommodation response-time commitments specific to PwD employees are disclosed.",
+      "recommendation": "Establish and disclose ongoing PwD-focused culture initiatives (ERG, flexible work, accommodation SLAs).",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; general grievance mechanisms exist but are not broken out by disability status.",
+      "recommendation": "Track and disclose grievance/satisfaction data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "The Company states 'Coromandel employs persons with disabilities and is committed to ensuring accessibility across its facilities,' listing specific infrastructure provided 'wherever applicable, across plant locations' in response to the mandated RPwD Act 2016 question, but does not report full attainment, a hiring-quota percentage, or a WCAG conformance level.",
+      "recommendation": "Disclose RPwD Act statutory hiring-quota attainment and confirm what proportion of locations meet the full accessibility infrastructure standard.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

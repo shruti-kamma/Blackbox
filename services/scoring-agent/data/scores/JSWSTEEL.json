@@ -1,0 +1,93 @@
+{
+  "symbol": "JSWSTEEL",
+  "company_name": "JSW Steel Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 23.6,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 35,
+      "rationale": "The company states its offices and operational locations where PwD employees/workers are present are 'equipped with appropriate accessibility infrastructure and facilities' per the RPwD Act, and confirms visitor accessibility, but gives no specific physical features and discloses nothing about digital accessibility.",
+      "recommendation": "Itemize the specific physical accessibility features provided and disclose digital accessibility measures (e.g. website/app conformance to WCAG).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 40,
+      "rationale": "A policy promoting equal opportunity and non-discrimination with provisions aligned to the RPwD Act, 2016 is confirmed, but no concrete accommodation request/approval process is described.",
+      "recommendation": "Describe a concrete workplace accommodation process for PwD employees, including how requests are made and resolved.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 50,
+      "rationale": "A specific, internally consistent PwD headcount is disclosed: 29 differently abled employees (25 male, 4 female) and 0 differently abled workers, but no percentage of total workforce or trend context is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and disclose year-over-year trends.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No hiring targets, attainment rates, or disability-specific recruitment outreach are disclosed.",
+      "recommendation": "Disclose any PwD hiring targets or disability-specific outreach efforts and whether they were met.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No attrition, tenure, or promotion data specific to PwD employees is disclosed.",
+      "recommendation": "Report PwD-specific retention or attrition data separately from overall workforce figures.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No disclosure of PwD representation in senior or management roles.",
+      "recommendation": "Disclose PwD representation specifically within senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No training or sensitization programs related to disability/PwD inclusion are described.",
+      "recommendation": "Introduce and disclose disability-sensitization training for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No PwD-specific ongoing culture practices (ERGs, flexible work, accommodation response-time commitments) are described; only a general reference to grievance mechanisms being available to all employees including persons with disabilities.",
+      "recommendation": "Establish and disclose PwD-specific culture practices, such as an employee resource group or documented accommodation response-time commitment.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No satisfaction or grievance data specific to PwD employees is disclosed; only a general statement that grievance redressal mechanisms are available to all employees including persons with disabilities.",
+      "recommendation": "Track and disclose PwD-specific employee feedback or grievance outcomes.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 40,
+      "rationale": "The company affirmatively answers the mandated BRSR statutory questions on RPwD Act workplace accessibility, equal opportunity policy, and visitor accessibility, but does not report quota attainment or any audited/verifiable compliance claim.",
+      "recommendation": "Disclose RPwD Act statutory quota attainment figures rather than only affirming general accessibility and policy compliance.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

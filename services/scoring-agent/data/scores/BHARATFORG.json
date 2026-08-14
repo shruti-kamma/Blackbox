@@ -1,0 +1,93 @@
+{
+  "symbol": "BHARATFORG",
+  "company_name": "Bharat Forge Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 29.3,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 55,
+      "rationale": "Bharat Forge names specific physical accessibility features (ramps, lifts, and handrails for stairwells) installed to facilitate movement of differently abled individuals, which is more concrete than a bare compliance statement, but no digital accessibility measures are disclosed at all.",
+      "recommendation": "Disclose digital accessibility measures such as website/app conformance standards or assistive technology support.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "A standalone, dedicated 'Equal Opportunity Policy for Persons with Disabilities' (BFL-22) is published with a specific web-link, which is more specific than a generic non-discrimination clause, but no accommodation-request process is described.",
+      "recommendation": "Describe a concrete workplace accommodation process for PwD employees, including how requests are made and response times.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 40,
+      "rationale": "A specific PwD headcount is disclosed (0 differently abled employees and 0 differently abled workers out of 2,849 employees and 7,774 workers), which is a concrete and verifiable figure, but it reveals no actual PwD employment and no explanation or improvement plan is given.",
+      "recommendation": "Disclose a plan and targets to build PwD representation in the workforce, given the currently reported zero headcount.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No PwD-specific hiring targets, attainment figures, or disability-focused recruitment outreach are disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD hiring targets and attainment, and name specific disability-focused recruitment channels or partners.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed (and no PwD employees are reported to begin with).",
+      "recommendation": "Disclose PwD-specific attrition and promotion rates once PwD representation exists in the workforce.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No PwD presence in senior/management roles is disclosed anywhere in the filing.",
+      "recommendation": "Report PwD representation specifically within senior management and leadership roles.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is disclosed.",
+      "recommendation": "Introduce and disclose a disability-sensitization or inclusion training program for employees and managers.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices specific to PwD employees (ERGs, flexible work, accommodation response-time commitments) are disclosed.",
+      "recommendation": "Describe ongoing inclusion practices for PwD employees, such as an ERG, flexible-work provisions, or accommodation response-time commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD-specific feedback channels and any satisfaction or grievance metrics collected from PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "Bharat Forge affirmatively answers the mandated BRSR RPwD Act, 2016 questions with named supporting measures (ramps, lifts, handrails, a dedicated policy document), but there is no claimed WCAG conformance level or quantified quota-attainment figure.",
+      "recommendation": "State a specific WCAG conformance level for digital properties and report attainment against any statutory disability-employment quota.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "HDFCLIFE",
+  "company_name": "HDFC Life Insurance Company Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 28.6,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 55,
+      "rationale": "The filing details specific physical accessibility infrastructure at the Mumbai corporate headquarters (accessible washrooms, ramps, handrails, accessible restrooms), but this detail is limited to the HQ rather than all 715 offices, and no digital accessibility measures are disclosed.",
+      "recommendation": "Disclose accessibility infrastructure coverage across all branch offices, not just the HQ, and add digital accessibility measures.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 55,
+      "rationale": "An equal opportunity commitment for persons with disabilities is embedded in the Code of Conduct and DEI Policy, both linked publicly, but no concrete accommodation-request process is described.",
+      "recommendation": "Describe a concrete accommodation-request process with defined response times.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 45,
+      "rationale": "A specific PwD headcount is disclosed by gender (24 employees, all permanent), but the filing itself notes these figures rely on voluntary self-disclosure by employees (likely an undercount) and no percentage-of-workforce context is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and improve voluntary disclosure mechanisms to reduce undercounting.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, outreach programmes, or hiring attainment figures are disclosed.",
+      "recommendation": "Disclose PwD-specific hiring targets and attainment for the reporting year.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; general turnover figures do not break out PwD employees.",
+      "recommendation": "Report attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "The filing reports women's representation on the Board and in Key Management Personnel but makes no mention of PwD representation in senior or management roles.",
+      "recommendation": "Disclose PwD representation figures within senior/management leadership tiers.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "The filing explicitly notes it does not have a standalone Human Rights or disability-sensitization training module; DEI-related content is folded into general Code of Conduct/POSH training without disability-specific content described.",
+      "recommendation": "Introduce and disclose a dedicated disability-sensitization training programme.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "General wellness initiatives (Click2Wellness, FitbyBit Challenge, mindfulness sessions) are described, but none is identified as PwD-specific; no ERG or accommodation response-time commitment is disclosed.",
+      "recommendation": "Establish and disclose a concrete ongoing PwD-inclusion practice such as an ERG or accommodation SLA.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "An annual Employee Satisfaction (ESAT) survey is mentioned as including a human rights risk assessment, but no PwD-specific satisfaction or grievance data is disclosed.",
+      "recommendation": "Break out ESAT survey results or grievance data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 45,
+      "rationale": "The Company states general compliance with the RPwD Act, 2016 for both accessibility and having an equal opportunity policy, but discloses no specific employment-quota attainment percentage or other verifiable compliance metric.",
+      "recommendation": "Disclose the specific RPwD Act employment-quota attainment percentage.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

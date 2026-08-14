@@ -1,0 +1,43 @@
+{
+  "symbol": "GODREJPROP",
+  "company_name": "Godrej Properties Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "source_pdf": "reports/godrej-properties-limited-2025-2026.pdf",
+  "annual_report_pdf": null,
+  "sources_used": ["BRSR"],
+  "mock": false,
+  "manual_extraction": true,
+  "triage": {"brsr": {"flagged_pages_count": 7, "total_pages": 24, "ocr_fallback": false, "no_signal_fallback": false}},
+  "extraction": {
+    "policy_exists": true,
+    "policy_summary": "Godrej Properties states: 'Yes, GPL has a diversity, anti discrimination, equal opportunity policy,' provided in response to the mandated question on whether the entity has an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016, with a link to the Diversity, Anti discrimination, equal opportunities policy.",
+    "accommodation_process_described": false,
+    "accommodation_process_summary": null,
+    "pwd_employee_count_stated": true,
+    "pwd_employee_count_details": "As at end of FY 2025-26, GPL reports 76 total differently abled employees (68 male, 89.5%; 8 female, 10.5%), comprising 65 Permanent (59 male, 90.7%; 6 female, 9.2%) and 11 Other than Permanent (9 male, 81.8%; 2 female, 18.1%). Differently abled workers are marked 'NA' (the company does not report a separate 'workers' category, consistent with its overall employee/worker table where workers are also NA).",
+    "physical_accessibility_measures": "GPL states: 'The GPL Head Office in Vikhroli, Mumbai is accessible to differently-abled employees and workers. Additionally 40 project site offices are made accessible,' and describes steps being taken: 'We provide gender neutral restrooms which are \"people with disabilities\" (PwD) compliant' and 'We are doing accessibility audits to identify further modifications required.' Separately, in the visitor-accessibility answer, it states that Godrej One (head office) and 40 project site offices (Marketing and Show Apartment offices) are 'fully accessible inclusive of tactile flooring, all inclusive washrooms, ramps, broad pathways etc.'",
+    "digital_accessibility_measures": null,
+    "training_or_sensitization_programs": null,
+    "recruitment_disclosed": false,
+    "recruitment_details": null,
+    "retention_disclosed": false,
+    "retention_details": null,
+    "leadership_representation_disclosed": false,
+    "leadership_representation_details": null,
+    "culture_practices_disclosed": true,
+    "culture_practices_details": "GPL states it is 'doing accessibility audits to identify further modifications required' as an ongoing step beyond its current accessible-premises baseline, indicating an active, continuing accessibility-improvement practice rather than a one-time policy statement. No specific audit timeline, frequency, or scope (e.g., number of sites per year) is given, and no other ongoing PwD-specific practices (ERG, flexible work, accommodation response-time commitment) are described.",
+    "employee_feedback_disclosed": false,
+    "employee_feedback_details": null,
+    "compliance_disclosed": true,
+    "compliance_details": "GPL affirmatively answers the mandated BRSR statutory questions on the Rights of Persons with Disabilities Act, 2016: premises (Head Office and 40 project site offices) accessible to differently abled employees and workers ('Yes,' with described PwD-compliant restrooms and ongoing accessibility audits); an equal opportunity policy in place with a web-link; and premises accessible to differently abled visitors ('Yes,' with tactile flooring, all-inclusive washrooms, ramps and broad pathways at 40 project site offices).",
+    "evidence": [
+      {"field": "policy_summary", "quote": "Yes, GPL has a diversity, anti discrimination, equal opportunity policy. The link for the policy is Diversity, Anti discrimination, equal opportunities policy.", "original_page": 8, "source": "BRSR"},
+      {"field": "pwd_employee_count_details", "quote": "Differently Abled Employees 1. Permanent (D) 2. Other than Permanent (E) 3. Total employees (D + E) ... Total (A) 65 11 76 ... No. (B) 59 9 68 ... Male % (B / A) 90.7% 81.8% 89.5%", "original_page": 2, "source": "BRSR"},
+      {"field": "physical_accessibility_measures", "quote": "The GPL Head Office in Vikhroli, Mumbai is accessible to differently-abled employees and workers. Additionally 40 project site offices are made accessible... We provide gender neutral restrooms which are 'people with disabilities' (PwD) compliant.", "original_page": 8, "source": "BRSR"},
+      {"field": "culture_practices_details", "quote": "We are doing accessibility audits to identify further modifications required.", "original_page": 8, "source": "BRSR"},
+      {"field": "compliance_details", "quote": "Yes. Godrej One the head office is accessible. Additionally 40 project site offices - Marketing and Show Apartment offices are fully accessible inclusive of tactile flooring, all inclusive washrooms, ramps, broad pathways etc", "original_page": 12, "source": "BRSR"}
+    ],
+    "no_disclosure_found": false
+  }
+}

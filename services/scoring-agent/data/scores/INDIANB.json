@@ -1,0 +1,93 @@
+{
+  "symbol": "INDIANB",
+  "company_name": "Indian Bank",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 33.0,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 55,
+      "rationale": "Physical accessibility is described with some specificity (ramps, elevators, wheelchairs, restrooms, and a stated ~75% of offices accessible), but no digital accessibility measures (website/app/screen-reader support) are disclosed at all.",
+      "recommendation": "Disclose digital accessibility measures such as website/app WCAG conformance and assistive technology support.",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 50,
+      "rationale": "An Equal Opportunity Policy aligned with the RPwD Act, 2016 is stated to exist and is described at a general level, but no concrete accommodation request/approval process is described.",
+      "recommendation": "Describe the concrete workplace accommodation request and approval process available to PwD employees.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "A specific headcount (1,210 permanent differently abled employees, with gender split) is disclosed, but no context such as % of total workforce or trend over time is given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and against the RPwD Act mandated quota.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 30,
+      "rationale": "The filing states PWD reservation is provided in direct recruitment per GoI guidelines, but gives no numeric target, disability-specific outreach programs, or attainment figures.",
+      "recommendation": "Publish the PWD recruitment target/quota and the attainment achieved during the year.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; only general parental-leave return/retention rates are given, which are not disability-specific.",
+      "recommendation": "Disclose attrition and retention rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed anywhere in the filing.",
+      "recommendation": "Report PwD representation broken out by seniority/management level.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 41,
+      "rationale": "Disability inclusion and sensitization content is stated to be available via the LMS self-learning portal, and a workshop on PWD reservation policy and accessible services is listed, but no participation numbers or completion rates are given.",
+      "recommendation": "Report participation/completion rates for disability sensitization training.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing culture practices (PwD ERG, flexible work arrangements, accommodation response-time commitments) specific to PwD employees are disclosed beyond the general policy statement.",
+      "recommendation": "Disclose ongoing PwD-specific culture practices such as an employee resource group or flexible work commitments.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; only a general employee grievance mechanism (H-Response, Internal Ombudsman) is described, not disability-specific.",
+      "recommendation": "Disclose satisfaction or grievance-resolution data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing does not state RPwD Act quota attainment as a percentage or claim any accessibility conformance standard (e.g. WCAG level); only general policy alignment language is used.",
+      "recommendation": "State the RPwD Act statutory quota attainment percentage or any accessibility conformance standard achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "ICICIGI",
+  "company_name": "ICICI Lombard General Insurance Company Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 17.9,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 30,
+      "rationale": "The filing states that offices where differently abled employees work (Vashi, Rourkela, Indore) are 'equipped with accessibility features' per the RPwD Act, but does not itemize which features (ramps, elevators, restrooms) or disclose any digital accessibility measures.",
+      "recommendation": "Itemize the specific physical accessibility features provided and disclose any digital accessibility measures (e.g. screen-reader support, WCAG conformance).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 45,
+      "rationale": "The Company states a commitment to equal opportunity for individuals with disabilities and references a Fair Employment Practices and Diversity section in its Employees Code of Conduct, but no concrete accommodation request/approval process is described.",
+      "recommendation": "Describe a concrete process for employees to request and receive workplace accommodations.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 50,
+      "rationale": "A specific headcount is disclosed (10 differently abled employees, 6 male/4 female), but with no percentage of total workforce or year-over-year trend given.",
+      "recommendation": "Report PwD headcount as a percentage of total workforce and track it over time.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 0,
+      "rationale": "No disability-specific recruitment targets, outreach, or hiring attainment figures are disclosed anywhere in the filing.",
+      "recommendation": "Disclose any disability-specific hiring targets or outreach programs and report attainment against them.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed.",
+      "recommendation": "Disclose attrition and retention data specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed anywhere in the filing.",
+      "recommendation": "Report PwD representation broken out by seniority/management level.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization program is described anywhere in the filing.",
+      "recommendation": "Disclose any disability sensitization or accessibility training programs offered to employees.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERG, flexible work, accommodation response-time commitments) are disclosed; general employee wellbeing benefits described are not PwD-specific.",
+      "recommendation": "Disclose ongoing culture practices supporting PwD employees, such as a dedicated employee resource group.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "An Employee Engagement & Satisfaction Survey and general grievance mechanisms are described, but none are disability-specific and no PwD satisfaction data is given.",
+      "recommendation": "Disclose satisfaction or grievance-resolution data specific to PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 0,
+      "rationale": "The filing states offices are equipped to 'comply with' the RPwD Act, but does not state a quota attainment percentage or any accessibility conformance standard (e.g. WCAG level).",
+      "recommendation": "State the RPwD Act statutory quota attainment percentage or any accessibility conformance standard achieved.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}

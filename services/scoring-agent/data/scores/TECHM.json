@@ -1,0 +1,93 @@
+{
+  "symbol": "TECHM",
+  "company_name": "Tech Mahindra Limited",
+  "fy_from": 2025,
+  "fy_to": 2026,
+  "overall_score": 37.9,
+  "methodology_version": "v1-10metric",
+  "generated_by": "manual-claude@v1",
+  "generated_at": "2026-08-13T00:00:00.000Z",
+  "mock": false,
+  "breakdown": [
+    {
+      "category": "Accessibility",
+      "subscore": 60,
+      "rationale": "Filing discloses both physical measures (ramps, elevators, accessible washrooms, transportation support) and a rare mention of digital/ICT accessibility ('information and communications with technologies and systems aligned with the requirements of persons with disabilities'), though no specific accessibility standard (e.g., WCAG) or feature is named.",
+      "recommendation": "Name the specific digital accessibility standard or features implemented (e.g., WCAG conformance level, screen-reader compatibility).",
+      "included_in_score": true,
+      "industry_average": 46.4
+    },
+    {
+      "category": "Policy",
+      "subscore": 60,
+      "rationale": "A public Policy on Equal Employment, Diversity & Inclusion explicitly commits to RPwD Act provisions including 'identified positions,' and a concrete accommodation process is named (Corporate Services team handles accessibility-related requests), though no response-time commitment is given.",
+      "recommendation": "Publish a defined response-time commitment for accommodation requests handled by the Corporate Services team.",
+      "included_in_score": true,
+      "industry_average": 48.8
+    },
+    {
+      "category": "Employment",
+      "subscore": 55,
+      "rationale": "A specific, gender-broken-down PwD headcount is disclosed (370 employees) with an unusually transparent caveat that the figure is self-identified and voluntary and therefore an undercount -- more candid than most peers -- but still lacks trend data or attainment against any target.",
+      "recommendation": "Report PwD headcount trends year-over-year and note any measures taken to encourage voluntary self-identification.",
+      "included_in_score": true,
+      "industry_average": 53.5
+    },
+    {
+      "category": "Recruitment",
+      "subscore": 35,
+      "rationale": "The equal opportunity policy commits to providing 'specific opportunities for identified positions' for Persons with Disabilities under the RPwD Act, but no numeric hiring target, dedicated outreach channel, or attainment figure is disclosed.",
+      "recommendation": "Set and report a measurable PwD hiring target with year-over-year attainment, and disclose any disability-focused recruitment outreach.",
+      "included_in_score": true,
+      "industry_average": 11.2
+    },
+    {
+      "category": "Retention",
+      "subscore": 0,
+      "rationale": "No PwD-specific attrition, tenure, or promotion data is disclosed; the return-to-work/retention table covers parental leave only and is not broken out by disability status.",
+      "recommendation": "Track and disclose attrition and promotion rates specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Leadership",
+      "subscore": 0,
+      "rationale": "No data on PwD representation in senior or management roles is disclosed anywhere in the filing.",
+      "recommendation": "Disclose PwD representation figures specifically at senior/management levels.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Learning",
+      "subscore": 0,
+      "rationale": "No disability-specific training or sensitization programme is described; training disclosures cover health & safety, skill upgradation, and human rights, but not disability awareness.",
+      "recommendation": "Introduce and disclose a disability-awareness/sensitization training module for managers and staff.",
+      "included_in_score": true,
+      "industry_average": 4.8
+    },
+    {
+      "category": "Culture",
+      "subscore": 0,
+      "rationale": "No ongoing PwD-specific culture practices (ERG, flexible work, accommodation response-time commitment) are disclosed beyond the accommodation-request process already captured under Policy.",
+      "recommendation": "Establish and disclose concrete ongoing PwD-inclusion practices such as an employee resource group.",
+      "included_in_score": true,
+      "industry_average": 7.4
+    },
+    {
+      "category": "Employee Feedback",
+      "subscore": 0,
+      "rationale": "No PwD-specific satisfaction or grievance data is disclosed; general grievance channels (Corporate Ombudsman, FreeVoice) exist but are not broken out for PwD employees.",
+      "recommendation": "Track and disclose grievance/satisfaction metrics specifically for PwD employees.",
+      "included_in_score": false,
+      "industry_average": 0.0
+    },
+    {
+      "category": "Compliance",
+      "subscore": 55,
+      "rationale": "Filing directly and affirmatively answers the mandated BRSR RPwD Act questions for both employees and visitors, citing barrier-free physical and ICT infrastructure, but no statutory employment quota attainment percentage or WCAG conformance level is stated.",
+      "recommendation": "Disclose the specific RPwD Act statutory employment quota attainment percentage and any formal WCAG conformance claim.",
+      "included_in_score": true,
+      "industry_average": 34.1
+    }
+  ]
+}
