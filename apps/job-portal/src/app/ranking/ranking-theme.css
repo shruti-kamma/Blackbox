@@ -1,31 +1,23 @@
 /*
- * Rankings-section theme overrides, ported from apps/rankings' globals.css
- * (shruti branch) — scoped to #ranking-root, since this now shares one
- * document with the rest of job-portal instead of being its own standalone
- * <html>. Scoping this way means the navy/purple accent, card token, and
- * Lexend font only apply inside the /ranking section — everything else on
- * the site keeps job-portal's own theme untouched.
- *
- * Light-only, no toggle: there's no data-theme switching mechanism here
- * (removed — light mode is the only mode /ranking offers, matching the
- * sitewide "light is the deliberate default" direction, taken one step
- * further by not offering a manual dark option here at all).
+ * Rankings-section theme overrides scoped to #ranking-root.
+ * Supports light (#03068d) and dark (#7c3ca1) theme configuration rules.
  */
 
 #ranking-root {
   --font-sans: var(--font-lexend);
   --font-serif: var(--font-lexend);
 
-  /* Editorial-corporate theme: black/white/gray from the shared base theme,
-     with navy (--color-primary) as the interactive/brand color and purple
-     (--color-secondary) as its paired accent — the two are used together as
-     a gradient duo on hero numerals and primary CTAs (see docs/decisions.md
-     — "Editorial redesign"), not as a primary/secondary hierarchy and not
-     split by section. */
   --color-primary: #03068d;
   --color-secondary: #7c3ca1;
   --color-focus-ring: #03068d;
-  --color-card: #ffffff;
+  --color-card: #f4f4f5;
 
   font-family: var(--font-sans), sans-serif;
+}
+
+[data-theme="dark"] #ranking-root {
+  --color-primary: #7c3ca1;
+  --color-secondary: #03068d;
+  --color-focus-ring: #7c3ca1;
+  --color-card: #18181b;
 }
