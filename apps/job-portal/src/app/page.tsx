@@ -29,7 +29,7 @@ export default async function Home() {
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30">
-        <div className="absolute inset-0 z-0 opacity-60 dark:opacity-40">
+        <div className="absolute inset-0 z-0 opacity-80">
           <HeroShapeGrid />
         </div>
         <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-20 text-left md:py-28 font-sans">
