@@ -34,16 +34,16 @@ export default async function Home() {
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8 flex-1 flex flex-col justify-center text-left font-sans">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-1.5">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-2">
             <span>Blackbox INDEX</span>
-            <sup className="text-base sm:text-xl font-extrabold text-primary select-none">™</sup>
+            <sup className="text-xl sm:text-3xl font-extrabold text-primary select-none">™</sup>
           </h1>
 
-          <p className="mt-2 text-base sm:text-lg font-semibold tracking-wide text-primary font-sans">
+          <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold tracking-wide text-primary font-sans">
             (Indian National Disability Ecosystem Exchange)
           </p>
 
-          <p className="mt-5 max-w-2xl text-base sm:text-lg text-muted-foreground font-sans leading-relaxed">
+          <p className="mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground font-sans leading-relaxed">
             India&apos;s first unified accessibility and inclusion intelligence platform — matching candidates with disabilities to verified roles while tracking real, enforced employer accommodation commitments.
           </p>
         </div>
