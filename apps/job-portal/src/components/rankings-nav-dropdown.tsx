@@ -11,7 +11,7 @@ export function RankingsNavDropdown({ className = "" }: RankingsNavDropdownProps
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click anywhere on the screen
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -34,12 +34,7 @@ export function RankingsNavDropdown({ className = "" }: RankingsNavDropdownProps
   }, []);
 
   return (
-    <div
-      ref={dropdownRef}
-      className="relative inline-block text-left"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
+    <div ref={dropdownRef} className="relative inline-block text-left">
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
