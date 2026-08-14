@@ -33,14 +33,18 @@ export default async function Home() {
           <HeroShapeGrid />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col justify-center text-left font-sans">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-2">
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8 flex-1 flex flex-col justify-center text-left font-sans">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-1.5">
             <span>Blackbox INDEX</span>
-            <sup className="text-xl sm:text-3xl font-extrabold text-primary select-none">™</sup>
+            <sup className="text-base sm:text-xl font-extrabold text-primary select-none">™</sup>
           </h1>
 
-          <p className="mt-4 text-lg sm:text-xl md:text-2xl font-semibold tracking-wide text-primary font-sans">
+          <p className="mt-2 text-base sm:text-lg font-semibold tracking-wide text-primary font-sans">
             (Indian National Disability Ecosystem Exchange)
+          </p>
+
+          <p className="mt-5 max-w-2xl text-base sm:text-lg text-muted-foreground font-sans leading-relaxed">
+            India&apos;s first unified accessibility and inclusion intelligence platform — matching candidates with disabilities to verified roles while tracking real, enforced employer accommodation commitments.
           </p>
         </div>
 
