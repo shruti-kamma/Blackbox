@@ -9,10 +9,10 @@ import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
 import { PortalSelectTrigger } from "@/components/a11y/portal-select-trigger";
 import { HeroShapeGrid } from "@/components/hero-shape-grid";
 
-// The Rankings landing page — hero, live top-scorers teaser, institution
-// search, product pitch, and About section all live here at /rankings.
-// The bare "/" is the separate NGO landing page (see app/page.tsx); the
-// job portal itself lives at /nexo.
+// The Blackbox INDEX landing page — hero, live top-scorers teaser,
+// institution search, product pitch, and About section all live here at
+// /indextm. The bare "/" is the separate pre-launch teaser (see
+// app/page.tsx); the job portal itself lives at /nexo.
 export default async function Home() {
   const user = await getCurrentUser();
   if (user?.role === "CANDIDATE") redirect("/nexo/candidate/jobs");
@@ -58,7 +58,7 @@ export default async function Home() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <InstitutionSearch options={searchOptions} />
             <Link
-              href="/rankings/companies"
+              href="/indextm/companies"
               className="flex h-touch-target shrink-0 items-center justify-center rounded-full border border-border bg-background px-6 text-sm font-semibold text-foreground hover:bg-muted"
             >
               Discover all institutions
@@ -115,7 +115,7 @@ export default async function Home() {
           </PortalSelectTrigger>
 
           <Link
-            href="/rankings/companies"
+            href="/indextm/companies"
             className="flex flex-col items-start gap-3 rounded-lg border-2 border-border bg-background p-7 text-left hover:shadow-md"
           >
             <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold tracking-wide text-muted-foreground uppercase">
@@ -173,7 +173,7 @@ export default async function Home() {
             public disclosures, scored against a fixed methodology, not a self-submitted survey. 50 companies are
             live today, with employer accommodation history and candidate reviews from the hiring side planned as
             the next data source — see{" "}
-            <Link href="/rankings/methodology" className="font-medium text-primary underline">
+            <Link href="/indextm/methodology" className="font-medium text-primary underline">
               the methodology
             </Link>{" "}
             for how it works.

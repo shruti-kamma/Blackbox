@@ -53,10 +53,6 @@ export async function Nav() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <PortalSelectTrigger className={LINK_CLASS}>Job portal</PortalSelectTrigger>
-            <Link href="/rankings#about" className={LINK_CLASS}>
-              About
-            </Link>
           </>
         )}
         {user?.role === "CANDIDATE" && (

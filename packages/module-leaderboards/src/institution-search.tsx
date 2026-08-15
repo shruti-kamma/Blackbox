@@ -98,7 +98,7 @@ export function InstitutionSearch({ options }: { options: InstitutionSearchOptio
             results.map((o) => (
               <li key={o.slug} role="option" aria-selected="false">
                 <Link
-                  href={`/rankings/organizations/${o.slug}`}
+                  href={`/indextm/organizations/${o.slug}`}
                   className="flex items-center justify-between gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted"
                   onClick={() => setOpen(false)}
                 >

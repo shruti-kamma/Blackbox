@@ -165,7 +165,7 @@ export async function OrgSnapshotContent({ slug }: OrgSnapshotContentProps) {
               size="sm"
               className="rounded-full shrink-0 bg-gradient-to-r from-primary to-secondary"
             >
-              <Link href={`/rankings/claim?org=${org.slug}`}>Claim record</Link>
+              <Link href={`/indextm/claim?org=${org.slug}`}>Claim record</Link>
             </Button>
           </div>
         )}

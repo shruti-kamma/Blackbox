@@ -88,11 +88,6 @@ export function MobileNav({ role }: MobileNavProps) {
                     {link.label}
                   </Link>
                 ))}
-                <div className="my-2 border-t border-border" />
-                <PortalSelectTrigger className={`${LINK_CLASS} w-full text-left`}>Job portal</PortalSelectTrigger>
-                <Link href="/rankings#about" className={LINK_CLASS}>
-                  About
-                </Link>
               </>
             )}
             {role === "CANDIDATE" && (
