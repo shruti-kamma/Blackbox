@@ -1,5 +1,6 @@
 import { HomePageContent } from "@/components/home-page-content";
 
-export default async function Home() {
+// Same page as the root "/" route, under a second URL.
+export default async function NgoPage() {
   return <HomePageContent />;
 }
