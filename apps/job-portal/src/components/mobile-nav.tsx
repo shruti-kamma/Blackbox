@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { NotificationBell } from "./notification-bell";
 import { LogoutButton } from "./logout-button";
 import { PortalSelectTrigger } from "./a11y/portal-select-trigger";
-import { NAV_LINKS as RANKING_NAV_LINKS } from "@/lib/ranking-nav";
 
 export type NavUserRole = "CANDIDATE" | "EMPLOYER" | "ADMIN" | null;
 
@@ -78,18 +77,6 @@ export function MobileNav({ role }: MobileNavProps) {
           className="absolute inset-x-0 top-16 z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-border bg-background px-4 py-4 shadow-lg"
         >
           <nav aria-label="Primary" className="flex flex-col gap-1">
-            {role === null && (
-              <>
-                <p className="px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Rankings
-                </p>
-                {RANKING_NAV_LINKS.map((link) => (
-                  <Link key={link.href} href={link.href} className={LINK_CLASS}>
-                    {link.label}
-                  </Link>
-                ))}
-              </>
-            )}
             {role === "CANDIDATE" && (
               <>
                 <Link href="/nexo/candidate/profile" className={LINK_CLASS}>

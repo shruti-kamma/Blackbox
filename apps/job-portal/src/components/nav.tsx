@@ -1,34 +1,15 @@
 import Link from "next/link";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@blackbox/ui";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { LogoutButton } from "./logout-button";
 import { NotificationBell } from "./notification-bell";
 import { PortalSelectTrigger } from "./a11y/portal-select-trigger";
 import { NavLogo } from "./nav-logo";
 import { MobileNav } from "./mobile-nav";
-import { NAV_LINKS as RANKING_NAV_LINKS } from "@/lib/ranking-nav";
 
 // Follows the shared --color-* theme tokens (light/dark, and the a11y
 // presentation modes that also override them) like every other page,
 // instead of a previous hardcoded-always-dark palette.
 const LINK_CLASS = "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground";
-
-function ChevronDownIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-3.5 w-3.5"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
 
 export async function Nav() {
   const user = await getCurrentUser();
@@ -38,23 +19,6 @@ export async function Nav() {
       <NavLogo />
 
       <nav className="hidden flex-1 items-center justify-center gap-8 md:flex">
-        {!user && (
-          <>
-            <DropdownMenu>
-              <DropdownMenuTrigger className={`${LINK_CLASS} flex items-center gap-1 outline-none`}>
-                Rankings
-                <ChevronDownIcon />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                {RANKING_NAV_LINKS.map((link) => (
-                  <DropdownMenuItem key={link.href} asChild>
-                    <Link href={link.href}>{link.label}</Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </>
-        )}
         {user?.role === "CANDIDATE" && (
           <>
             <Link href="/nexo/candidate/profile" className={LINK_CLASS}>
