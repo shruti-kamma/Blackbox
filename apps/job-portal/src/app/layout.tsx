@@ -20,8 +20,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blackbox Jobs",
-  description: "An accessibility-first hiring portal for persons with disabilities.",
+  title: "Blackbox Global Foundation",
+  description:
+    "Building the data, platforms, networks, and pathways that turn disability inclusion into participation, education, employment, and economic opportunity.",
 };
 
 export default async function RootLayout({
