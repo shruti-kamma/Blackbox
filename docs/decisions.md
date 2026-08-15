@@ -111,11 +111,11 @@ public documents at all.
 
 - **Six-level ladder**: AI Est. (0) → Registered (1) → Self-Declared (2) →
   Doc-Verified (3) → Audited (4) → Certified (5).
-- **B4I has two views, per the client's own Lovable/Claude prompt for the
+- **The platform has two views, per the client's own prompt for the
   platform**: a **public view** (anonymous visitors — leaderboards, org
   pages) and a **company view** (private, login-gated behind company-email
-  or similar verification, mechanism TBD) that's the full "B4I
-  Intelligence" dashboard — eight tabs (Snapshot, Benchmark, Gap Analysis,
+  or similar verification, mechanism TBD) that's the full
+  Intelligence dashboard — eight tabs (Snapshot, Benchmark, Gap Analysis,
   Roadmap, Impact Simulator, Progress Tracker, Recognition, Executive
   Boardroom). Only Snapshot is public; the other seven are shown as
   disabled/locked tab labels on the public org page (visible that they
@@ -149,7 +149,7 @@ mean of ten independent 0-100 subscores — mathematically identical to the
 10-points-each framing, just on the same 0-100-per-metric scale the
 rankings site already displays rather than 0-10.
 
-Final 10 (8 from the client's own B4I mockup, kept as-is since they're
+Final 10 (8 from the client's own mockup, kept as-is since they're
 already visually validated there, not just verbally specified):
 **Accessibility, Policy, Employment, Recruitment, Retention, Leadership,
 Learning, Culture, Employee Feedback, Compliance.**

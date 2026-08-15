@@ -140,7 +140,7 @@ export const MATURITY_LEVEL_DOT_CLASS: Record<MaturityLevel, string> = {
 
 // Provisional score cutoffs — the client hasn't given exact thresholds yet.
 // Calibrated only to the one known reference point (score 68 -> "Progressing"
-// from the client's B4I mockup). Replace once the real cutoffs are confirmed;
+// from the client's initial mockup). Replace once the real cutoffs are confirmed;
 // nothing else in the app depends on the exact boundary values.
 const MATURITY_THRESHOLDS: { min: number; label: MaturityLevel }[] = [
   { min: 85, label: "Transforming" },
