@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import { Lexend, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
-import { Nav } from "@/components/nav";
-import { PortalSelectProvider } from "@/components/a11y/portal-select-provider";
 import { ThemeToggleFloating } from "@/components/theme-toggle-floating";
 import { A11Y_COOKIE_NAME } from "@/lib/a11y/cookie";
 
-// Sitewide editorial redesign (see docs/decisions.md — "Editorial
-// redesign"), extended here from its original /ranking-only scope —
-// loaded once for the whole app now, rather than duplicated in
-// app/ranking/layout.tsx's own scoped instance.
+// Root shell shared by both the NGO landing page (this route, "/") and
+// everything under the (app) route group. Nav + PortalSelectProvider
+// live in (app)/layout.tsx instead of here, since the NGO placeholder
+// isn't part of the job-portal/rankings app and shouldn't show its nav.
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
@@ -44,11 +42,8 @@ export default async function RootLayout({
       data-a11y={a11yMode || undefined}
     >
       <body className="min-h-full flex flex-col relative">
-        <PortalSelectProvider>
-          <Nav />
-          {children}
-          <ThemeToggleFloating />
-        </PortalSelectProvider>
+        {children}
+        <ThemeToggleFloating />
       </body>
     </html>
   );

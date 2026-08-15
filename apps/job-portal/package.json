@@ -19,6 +19,7 @@
     "@blackbox/module-claim": "workspace:*",
     "@blackbox/module-leaderboards": "workspace:*",
     "@blackbox/module-methodology": "workspace:*",
+    "@blackbox/module-ngo-site": "workspace:*",
     "@blackbox/module-org-snapshot": "workspace:*",
     "@blackbox/rankings-data": "workspace:*",
     "@blackbox/ui": "workspace:*",

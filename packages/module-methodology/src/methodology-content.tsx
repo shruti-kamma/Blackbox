@@ -22,7 +22,7 @@ const CATEGORIES = [
   {
     name: "Employment",
     description:
-      "Overall headcount and proportion of persons with disabilities employed, as disclosed in the filing — the workforce-representation baseline the other workforce metrics build on.",
+      "Overall headcount and proportion of persons with disabilities employed, as publicly disclosed — the workforce-representation baseline the other workforce metrics build on.",
   },
   {
     name: "Recruitment",
@@ -60,11 +60,11 @@ const CATEGORIES = [
   {
     name: "Compliance",
     description:
-      "Statutory and regulatory adherence: RPwD Act quota attainment, WCAG conformance claims, and completeness of BRSR reporting itself.",
+      "Statutory and regulatory adherence: RPwD Act quota attainment, WCAG conformance claims, and completeness of public disclosure reporting itself.",
   },
 ];
 
-// Page content only — the route file (app/ranking/methodology/page.tsx)
+// Page content only — the route file (app/(app)/rankings/methodology/page.tsx)
 // renders this directly. Navigation into this page comes from the main
 // site nav's "Rankings" dropdown (see components/nav.tsx), not a
 // section-local nav bar (that Masthead was removed).
@@ -73,15 +73,15 @@ export function MethodologyContent() {
     <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
       <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Methodology</h1>
       <p className="mt-4 max-w-2xl text-muted-foreground">
-        Every B4I score is built from exactly <strong className="text-foreground">10 equally-weighted
+        Every score is built from exactly <strong className="text-foreground">10 equally-weighted
         metrics</strong>, each worth up to 10 points toward the 0–100 composite score — no single
         dimension can dominate the result. Metrics are derived from companies&rsquo; own public
-        disclosures (BRSR filings and annual reports), extracted and scored without company
-        involvement unless a record has been claimed and verified.
+        disclosures, extracted and scored without company involvement unless a record has been
+        claimed and verified.
       </p>
       <p className="mt-3 max-w-2xl text-muted-foreground">
         Three metrics — Retention, Leadership, and Employee Feedback — have no equivalent mandated
-        disclosure field in a BRSR filing, so they&rsquo;re essentially never public before a company
+        public disclosure field, so they&rsquo;re essentially never public before a company
         claims its record. They&rsquo;re still scored whenever something is disclosed, but excluded from
         the composite score until an organization claims its profile and can self-declare that data
         directly, so an unclaimed organization is never marked down for information it had no public

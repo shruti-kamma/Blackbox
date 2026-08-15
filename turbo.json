@@ -4,7 +4,8 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": ["DATABASE_URL", "REDIS_URL", "AUTH_SECRET", "CERT_HASH_SECRET", "KYC_DEV_MODE", "GROQ_API_KEY", "ANTHROPIC_API_KEY", "CLAUDE_VISION_MODEL"]
     },
     "dev": {
       "cache": false,

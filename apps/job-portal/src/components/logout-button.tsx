@@ -12,7 +12,7 @@ export function LogoutButton({ className }: { className?: string }) {
       className={className}
       onClick={async () => {
         await fetch("/api/auth/logout", { method: "POST" });
-        router.push("/login");
+        router.push("/nexo/login");
         router.refresh();
       }}
     >

@@ -112,7 +112,7 @@ export function CandidateProfileCard({ profile, matchCount, employerActionCount 
       </div>
 
       <Button asChild size="sm" className="w-full">
-        <Link href="/candidate/profile">{percent === 100 ? "Edit profile" : "Complete profile"}</Link>
+        <Link href="/nexo/candidate/profile">{percent === 100 ? "Edit profile" : "Complete profile"}</Link>
       </Button>
 
       <div className="mt-2 w-full rounded-md bg-muted p-4 text-left">
@@ -161,7 +161,7 @@ export function CandidateProfileCard({ profile, matchCount, employerActionCount 
           ) : (
             <p className="text-danger">
               Accommodation needs not yet specified —{" "}
-              <Link href="/candidate/profile" className="font-medium underline">
+              <Link href="/nexo/candidate/profile" className="font-medium underline">
                 add them
               </Link>{" "}
               to improve your matches.

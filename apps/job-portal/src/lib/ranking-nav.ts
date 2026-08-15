@@ -7,7 +7,7 @@ export interface NavLink {
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { href: "/ranking/companies", label: "Companies" }, // @blackbox/module-leaderboards
-  { href: "/ranking/universities", label: "Universities" }, // @blackbox/module-leaderboards
-  { href: "/ranking/methodology", label: "Methodology" }, // @blackbox/module-methodology
+  { href: "/rankings/companies", label: "Companies" }, // @blackbox/module-leaderboards
+  { href: "/rankings/universities", label: "Universities" }, // @blackbox/module-leaderboards
+  { href: "/rankings/methodology", label: "Methodology" }, // @blackbox/module-methodology
 ];

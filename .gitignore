@@ -62,3 +62,7 @@ docs/samples/
 
 # Uploaded files (candidate resumes, etc.) — local disk storage, dev only
 apps/job-portal/uploads/
+
+# Vercel project link (local machine's link to the hosted project, not
+# something every clone/environment should share)
+.vercel/

@@ -30,7 +30,7 @@ function NotificationContent({ n }: { n: Notification }) {
         <strong>{n.payload.candidateName}</strong> needs: {labels.join(", ")} — not yet marked as offered on
         this job.{" "}
         {n.payload.jobId && (
-          <Link href={`/employer/jobs/${n.payload.jobId}`} className="text-primary underline">
+          <Link href={`/nexo/employer/jobs/${n.payload.jobId}`} className="text-primary underline">
             View
           </Link>
         )}
@@ -43,7 +43,7 @@ function NotificationContent({ n }: { n: Notification }) {
         <strong>{n.payload.candidateName}</strong> met your must-have skills for this job but was rejected
         before an interview — your guaranteed-interview commitment applied here.{" "}
         {n.payload.jobId && (
-          <Link href={`/employer/jobs/${n.payload.jobId}`} className="text-primary underline">
+          <Link href={`/nexo/employer/jobs/${n.payload.jobId}`} className="text-primary underline">
             View
           </Link>
         )}
@@ -54,7 +54,7 @@ function NotificationContent({ n }: { n: Notification }) {
     <>
       New match — {n.payload.score}% fit.{" "}
       {n.payload.jobId && (
-        <Link href="/candidate/jobs" className="text-primary underline">
+        <Link href="/nexo/candidate/jobs" className="text-primary underline">
           View
         </Link>
       )}

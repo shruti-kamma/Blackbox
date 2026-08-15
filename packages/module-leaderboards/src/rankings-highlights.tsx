@@ -22,7 +22,7 @@ function HighlightCard({ org, rank }: { org: MockOrg; rank: number }) {
   const tier = getMaturityLevel(org.overallScore);
   return (
     <Link
-      href={`/ranking/organizations/${org.slug}`}
+      href={`/rankings/organizations/${org.slug}`}
       className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-2">
@@ -44,9 +44,6 @@ function HighlightCard({ org, rank }: { org: MockOrg; rank: number }) {
           {org.overallScore}
         </span>
         <span className="text-xs text-muted-foreground">/100</span>
-        <span className="ml-auto rounded-full border border-border px-1.5 py-0.5 text-[0.6rem] font-medium uppercase tracking-wide text-muted-foreground">
-          B4I
-        </span>
       </p>
     </Link>
   );
@@ -69,7 +66,7 @@ export async function RankingsHighlights() {
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-primary" />
               Live
             </span>
-            <span className="text-muted-foreground">&middot; B4I Accessibility Index</span>
+            <span className="text-muted-foreground">&middot; Blackbox Accessibility Index</span>
             <span className="rounded-full border border-border px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground">
               India pilot
             </span>
@@ -78,14 +75,14 @@ export async function RankingsHighlights() {
           <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                Top B4I Scores &mdash; Indian Companies
+                Top Scores &mdash; Companies in India
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 {orgs.length} companies indexed &middot; the 10-metric methodology is live &middot; universities
                 launching next
               </p>
             </div>
-            <Link href="/ranking/companies" className="shrink-0 text-sm font-semibold text-primary hover:underline">
+            <Link href="/rankings/companies" className="shrink-0 text-sm font-semibold text-primary hover:underline">
               Full rankings &rarr;
             </Link>
           </div>
@@ -129,7 +126,7 @@ export async function RankingsHighlights() {
               be scored, or you can claim a free baseline.
             </p>
             <Link
-              href="/ranking/claim"
+              href="/rankings/claim"
               className="flex h-touch-target shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-secondary px-6 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
               Claim or get scored &rarr;

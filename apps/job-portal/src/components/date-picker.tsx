@@ -112,7 +112,7 @@ export function DatePicker({
         <div
           role="dialog"
           aria-label={`Choose ${label.toLowerCase()}`}
-          className="absolute top-full z-10 mt-1 w-72 rounded-md border border-border bg-background p-3 shadow-md"
+          className="absolute top-full z-10 mt-1 w-72 max-w-[calc(100vw-2rem)] rounded-md border border-border bg-background p-3 shadow-md"
         >
           <div className="flex items-center gap-2">
             <select
@@ -160,7 +160,7 @@ export function DatePicker({
                   onClick={() => selectDay(day)}
                   aria-current={isSelected ? "date" : undefined}
                   aria-label={formatDisplay(iso)}
-                  className={`flex size-9 items-center justify-center rounded-md text-sm ${
+                  className={`flex size-8 items-center justify-center rounded-md text-sm ${
                     isSelected ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
                   }`}
                 >
