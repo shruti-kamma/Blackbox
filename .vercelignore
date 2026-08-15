@@ -1,0 +1,31 @@
+# Vercel's upload step doesn't fully respect the per-package .gitignore
+# files scattered across this monorepo (that's git's mechanism, not a
+# vercel deploy convention) — this file exists specifically because a
+# deploy from the repo root was trying to upload 8.7GB (node_modules
+# across every workspace, Python .venv dirs, and the crawler's raw BRSR
+# PDF corpus), none of which the actual Next.js build needs. The build
+# reinstalls dependencies itself (via pnpm, respecting pnpm-lock.yaml).
+
+node_modules
+**/node_modules
+.venv
+**/.venv
+__pycache__
+**/__pycache__
+.next
+**/.next
+.turbo
+**/.turbo
+.git
+
+# Python services aren't part of this deployment (job-portal only) — their
+# code isn't needed to build/run the Next.js app.
+services/crawler/data/reports
+services/crawler/data/trimmed_pdfs
+services/crawler/data/annual_reports
+services/crawler/data/scratch_txt
+
+# Local uploads dir (dev-only local disk storage, see resume-storage.ts)
+apps/job-portal/uploads
+
+docs/samples

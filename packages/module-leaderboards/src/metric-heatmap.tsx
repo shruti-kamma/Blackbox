@@ -115,7 +115,7 @@ export function MetricHeatmap({ orgs }: MetricHeatmapProps) {
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
         &dagger; Claim-gated — not yet disclosable pre-claim (see the{" "}
-        <a href="/ranking/methodology" className="underline underline-offset-2">
+        <a href="/rankings/methodology" className="underline underline-offset-2">
           methodology
         </a>
         ), so these columns are structurally near-zero everywhere rather than an industry-specific weakness.

@@ -12,7 +12,7 @@ import { PwdHeadcountPanel } from "./pwd-headcount-panel";
 import { MetricHeatmap } from "./metric-heatmap";
 import { getAllOrgs } from "@blackbox/rankings-data";
 
-// Page content only — the route file (app/ranking/companies/page.tsx)
+// Page content only — the route file (app/(app)/rankings/companies/page.tsx)
 // renders this directly. Navigation into this page comes from the main
 // site nav's "Rankings" dropdown (see components/nav.tsx), not a
 // section-local nav bar (that Masthead was removed).

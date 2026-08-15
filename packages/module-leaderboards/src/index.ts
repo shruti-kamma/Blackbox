@@ -13,5 +13,6 @@ export * from "./disclosure-gaps-panel";
 export * from "./pwd-headcount-panel";
 export * from "./metric-heatmap";
 export * from "./rankings-highlights";
+export * from "./institution-search";
 export * from "./companies-content";
 export * from "./universities-content";

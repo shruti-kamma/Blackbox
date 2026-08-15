@@ -21,7 +21,7 @@ export function TopPerformersPanel({ orgs }: TopPerformersPanelProps) {
         {top.map((org, i) => (
           <li key={org.id} className="flex items-baseline justify-between gap-2 text-sm">
             <Link
-              href={`/ranking/organizations/${org.slug}`}
+              href={`/rankings/organizations/${org.slug}`}
               className="flex min-w-0 items-baseline gap-2 text-foreground hover:underline"
             >
               <span className="shrink-0 text-muted-foreground">{i + 1}.</span>

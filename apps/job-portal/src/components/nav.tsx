@@ -5,6 +5,7 @@ import { LogoutButton } from "./logout-button";
 import { NotificationBell } from "./notification-bell";
 import { PortalSelectTrigger } from "./a11y/portal-select-trigger";
 import { NavLogo } from "./nav-logo";
+import { MobileNav } from "./mobile-nav";
 import { NAV_LINKS as RANKING_NAV_LINKS } from "@/lib/ranking-nav";
 
 // Follows the shared --color-* theme tokens (light/dark, and the a11y
@@ -33,10 +34,10 @@ export async function Nav() {
   const user = await getCurrentUser();
 
   return (
-    <header className="no-print flex h-16 items-center justify-between gap-6 border-b border-border bg-background px-6">
+    <header className="no-print relative flex h-16 items-center justify-between gap-6 border-b border-border bg-background px-6">
       <NavLogo />
 
-      <nav className="flex flex-1 items-center justify-center gap-8">
+      <nav className="hidden flex-1 items-center justify-center gap-8 md:flex">
         {!user && (
           <>
             <DropdownMenu>
@@ -53,72 +54,72 @@ export async function Nav() {
               </DropdownMenuContent>
             </DropdownMenu>
             <PortalSelectTrigger className={LINK_CLASS}>Job portal</PortalSelectTrigger>
-            <Link href="/#about" className={LINK_CLASS}>
+            <Link href="/rankings#about" className={LINK_CLASS}>
               About
             </Link>
           </>
         )}
         {user?.role === "CANDIDATE" && (
           <>
-            <Link href="/candidate/profile" className={LINK_CLASS}>
+            <Link href="/nexo/candidate/profile" className={LINK_CLASS}>
               Profile
             </Link>
-            <Link href="/candidate/resume" className={LINK_CLASS}>
+            <Link href="/nexo/candidate/resume" className={LINK_CLASS}>
               Resume
             </Link>
-            <Link href="/candidate/assessment" className={LINK_CLASS}>
+            <Link href="/nexo/candidate/assessment" className={LINK_CLASS}>
               Assessment
             </Link>
-            <Link href="/candidate/jobs" className={LINK_CLASS}>
+            <Link href="/nexo/candidate/jobs" className={LINK_CLASS}>
               Matched jobs
             </Link>
-            <Link href="/candidate/applications" className={LINK_CLASS}>
+            <Link href="/nexo/candidate/applications" className={LINK_CLASS}>
               My applications
             </Link>
-            <Link href="/candidate/leaderboard" className={LINK_CLASS}>
+            <Link href="/nexo/candidate/leaderboard" className={LINK_CLASS}>
               Leaderboard
             </Link>
           </>
         )}
         {user?.role === "EMPLOYER" && (
           <>
-            <Link href="/employer" className={LINK_CLASS}>
+            <Link href="/nexo/employer" className={LINK_CLASS}>
               Matched candidates
             </Link>
-            <Link href="/employer/jobs" className={LINK_CLASS}>
+            <Link href="/nexo/employer/jobs" className={LINK_CLASS}>
               Postings
             </Link>
-            <Link href="/employer/jobs/new" className={LINK_CLASS}>
+            <Link href="/nexo/employer/jobs/new" className={LINK_CLASS}>
               Post a job
             </Link>
           </>
         )}
         {user?.role === "ADMIN" && (
           <>
-            <Link href="/admin" className={LINK_CLASS}>
+            <Link href="/nexo/admin" className={LINK_CLASS}>
               Overview
             </Link>
-            <Link href="/admin/coverage" className={LINK_CLASS}>
+            <Link href="/nexo/admin/coverage" className={LINK_CLASS}>
               Coverage
             </Link>
-            <Link href="/admin/employers" className={LINK_CLASS}>
+            <Link href="/nexo/admin/employers" className={LINK_CLASS}>
               Employers
             </Link>
-            <Link href="/admin/candidates" className={LINK_CLASS}>
+            <Link href="/nexo/admin/candidates" className={LINK_CLASS}>
               Candidates
             </Link>
-            <Link href="/admin/duplicates" className={LINK_CLASS}>
+            <Link href="/nexo/admin/duplicates" className={LINK_CLASS}>
               Duplicates
             </Link>
           </>
         )}
       </nav>
 
-      <div className="flex items-center gap-3">
+      <div className="hidden items-center gap-3 md:flex">
         {!user && (
           <>
             <Link
-              href="/login"
+              href="/nexo/login"
               className="flex h-touch-target items-center justify-center rounded-full border border-border bg-muted px-5 text-sm font-semibold text-foreground"
             >
               Sign in
@@ -131,6 +132,8 @@ export async function Nav() {
         {(user?.role === "CANDIDATE" || user?.role === "EMPLOYER") && <NotificationBell />}
         {user && <LogoutButton />}
       </div>
+
+      <MobileNav role={user?.role ?? null} />
     </header>
   );
 }

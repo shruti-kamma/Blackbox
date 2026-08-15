@@ -57,14 +57,14 @@ export function PortalSelectModal({
       return;
     }
     onClose();
-    router.push(type === "university" ? "/signup?role=EMPLOYER&orgType=UNIVERSITY" : "/signup?role=EMPLOYER");
+    router.push(type === "university" ? "/nexo/signup?role=EMPLOYER&orgType=UNIVERSITY" : "/nexo/signup?role=EMPLOYER");
   }
 
   function continueAsCandidate() {
     if (!disability) return;
     setA11yCookieClient(disability);
     onClose();
-    router.push("/signup?role=CANDIDATE");
+    router.push("/nexo/signup?role=CANDIDATE");
     router.refresh();
   }
 

@@ -36,7 +36,7 @@ export function PwdHeadcountPanel({ orgs, limit = 5 }: PwdHeadcountPanelProps) {
         {ranked.map((h, i) => {
           const slug = bySlug.get(h.companyName);
           const nameEl = slug ? (
-            <Link href={`/ranking/organizations/${slug}`} className="hover:underline">
+            <Link href={`/rankings/organizations/${slug}`} className="hover:underline">
               {h.companyName}
             </Link>
           ) : (

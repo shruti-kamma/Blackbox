@@ -11,13 +11,17 @@ export interface LeaderboardTableProps {
 // Real semantic <table>, not a div grid, so it's announced correctly by
 // screen readers (row/column context, header associations). The rounded
 // card shell is a wrapper div, not the table itself, so border-radius +
-// overflow-hidden don't fight table rendering rules.
+// overflow don't fight table rendering rules. overflow-x-auto (not
+// overflow-hidden) so the row content — rank, avatar, name/industry,
+// and the multi-part ScoreBadge (score + tier dot + verification pill,
+// none of which wrap) — scrolls into view on narrow screens instead of
+// silently clipping off the right edge.
 export function LeaderboardTable({
   orgs,
   caption = "Organizations ranked by accessibility and inclusion score",
 }: LeaderboardTableProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
       <table className="w-full border-collapse text-left">
         <caption className="sr-only">{caption}</caption>
         <thead>
@@ -44,7 +48,7 @@ export function LeaderboardTable({
               </td>
               <td className="py-4 pr-4 align-middle">
                 <Link
-                  href={`/ranking/organizations/${org.slug}`}
+                  href={`/rankings/organizations/${org.slug}`}
                   className="font-serif text-lg font-semibold text-foreground hover:underline"
                 >
                   {org.name}

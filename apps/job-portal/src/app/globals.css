@@ -5,10 +5,12 @@
 @source "../../../../packages/module-leaderboards/src/**/*.tsx";
 @source "../../../../packages/module-org-snapshot/src/**/*.tsx";
 @source "../../../../packages/module-claim/src/**/*.tsx";
+@source "../../../../packages/module-ngo-site/src/**/*.tsx";
 
 @theme inline {
   --font-sans: var(--font-lexend);
   --font-mono: var(--font-geist-mono);
+  --color-secondary: #7c3ca1;
 }
 
 /* Sitewide editorial-corporate theme (see docs/decisions.md — "Editorial
