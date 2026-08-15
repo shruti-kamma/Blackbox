@@ -14,7 +14,7 @@ export function NavLogo() {
       </span>
       {isRanking && (
         <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-bold tracking-wide text-foreground border border-border font-sans">
-          B4I
+          INDEX
         </span>
       )}
     </Link>

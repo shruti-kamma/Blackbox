@@ -1,40 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ShapeGrid from "@/components/ui/ShapeGrid";
+import Particles from "@/components/ui/Particles";
 
-const LIGHT_GRID_COLOR = "rgba(3, 6, 141, 0.18)";
-const DARK_GRID_COLOR = "rgba(167, 139, 250, 0.22)";
+const LIGHT_PARTICLE_COLORS = ["#03068d", "#2563eb", "#3b82f6"];
+const DARK_PARTICLE_COLORS = ["#a78bfa", "#c4b5fd", "#8b5cf6"];
 
 export function HeroShapeGrid() {
-  const [borderColor, setBorderColor] = useState<string>(LIGHT_GRID_COLOR);
+  const [particleColors, setParticleColors] = useState<string[]>(LIGHT_PARTICLE_COLORS);
 
   useEffect(() => {
-    const updateColor = () => {
+    const updateColors = () => {
       const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-      setBorderColor(currentTheme === "dark" ? DARK_GRID_COLOR : LIGHT_GRID_COLOR);
+      setParticleColors(currentTheme === "dark" ? DARK_PARTICLE_COLORS : LIGHT_PARTICLE_COLORS);
     };
 
-    // Synchronize theme on initial mount
-    updateColor();
+    updateColors();
 
-    // Listen to custom theme change event
     const handleThemeChange = (e: Event) => {
       const customEv = e as CustomEvent<{ theme: "light" | "dark" }>;
       if (customEv.detail?.theme) {
-        setBorderColor(customEv.detail.theme === "dark" ? DARK_GRID_COLOR : LIGHT_GRID_COLOR);
+        setParticleColors(customEv.detail.theme === "dark" ? DARK_PARTICLE_COLORS : LIGHT_PARTICLE_COLORS);
       } else {
-        updateColor();
+        updateColors();
       }
     };
 
     window.addEventListener("blackbox-theme-change", handleThemeChange);
 
-    // MutationObserver to watch data-theme attribute on <html> element
     const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
         if (m.type === "attributes" && m.attributeName === "data-theme") {
-          updateColor();
+          updateColors();
         }
       }
     });
@@ -48,14 +45,18 @@ export function HeroShapeGrid() {
   }, []);
 
   return (
-    <ShapeGrid
-      speed={0}
-      squareSize={45}
-      direction="diagonal"
-      borderColor={borderColor}
-      hoverFillColor="transparent"
-      shape="hexagon"
-      hoverTrailAmount={0}
+    <Particles
+      particleCount={250}
+      particleSpread={12}
+      speed={0.15}
+      particleColors={particleColors}
+      moveParticlesOnHover={false}
+      particleHoverFactor={0}
+      alphaParticles={true}
+      particleBaseSize={80}
+      sizeRandomness={0.8}
+      cameraDistance={20}
+      disableRotation={false}
     />
   );
 }

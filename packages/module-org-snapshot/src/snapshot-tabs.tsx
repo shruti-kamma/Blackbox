@@ -1,13 +1,13 @@
 import { cn } from "@blackbox/ui";
 
 const LOCKED_TABS = [
-  "B4I Benchmark",
-  "B4I Gap Analysis",
-  "B4I Roadmap",
-  "B4I Impact Simulator",
-  "B4I Progress Tracker",
-  "B4I Recognition",
-  "B4I Executive Boardroom",
+  "Benchmark",
+  "Gap Analysis",
+  "Roadmap",
+  "Impact Simulator",
+  "Progress Tracker",
+  "Recognition",
+  "Executive Boardroom",
 ] as const;
 
 function LockIcon() {
@@ -43,7 +43,7 @@ export function SnapshotTabs() {
             aria-current="page"
             className="inline-block border-b-2 border-foreground px-4 py-3 text-sm font-semibold text-foreground"
           >
-            B4I Snapshot
+            Snapshot
           </span>
         </li>
         {LOCKED_TABS.map((label) => (

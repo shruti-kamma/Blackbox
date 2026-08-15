@@ -63,7 +63,7 @@ export function MethodologyContent() {
     <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
       <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Methodology</h1>
       <p className="mt-4 max-w-2xl text-muted-foreground">
-        Every B4I score is built from exactly <strong className="text-foreground">10 equally-weighted
+        Every score is built from exactly <strong className="text-foreground">10 equally-weighted
         metrics</strong>, each worth up to 10 points toward the 0–100 composite score — no single
         dimension can dominate the result. Metrics are derived from companies&rsquo; own public
         disclosures (BRSR filings and annual reports), extracted and scored without company

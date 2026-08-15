@@ -1,201 +1,208 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { MATCH_THRESHOLD } from "@blackbox/matching-engine";
-import { getCurrentUser } from "@/lib/auth/current-user";
-import { prisma } from "@/lib/db";
-import { DISABILITY_CATEGORY_OPTIONS } from "@/lib/matching-options";
-import { PortalSelectTrigger } from "@/components/a11y/portal-select-trigger";
 import { HeroShapeGrid } from "@/components/hero-shape-grid";
+import { BoxOpensVisual } from "@/components/box-opens-visual";
+import { StayConnectedForm } from "@/components/stay-connected-form";
 
-// The umbrella "Blackbox" landing page — the actual front door of the site.
-export default async function Home() {
-  const user = await getCurrentUser();
-  if (user?.role === "CANDIDATE") redirect("/candidate/jobs");
-  if (user?.role === "EMPLOYER") redirect("/employer");
-  if (user?.role === "ADMIN") redirect("/admin");
-
-  let openJobsCount = 0;
-  let organizationsCount = 0;
-  try {
-    [openJobsCount, organizationsCount] = await Promise.all([
-      prisma.job.count({ where: { isOpen: true } }),
-      prisma.organization.count(),
-    ]);
-  } catch (error) {
-    console.warn("Database connection offline, using fallback metrics");
-  }
-
+export default function Home() {
   return (
-    <main className="flex flex-1 flex-col">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background/95 to-muted/30 min-h-[calc(100vh-4.25rem)] flex flex-col justify-between py-12 md:py-16">
-        <div className="absolute inset-0 z-0 opacity-80">
+    <main className="flex flex-1 flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* ==========================================
+          1. HERO
+         ========================================== */}
+      <section className="relative overflow-hidden border-b border-border min-h-[90vh] flex flex-col justify-center py-20 md:py-28">
+        <div className="absolute inset-0 z-0 opacity-70" aria-hidden="true">
           <HeroShapeGrid />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8 flex-1 flex flex-col justify-center text-left font-sans">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-sans inline-flex items-center gap-2">
-            <span>Blackbox INDEX</span>
-            <sup className="text-xl sm:text-3xl font-extrabold text-primary select-none">™</sup>
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-6 sm:px-8 text-center flex flex-col items-center">
+          {/* Main Title */}
+          <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-foreground uppercase font-sans">
+            BLACKBOX
           </h1>
 
-          <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold tracking-wide text-primary font-sans">
-            (Indian National Disability Ecosystem Exchange)
+          {/* Tagline */}
+          <p className="mt-3 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wide text-primary font-sans">
+            Xclusively Inclusive.
           </p>
 
-          <p className="mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground font-sans leading-relaxed">
-            India&apos;s first unified accessibility and inclusion intelligence platform — matching candidates with disabilities to verified roles while tracking real, enforced employer accommodation commitments.
+          {/* Sub-headline */}
+          <p className="mt-6 text-xl sm:text-2xl font-bold tracking-normal text-foreground/90 font-sans">
+            From intent to action.
+          </p>
+
+          {/* Core Problem Narrative */}
+          <div className="mt-8 max-w-2xl space-y-4 text-base sm:text-lg md:text-xl text-muted-foreground font-sans leading-relaxed">
+            <p>India has made important commitments towards inclusion.</p>
+            <p>
+              Yet a significant gap remains between what the system intends to achieve and what persons with disabilities experience in reality.
+            </p>
+            <p className="text-foreground font-medium">
+              We are building something to help close that gap.
+            </p>
+          </div>
+
+          {/* Driving Motto */}
+          <div className="mt-12 inline-block rounded-2xl border border-primary/30 bg-primary/10 px-8 py-4 backdrop-blur-md">
+            <p className="text-xl sm:text-2xl font-extrabold text-primary tracking-wide">
+              What gets measured, gets improved.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          2. THE REVEAL
+         ========================================== */}
+      <section className="relative py-24 sm:py-32 md:py-40 bg-gradient-to-b from-background via-card/40 to-background border-b border-border">
+        {/* Generous Whitespace Header */}
+        <div className="mx-auto w-full max-w-4xl px-6 text-center">
+          <p className="text-lg sm:text-xl font-bold uppercase tracking-widest text-primary/80 mb-6">
+            Something is coming.
+          </p>
+
+          {/* Ecosystem Pillars */}
+          <div className="my-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-4xl mx-auto px-4">
+            <div className="px-5 py-3 sm:px-6 sm:py-4 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md shadow-sm transition-all hover:border-primary/50">
+              <span className="text-sm sm:text-base md:text-lg font-black tracking-wider text-foreground">DATA.</span>
+            </div>
+            <div className="px-5 py-3 sm:px-6 sm:py-4 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md shadow-sm transition-all hover:border-primary/50">
+              <span className="text-sm sm:text-base md:text-lg font-black tracking-wider text-foreground">OPPORTUNITY.</span>
+            </div>
+            <div className="px-5 py-3 sm:px-6 sm:py-4 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md shadow-sm transition-all hover:border-primary/50">
+              <span className="text-sm sm:text-base md:text-lg font-black tracking-wider text-foreground">TECHNOLOGY.</span>
+            </div>
+            <div className="px-5 py-3 sm:px-6 sm:py-4 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md shadow-sm transition-all hover:border-primary/50">
+              <span className="text-sm sm:text-base md:text-lg font-black tracking-wider text-foreground">PARTNERSHIPS.</span>
+            </div>
+          </div>
+
+          <p className="text-xl sm:text-2xl font-extrabold text-muted-foreground uppercase tracking-widest mb-16">
+            One ecosystem.
           </p>
         </div>
 
-        {/* First Scroll Reveal Indicator */}
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-4 flex items-center justify-center">
-          <a
-            href="#rankings"
-            aria-label="Scroll to next section"
-            className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-7 w-7 animate-bounce text-primary group-hover:translate-y-1 transition-transform"
-            >
-              <path d="M12 5v14M19 12l-7 7-7-7" />
+        {/* Visual Hook & Countdown */}
+        <BoxOpensVisual />
+      </section>
+
+      {/* ==========================================
+          3. INDEPENDENCE DAY CONTEXT
+         ========================================== */}
+      <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border text-center bg-gradient-to-r from-[#FF9933]/15 via-background to-[#138808]/15 dark:from-[#FF9933]/20 dark:via-background dark:to-[#138808]/20">
+        {/* Tricolor subtle top & bottom accent borders */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#FF9933] via-white to-[#138808] opacity-80" />
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#FF9933] via-white to-[#138808] opacity-80" />
+
+        {/* Ambient radial blur glowing spheres for Saffron & Green */}
+        <div aria-hidden="true" className="absolute -top-12 -left-12 w-64 h-64 bg-[#FF9933]/25 dark:bg-[#FF9933]/20 rounded-full blur-3xl pointer-events-none" />
+        <div aria-hidden="true" className="absolute -bottom-12 -right-12 w-64 h-64 bg-[#138808]/25 dark:bg-[#138808]/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-6 flex flex-col items-center">
+          {/* Subtle Ashoka Chakra Motif Icon */}
+          <div className="mb-4 text-primary/80 opacity-90">
+            <svg className="w-10 h-10 animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+              <circle cx="50" cy="50" r="45" strokeWidth="3" />
+              <circle cx="50" cy="50" r="8" strokeWidth="3" />
+              {Array.from({ length: 24 }).map((_, i) => {
+                const angle = (i * 360) / 24;
+                const rad = (angle * Math.PI) / 180;
+                const x2 = 50 + 45 * Math.cos(rad);
+                const y2 = 50 + 45 * Math.sin(rad);
+                return <line key={i} x1="50" y1="50" x2={x2} y2={y2} strokeWidth="1.5" />;
+              })}
             </svg>
-          </a>
-        </div>
-      </section>
-
-      {/* Two products */}
-      <section id="rankings" className="scroll-mt-16 border-b border-border bg-muted py-14 md:py-20">
-        <div className="mx-auto w-full max-w-5xl px-4 text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
-            What Gets Measured, <span className="text-primary">Gets Improved</span>
-          </h2>
-        </div>
-
-        <div className="mx-auto grid w-full max-w-5xl gap-5 px-4 md:grid-cols-2">
-          <PortalSelectTrigger className="flex flex-col items-start gap-3 rounded-lg border-2 border-primary bg-background p-7 text-left hover:shadow-md">
-            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-wide text-primary uppercase">
-              Blackbox Jobs
-            </span>
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">The hiring platform</h2>
-            <p className="text-sm text-muted-foreground">
-              Candidates build a verified profile, take one accessibility-adjusted assessment, and get matched
-              to roles that already fit. Employers hire against enforced accommodation commitments.
-            </p>
-            <span className="mt-1 text-sm font-semibold text-primary">Enter Blackbox Jobs →</span>
-          </PortalSelectTrigger>
-
-          <Link
-            href="/ranking"
-            className="flex flex-col items-start gap-3 rounded-lg border-2 border-border bg-background p-7 text-left hover:shadow-md"
-          >
-            <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold tracking-wide text-muted-foreground uppercase">
-              Blackbox Rankings
-            </span>
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">The accountability layer</h2>
-            <p className="text-sm text-muted-foreground">
-              A public, ongoing score of how well employers actually deliver on disability inclusion — built
-              from real candidate reviews and accommodation history, not a self-submitted survey.
-            </p>
-            <span className="mt-1 text-sm font-semibold text-foreground">See the rankings →</span>
-          </Link>
-        </div>
-      </section>
-
-      {/* Real, live stats */}
-      <section className="border-b border-border">
-        <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4">
-          <div>
-            <p className="text-primary text-3xl font-semibold tabular-nums">
-              {openJobsCount}
-            </p>
-            <p className="text-sm text-muted-foreground">Open roles</p>
           </div>
-          <div>
-            <p className="text-primary text-3xl font-semibold tabular-nums">
-              {organizationsCount}
+
+          <div className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md p-8 sm:p-10 shadow-lg max-w-3xl">
+            <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-foreground leading-relaxed font-sans">
+              On India’s 80th Independence Day, we begin a journey towards a more inclusive{" "}
+              <span className="font-black inline-flex flex-wrap items-center justify-center gap-x-2">
+                <span className="text-[#FF671F] drop-shadow-sm">Viksit</span>
+                <span className="text-foreground">Bharat</span>
+                <span className="text-[#138808] dark:text-[#22c55e] drop-shadow-sm">by 2047.</span>
+              </span>
             </p>
-            <p className="text-sm text-muted-foreground">Organizations hiring</p>
-          </div>
-          <div>
-            <p className="text-primary text-3xl font-semibold tabular-nums">
-              {DISABILITY_CATEGORY_OPTIONS.length}
-            </p>
-            <p className="text-sm text-muted-foreground">Disability categories supported</p>
-          </div>
-          <div>
-            <p className="text-primary text-3xl font-semibold tabular-nums">
-              {MATCH_THRESHOLD}%
-            </p>
-            <p className="text-sm text-muted-foreground">Minimum fit to ever appear as a match</p>
           </div>
         </div>
       </section>
 
-      {/* About / Motive Section */}
-      <section id="about" className="scroll-mt-16 border-t border-border bg-background py-16 md:py-24">
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 md:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-wide text-primary uppercase">
-              Our Purpose & Motive
-            </span>
-            <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
-              Why Blackbox Exists
+      {/* ==========================================
+          4. THE MYSTERY
+         ========================================== */}
+      <section className="py-24 sm:py-32 bg-background border-b border-border">
+        <div className="mx-auto w-full max-w-3xl px-6 text-center space-y-8">
+          <div className="space-y-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-muted-foreground">
+              We aren’t ready to show you everything yet.
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground font-sans leading-relaxed">
-              We are a purpose-built technology platform solving the systemic exclusion of persons with disabilities in the workforce through enforceable data and real accessibility.
+            <p className="text-xl sm:text-2xl font-semibold text-foreground">
+              But we are ready to tell you this:
             </p>
           </div>
 
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
-            {/* Pillar 1 */}
-            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-foreground font-sans">What We Are Solving</h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                Traditional hiring platforms treat disability inclusion as a superficial checkbox. Candidates face unadapted assessments and empty diversity statements without knowing if real workplace accommodations actually exist.
-              </p>
-            </div>
+          <div className="py-6">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-primary">
+              Something is being built.
+            </h3>
+          </div>
 
-            {/* Pillar 2 */}
-            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-foreground font-sans">Driven By Purpose & Data</h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                Blackbox is an infrastructure of systemic accountability. We measure real accommodation track records and employee reviews to hold employers accountable against enforced commitments.
-              </p>
+          {/* Curiosity Building Pillars */}
+          <div className="grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
+            <div className="p-5 rounded-xl border border-border/80 bg-card/50 backdrop-blur-sm flex items-center gap-3">
+              <div className="h-2.5 w-2.5 rounded-full bg-primary flex-shrink-0" />
+              <span className="text-lg font-bold text-foreground">Something that will measure.</span>
             </div>
-
-            {/* Pillar 3 */}
-            <div className="flex flex-col items-start rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-foreground font-sans">An Accessible Job Space</h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                We provide candidates with disabilities a dedicated, screen-reader optimized platform to build verified profiles, take adapted skill evaluations, and secure roles that are pre-fitted for their specific needs.
-              </p>
+            <div className="p-5 rounded-xl border border-border/80 bg-card/50 backdrop-blur-sm flex items-center gap-3">
+              <div className="h-2.5 w-2.5 rounded-full bg-primary flex-shrink-0" />
+              <span className="text-lg font-bold text-foreground">Something that will connect.</span>
+            </div>
+            <div className="p-5 rounded-xl border border-border/80 bg-card/50 backdrop-blur-sm flex items-center gap-3">
+              <div className="h-2.5 w-2.5 rounded-full bg-primary flex-shrink-0" />
+              <span className="text-lg font-bold text-foreground">Something that will enable.</span>
+            </div>
+            <div className="p-5 rounded-xl border border-border/80 bg-card/50 backdrop-blur-sm flex items-center gap-3">
+              <div className="h-2.5 w-2.5 rounded-full bg-primary flex-shrink-0" />
+              <span className="text-lg font-bold text-foreground">Something that will create opportunity.</span>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ==========================================
+          5. STAY CONNECTED
+         ========================================== */}
+      <section id="stay-connected" className="py-24 sm:py-32 bg-card/40 border-b border-border">
+        <div className="mx-auto w-full max-w-3xl px-6 text-center space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground font-sans">
+              Be the first to know.
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground font-sans">
+              Something is being built behind the Blackbox.
+            </p>
+          </div>
+
+          <div className="pt-6">
+            <StayConnectedForm />
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          6. FINAL SCREEN
+         ========================================== */}
+      <footer className="py-16 sm:py-24 bg-background text-center">
+        <div className="mx-auto w-full max-w-3xl px-6 space-y-4">
+          <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-foreground uppercase">
+            BLACKBOX
+          </h2>
+          <p className="text-xl sm:text-2xl font-bold text-primary tracking-wide">
+            Xclusively Inclusive.
+          </p>
+          <p className="text-sm sm:text-base font-semibold text-muted-foreground uppercase tracking-widest pt-4">
+            The box opens — 3 December 2026.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }
