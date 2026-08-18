@@ -15,17 +15,9 @@ import {
   getEmployeeFeedbackScore,
   MATURITY_LEVEL_DOT_CLASS,
   VERIFICATION_LEVEL_LABELS,
-  MOCK_ORGS,
   getOrg,
   getAllOrgs,
 } from "@blackbox/rankings-data";
-
-// Re-exported so a route file can do `export { generateStaticParams } from
-// "@blackbox/module-org-snapshot"` — Next.js requires this export to live
-// directly in the route module, but re-exporting satisfies that.
-export function generateStaticParams() {
-  return MOCK_ORGS.map((org) => ({ slug: org.slug }));
-}
 
 function StatCard({
   label,
