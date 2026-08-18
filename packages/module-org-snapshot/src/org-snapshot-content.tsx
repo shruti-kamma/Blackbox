@@ -96,7 +96,7 @@ export async function OrgSnapshotContent({ slug }: OrgSnapshotContentProps) {
         {/* Header */}
         <div className="border-b border-foreground pb-8">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Blackbox Global Foundation &middot; Accessibility Intelligence
+            Blackbox Global Foundation &middot; Index Intelligence
           </p>
           <div className="mt-3 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex gap-4">
@@ -157,14 +157,14 @@ export async function OrgSnapshotContent({ slug }: OrgSnapshotContentProps) {
               size="sm"
               className="rounded-full shrink-0 bg-gradient-to-r from-primary to-secondary"
             >
-              <Link href={`/rankings/claim?org=${org.slug}`}>Claim record</Link>
+              <Link href={`/indextm/claim?org=${org.slug}`}>Claim record</Link>
             </Button>
           </div>
         )}
 
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <StatCard
-            label="Overall Blackbox Score"
+            label="Overall Score"
             value={org.overallScore}
             sub={hasTrend ? `${trendSign}${org.scoreTrend} / 12mo` : undefined}
             emphasis

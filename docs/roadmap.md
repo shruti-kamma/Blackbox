@@ -9,7 +9,7 @@ Three sites (see `docs/plans/`), agent services back them:
 | Site | Status |
 |---|---|
 | `apps/job-portal` | Scaffolded only. Functionality not yet scoped beyond "hiring portal for PwDs." |
-| `apps/rankings` | Public view **now reads real Postgres data** via `src/lib/get-orgs.ts` (falls back to the fictional `mock-orgs.ts` set if the DB is unreachable or empty — see decisions.md). Separate `/companies`/`/universities` leaderboards, org detail page in the client's "B4I Snapshot" layout. 11 real companies loaded end-to-end (mock-scored, real API run still pending). Real orgs currently have null industry/location (no classification data in the pipeline yet) and no employee/AI-confidence/trend figures — UI degrades gracefully rather than guessing. Private company-view dashboard (the other 7 B4I tabs) not started, gated behind company verification (mechanism TBD). |
+| `apps/rankings` | Public view **now reads real Postgres data** via `src/lib/get-orgs.ts` (falls back to the fictional `mock-orgs.ts` set if the DB is unreachable or empty — see decisions.md). Separate `/companies`/`/universities` leaderboards, org detail page in the client's "Snapshot" layout. 11 real companies loaded end-to-end (mock-scored, real API run still pending). Real orgs currently have null industry/location (no classification data in the pipeline yet) and no employee/AI-confidence/trend figures — UI degrades gracefully rather than guessing. Private company-view dashboard (the other 7 tabs) not started, gated behind company verification (mechanism TBD). |
 | `apps/ngo-site` | Deferred, not started. |
 
 | Agent | Status |
@@ -32,12 +32,12 @@ done here.
 |---|---|---|
 | `@blackbox/rankings-data` | Done | Shared data seam (Postgres via `@blackbox/db`, falls back to mock data) — infra, not a removable feature itself. |
 | `@blackbox/module-leaderboards` | Done | `/companies`, `/universities` listings; also houses `OrgAvatar`/`ScoreBadge`, shared with org-snapshot. |
-| `@blackbox/module-org-snapshot` | Done | `/organizations/[slug]` — the public B4I Snapshot page (rank summary, maturity ladder, dimension scorecard, strengths/risks, score breakdown). |
+| `@blackbox/module-org-snapshot` | Done | `/organizations/[slug]` — the public Snapshot page (rank summary, maturity ladder, dimension scorecard, strengths/risks, score breakdown). |
 | `@blackbox/module-methodology` | Done | `/methodology` — static placeholder content. |
 | `@blackbox/module-claim` | Done | `/claim` placeholder flow + the parked (unused, not yet wired to any page) `VerificationLadder` company-view component. |
 | `job-portal` (site-level) | Not started | Whole site is an unmodified scaffold — nothing to extract yet. |
 | `ngo-site` (site-level) | Not started | Deferred; not scaffolded beyond a README. |
-| 7 private B4I dashboard tabs (feature-level, within rankings) | Not started | Benchmark, Gap Analysis, Roadmap, Impact Simulator, Progress Tracker, Recognition, Executive Boardroom — currently shown as locked/disabled labels only (`SnapshotTabs`, in `module-org-snapshot`), gated behind company verification (mechanism TBD). Each becomes its own `@blackbox/module-*` package once built, following the same pattern. |
+| 7 private dashboard tabs (feature-level, within rankings) | Not started | Benchmark, Gap Analysis, Roadmap, Impact Simulator, Progress Tracker, Recognition, Executive Boardroom — currently shown as locked/disabled labels only (`SnapshotTabs`, in `module-org-snapshot`), gated behind company verification (mechanism TBD). Each becomes its own `@blackbox/module-*` package once built, following the same pattern. |
 
 ## BRSR accessibility-scoring pipeline
 

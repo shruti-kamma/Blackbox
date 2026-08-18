@@ -90,7 +90,7 @@ export function VerificationLadder({ level, orgSlug }: VerificationLadderProps) 
           variant="primary"
           className="shrink-0 rounded-full bg-gradient-to-r from-primary to-secondary"
         >
-          <Link href={`/rankings/claim?org=${orgSlug}`}>Claim record</Link>
+          <Link href={`/indextm/claim?org=${orgSlug}`}>Claim record</Link>
         </Button>
       </div>
     </section>

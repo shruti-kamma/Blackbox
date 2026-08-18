@@ -22,7 +22,7 @@ function HighlightCard({ org, rank }: { org: MockOrg; rank: number }) {
   const tier = getMaturityLevel(org.overallScore);
   return (
     <Link
-      href={`/rankings/organizations/${org.slug}`}
+      href={`/indextm/organizations/${org.slug}`}
       className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-2">
@@ -82,7 +82,7 @@ export async function RankingsHighlights() {
                 launching next
               </p>
             </div>
-            <Link href="/rankings/companies" className="shrink-0 text-sm font-semibold text-primary hover:underline">
+            <Link href="/indextm/companies" className="shrink-0 text-sm font-semibold text-primary hover:underline">
               Full rankings &rarr;
             </Link>
           </div>
@@ -126,7 +126,7 @@ export async function RankingsHighlights() {
               be scored, or you can claim a free baseline.
             </p>
             <Link
-              href="/rankings/claim"
+              href="/indextm/claim"
               className="flex h-touch-target shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-secondary px-6 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
               Claim or get scored &rarr;

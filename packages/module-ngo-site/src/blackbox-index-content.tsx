@@ -17,7 +17,7 @@ function LockIcon() {
 }
 
 // The public-facing product/marketing page for Blackbox Index — distinct
-// from the real, working dashboard at /rankings (built earlier this
+// from the real, working dashboard at /indextm (built earlier this
 // session). This page pitches the product and links through to the live
 // tool; it doesn't duplicate the dashboard itself. Per the brief, the
 // full 50-question methodology isn't exposed here, and any score data
@@ -47,7 +47,7 @@ export async function BlackboxIndexContent() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
-              href="/rankings"
+              href="/indextm"
               className="flex h-touch-target items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
               View the Live Rankings

@@ -20,7 +20,7 @@ export function WatchlistPanel({ orgs }: WatchlistPanelProps) {
       <ul className="mt-3 flex flex-col gap-2">
         {watchlist.map((org) => (
           <li key={org.id} className="flex items-baseline justify-between gap-2 text-sm">
-            <Link href={`/rankings/organizations/${org.slug}`} className="min-w-0 truncate text-foreground hover:underline">
+            <Link href={`/indextm/organizations/${org.slug}`} className="min-w-0 truncate text-foreground hover:underline">
               {org.name}
             </Link>
             <span className="shrink-0 font-serif font-semibold tabular-nums text-muted-foreground">

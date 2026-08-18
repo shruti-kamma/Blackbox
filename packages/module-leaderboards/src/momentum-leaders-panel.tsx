@@ -20,7 +20,7 @@ export function MomentumLeadersPanel({ orgs }: MomentumLeadersPanelProps) {
       <ul className="mt-3 flex flex-col gap-3">
         {leaders.map(({ org, trend, fromScore, toScore }) => (
           <li key={org.id}>
-            <Link href={`/rankings/organizations/${org.slug}`} className="block hover:underline">
+            <Link href={`/indextm/organizations/${org.slug}`} className="block hover:underline">
               <p className="text-sm font-medium text-foreground">{org.name}</p>
             </Link>
             <div className="mt-0.5 flex items-baseline justify-between gap-2 text-xs text-muted-foreground">

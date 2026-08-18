@@ -48,7 +48,7 @@ export function LeaderboardTable({
               </td>
               <td className="py-4 pr-4 align-middle">
                 <Link
-                  href={`/rankings/organizations/${org.slug}`}
+                  href={`/indextm/organizations/${org.slug}`}
                   className="font-serif text-lg font-semibold text-foreground hover:underline"
                 >
                   {org.name}
