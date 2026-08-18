@@ -92,7 +92,7 @@ export async function OrgSnapshotContent({ slug }: OrgSnapshotContentProps) {
   ].filter(Boolean);
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-4xl flex-1 px-6 py-16">
+    <main id="main-content" className="w-full flex-1 px-6 py-16">
         {/* Header */}
         <div className="border-b border-foreground pb-8">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
