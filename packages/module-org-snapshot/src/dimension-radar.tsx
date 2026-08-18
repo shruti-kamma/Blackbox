@@ -10,10 +10,13 @@ const MAX_RADIUS = 95;
 const LABEL_RADIUS = 122;
 const RING_STEPS = [25, 50, 75, 100];
 
-function pointFor(index: number, total: number, value: number, radius: number) {
+function pointAt(index: number, total: number, radius: number) {
   const angle = -Math.PI / 2 + (index * 2 * Math.PI) / total;
-  const r = (value / 100) * radius;
-  return { x: CENTER + r * Math.cos(angle), y: CENTER + r * Math.sin(angle) };
+  return { x: CENTER + radius * Math.cos(angle), y: CENTER + radius * Math.sin(angle) };
+}
+
+function pointFor(index: number, total: number, value: number, radius: number) {
+  return pointAt(index, total, (value / 100) * radius);
 }
 
 function labelAnchor(index: number, total: number): { anchor: "start" | "middle" | "end"; dy: number } {
@@ -87,7 +90,7 @@ export function DimensionRadar({ breakdown }: DimensionRadarProps) {
 
         {/* Axis labels, anchored/offset per quadrant so text reads outward rather than overlapping the plot. */}
         {breakdown.map((item, i) => {
-          const label = pointFor(i, total, 0, LABEL_RADIUS);
+          const label = pointAt(i, total, LABEL_RADIUS);
           const { anchor, dy } = labelAnchor(i, total);
           return (
             <text
